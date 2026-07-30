@@ -1,0 +1,47 @@
+name: Update Workbench Data
+
+# 每 30 分钟在 GitHub 服务器端抓取最新财经/新闻/音乐榜单，提交静态 JSON 到仓库。
+# App 同域直接读取这些 JSON（无跨域、国内稳定），无需任何 CORS 代理或 token。
+on:
+  schedule:
+    - cron: '*/30 * * * *'        # UTC，每 30 分钟一次
+  workflow_dispatch: {}           # 允许在 Actions 页面手动触发
+  push:
+    paths:
+      - 'scripts/update_data.py'
+      - '.github/workflows/update-data.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-workbench-data
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Fetch latest data
+        run: python scripts/update_data.py
+
+      - name: Commit and push (if changed)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add finance.json news.json music-spotify.json music-billboard.json
+          if git diff --cached --quiet; then
+            echo "数据无变化，跳过提交"
+          else
+            git commit -m "chore: 自动更新 财经/新闻/音乐 数据"
+            git push
+          fi

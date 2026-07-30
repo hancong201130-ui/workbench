@@ -156,7 +156,7 @@
         </div>
       </div>
       <div class="p-2 md:p-3 border-t border-slate-100">
-        <p class="text-[10px] md:text-xs text-slate-400 text-center mb-2">数据自动云同步，可一键备份到本机防丢</p>
+        <p class="text-[10px] md:text-xs text-slate-400 text-center mb-2">财经/新闻/音乐由云端定时更新，你的填写数据存本机，可一键备份防丢</p>
         <div class="flex items-center gap-2">
           <button id="btnExportAll2" class="flex-1 text-xs px-2 py-1.5 rounded-lg bg-brand-100 text-brand-700 hover:bg-brand-200">导出全部</button>
           <button id="btnImportAll2" class="flex-1 text-xs px-2 py-1.5 rounded-lg bg-brand-100 text-brand-700 hover:bg-brand-200">导入全部</button>
@@ -514,61 +514,30 @@ function renderFeed(listId, items, dateId) {
   if(dateId) document.getElementById(dateId).textContent = todayStr();
 }
 
-/* 公共跨域代理：前端直连第三方数据源，无需自建后端；每个代理最多等 9 秒，失败快速回退 */
-const PROXIES = ['https://api.allorigins.win/raw?url=', 'https://api.codetabs.com/v1/proxy/?quest='];
-async function fetchProxy(url){
-  let lastErr;
-  for(const base of PROXIES){
-    const ctrl = new AbortController();
-    const to = setTimeout(() => ctrl.abort(), 9000);
-    try {
-      const r = await fetch(base + encodeURIComponent(url), {cache:'no-store', signal: ctrl.signal});
-      clearTimeout(to);
-      if(!r.ok) throw new Error('http '+r.status);
-      return await r.text();
-    } catch(e){ clearTimeout(to); lastErr = e; }
-  }
-  throw lastErr;
-}
-function cleanHtml(s){ return (s||'').replace(/<[^>]+>/g,'').replace(/&[a-z#0-9]+;/gi,' ').replace(/\s+/g,' ').trim(); }
-function timeFmt(ts){ if(!ts) return ''; const d=new Date(ts*1000); const p=n=>(''+n).padStart(2,'0'); return `${d.getFullYear()}/${p(d.getMonth()+1)}/${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`; }
 
-/* 新浪财经滚动（lid=2509） */
-async function getSinaNews(lid, n=10){
-  const url = `https://feed.mix.sina.com.cn/api/roll/get?pageid=153&lid=${lid}&k=&num=${n}&order=1`;
-  const text = await fetchProxy(url);
-  const data = JSON.parse(text);
-  const items = (data.result && data.result.data) || [];
-  return items.sort((a,b)=>(parseInt(b.ctime)||0)-(parseInt(a.ctime)||0)).slice(0,n).map(it=>{
-    const title = cleanHtml(it.title||it.stitle||'');
-    let intro = cleanHtml(it.intro||it.summary||it.wapsummary||'');
-    if(intro.length>110) intro = intro.slice(0,110)+'…';
-    let t=''; try{ t = timeFmt(parseInt(it.ctime||0)); }catch(e){}
-    const kw = cleanHtml(it.keywords||'');
-    return {title, summary:intro, source: cleanHtml(it.media_name||'新浪财经'), time:t, tag: kw.split(',')[0]||'资讯'};
-  }).filter(it=>it.title);
-}
-/* 中国新闻网·国际 RSS */
-async function getChinanewsWorld(n=10){
-  const xml = await fetchProxy('https://www.chinanews.com.cn/rss/world.xml');
-  const doc = new DOMParser().parseFromString(xml, 'text/xml');
-  return Array.from(doc.querySelectorAll('item')).slice(0,n).map(it=>{
-    const g = t => { const e = it.querySelector(t); return e ? e.textContent.trim() : ''; };
-    let intro = g('description'); if(intro.length>110) intro = intro.slice(0,110)+'…';
-    let t=''; try{ t = g('pubDate').replace(/\s*\(.*\)$/,''); }catch(e){}
-    return {title:g('title'), summary:intro, source:'中国新闻网', time:t, tag: g('category')||'国际'};
-  }).filter(it=>it.title);
+/* 同域静态 JSON（由 GitHub Actions 定时生成），带时间戳防缓存；失败则抛错走兜底 */
+async function fetchDataJson(file) {
+  const url = file + '?t=' + Date.now();
+  const ctrl = new AbortController();
+  const to = setTimeout(() => ctrl.abort(), 12000);
+  try {
+    const r = await fetch(url, {cache: 'no-store', signal: ctrl.signal});
+    if(!r.ok) throw new Error('http ' + r.status);
+    return await r.json();
+  } finally { clearTimeout(to); }
 }
 
-/* 财经/新闻：前端直连实时数据，失败则用本地缓存或种子数据兜底 */
+/* 财经/新闻：读取同域静态 JSON（服务器端定时抓取，国内无跨域限制），失败则用本地缓存或种子数据兜底 */
 async function loadFeed(type) {
   const listId = type === 'finance' ? 'financeList' : 'newsList';
   const dateId = type === 'finance' ? 'financeDate' : 'newsDate';
   const seed = type === 'finance' ? SEED.finance : SEED.news;
+  const file = type === 'finance' ? 'finance.json' : 'news.json';
   const btn = document.getElementById(type === 'finance' ? 'btnRefreshFinance' : 'btnRefreshNews');
   if(btn) { btn.textContent = '刷新中…'; btn.disabled = true; }
   try {
-    const items = type === 'finance' ? await getSinaNews(2509) : await getChinanewsWorld();
+    const data = await fetchDataJson(file);
+    const items = (data && data.items) || [];
     if(!items.length) throw new Error('empty');
     renderFeed(listId, items, dateId);
     localStorage.setItem('wb_news_' + type, JSON.stringify(items));
@@ -615,53 +584,40 @@ function renderMusic() {
     '数据来源：' + label + (upd ? ' · 更新于 ' + upd : ' · 点击刷新获取实时榜单');
 }
 
-/* 音乐榜单：前端直连数据源（kworb / billboard），无需后端 */
-async function getSpotify(){
-  const html = await fetchProxy('https://kworb.net/spotify/country/global_weekly.html');
-  const rows = html.match(/<tr>[\s\S]*?<\/tr>/g) || [];
-  const out = []; let rank = 0;
-  for(const r of rows){
-    const div = r.match(/<td[^>]*>.*?<div>([\s\S]*?)<\/div>/);
-    if(!div) continue;
-    const links = (div[1].match(/<a[^>]*>([^<]+)<\/a>/g) || []).map(a => a.replace(/<[^>]+>/g,'').trim());
-    if(links.length < 2) continue;
-    rank++;
-    out.push({rank, title: links[1].trim(), artist: links[0].trim(), platform:'Spotify Global'});
-    if(rank >= 20) break;
-  }
-  return out;
-}
-async function getBillboard(){
-  const html = await fetchProxy('https://www.billboard.com/charts/hot-100/');
-  const rows = html.split('a-chart-result-item-container').slice(1);
-  const out = [];
-  for(const r of rows){
-    const mt = r.match(/class="[^"]*c-title[^"]*"[^>]*>([\s\S]*?)<\/h3>/);
-    const sp = r.match(/class="[^"]*c-label\s+a-no-trucate[^"]*"[^>]*>([\s\S]*?)<\/span>/);
-    if(!mt || !sp) continue;
-    const artist = cleanHtml(sp[1]);
-    if(!artist) continue;
-    out.push({rank: out.length+1, title: cleanHtml(mt[1]), artist, platform:'Billboard Hot 100'});
-    if(out.length >= 20) break;
-  }
-  return out;
-}
+/* 音乐榜单：读取同域静态 JSON（服务器端定时抓取 kworb / billboard），无需 CORS 代理 */
 async function refreshMusic() {
   const btn = document.getElementById('btnRefreshMusic');
   const p = localStorage.getItem('wb_music_platform') || 'spotify';
-  btn.textContent = '刷新中…'; btn.disabled = true;
+  const file = p === 'spotify' ? 'music-spotify.json' : 'music-billboard.json';
+  if (btn) { btn.textContent = '刷新中…'; btn.disabled = true; }
   try {
-    const songs = p === 'spotify' ? await getSpotify() : await getBillboard();
-    if (!songs || songs.length < 10) throw new Error('empty');
+    const data = await fetchDataJson(file);
+    const songs = (data && data.songs) || [];
+    if (!songs || songs.length < 5) throw new Error('empty');
     localStorage.setItem('wb_music_' + p, JSON.stringify(songs));
-    localStorage.setItem('wb_music_updated_' + p, todayStr());
+    localStorage.setItem('wb_music_updated_' + p, (data.updated || todayStr()));
     renderMusic();
-    toast('榜单已更新（实时）');
+    toast('榜单已更新');
   } catch (e) {
     toast('实时拉取失败，显示缓存榜单');
   } finally {
-    btn.textContent = '刷新'; btn.disabled = false;
+    if (btn) { btn.textContent = '刷新'; btn.disabled = false; }
   }
+}
+
+/* 进入页面时静默加载最新榜单（同域 JSON），失败则保留本地/种子数据 */
+async function loadMusicAuto() {
+  const p = localStorage.getItem('wb_music_platform') || 'spotify';
+  const file = p === 'spotify' ? 'music-spotify.json' : 'music-billboard.json';
+  try {
+    const data = await fetchDataJson(file);
+    const songs = (data && data.songs) || [];
+    if (songs && songs.length) {
+      localStorage.setItem('wb_music_' + p, JSON.stringify(songs));
+      localStorage.setItem('wb_music_updated_' + p, (data.updated || todayStr()));
+    }
+  } catch (e) { /* 离线则用缓存/种子 */ }
+  renderMusic();
 }
 
 function switchMusicPlatform(p) {
@@ -1246,7 +1202,7 @@ renderMenu();
 renderBottomTabs();
 loadFeed('finance');
 loadFeed('news');
-renderMusic();
+loadMusicAuto();
 renderDouyin();
 renderWords();
 renderChat();

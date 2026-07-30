@@ -1,4 +1,4 @@
-const CACHE = 'workbench-v10';
+const CACHE = 'workbench-v11';
 const ASSETS = [
   './',
   './index.html',
@@ -48,6 +48,14 @@ self.addEventListener('fetch', event => {
       }).catch(() => {
         return caches.match(event.request).then(cached => cached || caches.match('./index.html'));
       })
+    );
+    return;
+  }
+
+  // 数据 JSON（finance/news/music）由 GitHub Actions 定时更新，始终走网络、不缓存，保证刷新即最新
+  if (['finance.json', 'news.json', 'music-spotify.json', 'music-billboard.json'].some(n => url.pathname.endsWith('/' + n))) {
+    event.respondWith(
+      fetch(event.request).catch(() => caches.match(event.request))
     );
     return;
   }
