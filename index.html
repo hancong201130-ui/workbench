@@ -305,6 +305,7 @@
               <input id="movieTitle" type="text" placeholder="电影名称" class="border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand-200" />
               <select id="movieCat" class="border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand-200"></select>
             </div>
+            <p id="movieGuessHint" class="text-xs text-amber-500 mb-3 h-4"></p>
             <div class="mb-3 flex items-center">
               <span class="text-xs text-slate-400 mr-2">评分</span>
               <span id="movieStars" class="text-xl text-amber-400 cursor-pointer select-none"></span>
@@ -454,6 +455,41 @@ const SEED_MOVIES = [
   {id:'m39', title:'预产期(小罗伯特)', cat:'喜剧', rating:0, note:'', addedAt:'2026-07-30T00:00:00.000Z'},
   {id:'m40', title:'新恋爱世纪(黎明)', cat:'爱情', rating:0, note:'', addedAt:'2026-07-30T00:00:00.000Z'}
 ];
+/* 电影类型智能识别：按顺序匹配（更具体的类型优先）。本地规则，不联网。 */
+const MOVIE_GUESS_RULES = [
+  ['动画', ['动画','千与千寻','你的名字','铃芽','龙猫','天空之城','幽灵公主','魔女','起风了','波妞','罗小黑','大鱼海棠','大圣','哪吒','白蛇','熊出没','喜羊羊','猫和老鼠','米老鼠','迪士尼','皮克斯','玩具总动员','飞屋','冰雪奇缘','超人总动员','寻梦','疯狂动物城','头脑特工队','平行宇宙','灌篮高手','樱桃小丸子','宫崎骏','新海诚','吉卜力','海绵宝宝','蜡笔小新','哆啦','宝可梦','名侦探柯南','数码宝贝','奥特曼','猪猪侠','舒克','小猪佩奇']],
+  ['恐怖', ['恐怖','惊悚','鬼','凶宅','咒','招魂','寂静岭','午夜凶铃','咒怨','电锯惊魂','死神来了','异形','逃出','昆池岩','京城','笔仙','碟仙','僵尸','吸血鬼','女巫','闪灵','丧尸','驱魔','山村','诡','怨','厉鬼','阴阳','坟']],
+  ['悬疑', ['悬疑','谋杀','侦探','推理','福尔摩斯','看不见的客人','记忆碎片','致命','七宗罪','沉默的羔羊','控方','禁闭岛','消失的爱人','利刃','东方快车','信号','神秘代码','嫌疑人','无人生还','暴裂无声','心迷宫','调音师','催眠','网暴','误杀','看不见']],
+  ['科幻', ['科幻','星际','太空','银河','星球','三体','流浪地球','火星','克隆','人工智能','黑客帝国','银翼杀手','星际穿越','盗梦空间','降临','沙丘','阿凡达','复仇者','钢铁侠','蝙蝠侠','蜘蛛侠','超人','神奇女侠','银河护卫队','源代码','第九区','普罗米修斯','后天','2012','终结者','侏罗纪','变形金刚','环太平洋','外星','宇宙','量子','时空','奇异博士','黑豹','蚁人','雷神','星球大战','月球','机器','未来世界','E.T','独立日','银翼','机械']],
+  ['励志', ['励志','梦想','奋斗','摔跤吧','极速车王','42号传奇','爆裂鼓手','垫底辣妹','叫我第一名','心灵捕手','风雨哈佛','铁甲钢拳','光辉岁月','奔腾年代','翻滚吧','冲浪','追梦','斗士','弱点','幸福终点站','三傻','地球上的星星','音乐之声','当幸福来敲门','极速']],
+  ['救赎', ['救赎','希望','自由','楚门','放牛班的春天','绿皮书','触不可及','完美的日子','朝圣之路','破碎人生','肖申克的救赎','活着','追风筝','越过','归来','回家','越狱','囚','归途','心灵','解脱']],
+  ['喜剧', ['喜剧','搞笑','囧','西游降魔','唐人街探案','大话西游','九品芝麻官','东成西就','唐伯虎','食神','少林足球','功夫','喜剧之王','逃学威龙','摩登时代','卓别林','实习生','穿普拉达','预产期','新扎师妹','神偷奶爸','小黄人','功夫熊猫','疯狂的石头','心花路放','夏洛特','羞羞的','西虹市','一出好戏','憨豆','沐浴','祖宗','合伙人','老炮','煎饼侠','缝纫机','情圣','澳门风云','王牌','港囧','泰囧','妖铃','宝贝','二愣','嘻哈','欢乐']],
+  ['爱情', ['爱情','心动','求婚','婚礼','前任','浪漫','罗曼','西雅图','情书','恋恋','爱乐','怦然','甜','泰坦尼克','罗马假日','我的野蛮女友','那些年','致青春','小时代','前任攻略','喜欢你','后来的我们','一吻定情','月老','花束般的恋爱','非诚勿扰','101次求婚','我愿意','好东西','五月之恋','天涯海角','爱情神话','新恋爱世纪','怦然心动','初恋','暖暖','遇见','相爱','余生','两小无猜','撒娇','三十而已','恋','爱']],
+  ['剧情', ['剧情','传记','历史','文艺','教父','阿甘','霸王别姬','雨中曲','猫鼠游戏','美丽人生','独自等待','速度与激情','阿凡达','传奇','岁月','人生','往事','时代','史诗']]
+];
+const MOVIE_LEARN_KEY = 'wb_movie_learn';
+function loadMovieLearn(){ try { return JSON.parse(localStorage.getItem(MOVIE_LEARN_KEY) || '{}'); } catch(e){ return {}; } }
+function saveMovieLearn(map){ try { localStorage.setItem(MOVIE_LEARN_KEY, JSON.stringify(map)); } catch(e){} }
+function normalizeTitle(t){ return (t||'').replace(/\s*[(（][^)）]*[)）]\s*$/,'').trim(); }
+function smartGuessCategory(title){
+  if(!title || !title.trim()) return '剧情';
+  const raw = title.trim();
+  const t = normalizeTitle(raw);
+  const mem = loadMovieLearn();
+  if(mem[raw]) return mem[raw];
+  if(mem[t]) return mem[t];
+  for(const [cat, kws] of MOVIE_GUESS_RULES){
+    for(const kw of kws){
+      if(t.includes(kw) || raw.includes(kw)) return cat;
+    }
+  }
+  return '剧情';
+}
+function rememberMovie(title, cat){
+  const mem = loadMovieLearn();
+  mem[title.trim()] = cat;
+  saveMovieLearn(mem);
+}
 function getWords() { try { return JSON.parse(localStorage.getItem(K_WORDS)) || []; } catch(e){ return []; } }
 function setWords(v) { localStorage.setItem(K_WORDS, JSON.stringify(v)); }
 function getChat() { try { return JSON.parse(localStorage.getItem(K_CHAT)) || []; } catch(e){ return []; } }
@@ -799,9 +835,22 @@ function openMovieForm(id=null) {
   }
   document.getElementById('movieStars').innerHTML = renderMovieStars(movieFormRating, true, 'text-2xl');
   document.getElementById('movieRatingText').textContent = movieFormRating ? `${movieFormRating} 星` : '未评分';
+  document.getElementById('movieGuessHint').textContent = '';
   bindStarClicks();
   form.classList.remove('hidden');
   document.getElementById('movieTitle').focus();
+}
+
+// 输入片名时自动猜测分类：分类为空时自动填充，并给出提示（用户仍可手动调整）
+function onMovieTitleInput(){
+  const title = document.getElementById('movieTitle').value.trim();
+  const catSel = document.getElementById('movieCat');
+  const hint = document.getElementById('movieGuessHint');
+  if(!title){ hint.textContent = ''; return; }
+  const g = smartGuessCategory(title);
+  if(!catSel.value){ catSel.value = g; }
+  const tip = catSel.value === g ? `✨ 已自动识别为「${g}」（可手动修改）` : `💡 建议分类：「${g}」（可手动修改）`;
+  hint.textContent = tip;
 }
 
 function bindStarClicks() {
@@ -827,6 +876,8 @@ function saveMovie() {
   const note = document.getElementById('movieNote').value.trim();
   if(!title) { toast('请输入电影名称'); return; }
   if(!cat) { toast('请选择分类'); return; }
+  // 记住这部电影的归类，下次输入相同片名会自动识别
+  rememberMovie(title, cat);
   const movies = getMovies();
   if(editingMovieId){
     const idx = movies.findIndex(m => m.id === editingMovieId);
@@ -1076,6 +1127,21 @@ async function initAllData(){
     setMovies(SEED_MOVIES);
     localStorage.setItem('wb_movies_seeded', '1');
   }
+  // 用种子电影的分类初始化「智能识别」记忆，使已有影片也能被自动识别
+  seedMovieLearnFromSeed();
+}
+
+// 把 SEED_MOVIES 的分类写入学习记忆（仅在记忆为空时执行一次，避免覆盖用户后续学习结果）
+function seedMovieLearnFromSeed(){
+  try {
+    const mem = loadMovieLearn();
+    let changed = false;
+    for(const m of SEED_MOVIES){
+      const key = (m.title||'').trim();
+      if(key && !mem[key]){ mem[key] = m.cat; changed = true; }
+    }
+    if(changed) saveMovieLearn(mem);
+  } catch(e){}
 }
 /* 单模块备份（财务统筹） */
 function exportFinplan(){
@@ -1425,6 +1491,7 @@ document.getElementById('btnAddMovie').addEventListener('click', () => openMovie
 document.getElementById('btnSaveMovie').addEventListener('click', saveMovie);
 document.getElementById('btnCancelMovie').addEventListener('click', closeMovieForm);
 document.getElementById('movieTitle').addEventListener('keydown', e => { if(e.key==='Enter') saveMovie(); });
+document.getElementById('movieTitle').addEventListener('input', onMovieTitleInput);
 
 /* ===== 主题切换 ===== */
 const THEME_META = { pink:'#db2777', blue:'#2563eb', green:'#16a34a', purple:'#9333ea', yellow:'#ca8a04' };
