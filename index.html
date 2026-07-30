@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>我的工作台</title>
+  <meta name="theme-color" content="#2563eb" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="我的工作台" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/png" href="icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+        tailwind.config = { theme: { extend: { colors: { brand: { 50:'#eff6ff',100:'#dbeafe',200:'#bfdbfe',300:'#93c5fd',400:'#60a5fa',500:'#3b82f6',600:'#2563eb',700:'#1d4ed8' } } } } };
+  </script>
+  <style>
+    .hide-scroll::-webkit-scrollbar { width:4px; height:4px; }
+    .hide-scroll::-webkit-scrollbar-thumb { background:rgb(var(--c-300)); border-radius:4px; }
+    .module { display:none; }
+    .module.active { display:block; animation: fadeUp .28s ease; }
+    @keyframes fadeUp { from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;} }
+    .chat-bubble { max-width:85%; padding:10px 14px; border-radius:16px; margin-bottom:10px; line-height:1.4; }
+    .chat-me { background:rgb(var(--c-100)); color:rgb(var(--c-700)); margin-left:auto; border-bottom-right-radius:4px; }
+    .chat-ai { background: rgb(var(--c-100)); color: rgb(var(--c-700)); border-bottom-left-radius:4px; }
+    /* 主题配色：brand 色阶映射到 CSS 变量（RGB 通道），切换 data-theme 即可全局换色 */
+    :root, [data-theme="blue"]   { --c-50:239 246 255; --c-100:219 234 254; --c-200:191 219 254; --c-300:147 197 253; --c-400:96 165 250; --c-500:59 130 246; --c-600:37 99 235; --c-700:29 77 216; }
+    [data-theme="pink"]   { --c-50:253 242 248; --c-100:252 231 243; --c-200:251 207 232; --c-300:249 168 212; --c-400:244 114 182; --c-500:236 72 153; --c-600:219 39 119; --c-700:190 24 93; }
+    [data-theme="green"]  { --c-50:240 253 244; --c-100:220 252 231; --c-200:187 247 208; --c-300:134 239 172; --c-400:74 222 128; --c-500:34 197 94; --c-600:22 163 74; --c-700:21 128 61; }
+    [data-theme="purple"] { --c-50:250 245 255; --c-100:243 232 255; --c-200:233 213 255; --c-300:216 180 254; --c-400:192 132 252; --c-500:168 85 247; --c-600:147 51 234; --c-700:126 34 206; }
+    [data-theme="yellow"] { --c-50:254 252 232; --c-100:254 249 195; --c-200:254 240 138; --c-300:253 224 71; --c-400:250 204 21; --c-500:234 179 8; --c-600:202 138 4; --c-700:161 98 7; }
+    /* 全局背景：随主题变化的柔和渐变（五色调之一），顶部一抹主题色光晕，全程无白色 */
+    body {
+      background:
+        radial-gradient(1100px 560px at 100% -12%, rgb(var(--c-200) / .60), transparent 60%),
+        linear-gradient(160deg, rgb(var(--c-100)) 0%, rgb(var(--c-50)) 42%, rgb(var(--c-50)) 100%);
+    }
+    /* 侧栏品牌顶带 / 主题色圆徽 */
+    .brand-band { background: linear-gradient(135deg, rgb(var(--c-500)), rgb(var(--c-600))); }
+    .brand-ring { background: linear-gradient(135deg, rgb(var(--c-400)), rgb(var(--c-600))); }
+    /* 卡片统一美化：白底、圆角、柔和阴影、悬停微浮 */
+    .bg-white.rounded-xl, .bg-white.rounded-2xl {
+      border-color: rgb(241 245 249) !important;
+      box-shadow: 0 1px 2px rgba(15,23,42,.04), 0 8px 20px -10px rgba(15,23,42,.12);
+      transition: box-shadow .22s ease, transform .22s ease;
+    }
+    .bg-white.rounded-xl:hover, .bg-white.rounded-2xl:hover { box-shadow: 0 14px 30px -12px rgba(15,23,42,.20); transform: translateY(-2px); }
+    /* 模块标题前的主题色小竖条 */
+    .module > h2 { position: relative; padding-left: .8rem; }
+    .module > h2::before { content:''; position:absolute; left:0; top:.18em; bottom:.18em; width:4px; border-radius:99px; background: rgb(var(--c-600)); }
+    /* 通用主题化小组件 */
+    .tag-chip { background: rgb(var(--c-50)); color: rgb(var(--c-700)); }
+    .rank-badge { background: rgb(var(--c-100)); color: rgb(var(--c-700)); }
+    .platform-pill { background: rgb(var(--c-50)); color: rgb(var(--c-700)); }
+    .soft-surface { background: rgb(var(--c-50)); }
+    .theme-dot { border:2px solid #fff; box-shadow:0 0 0 1px rgba(0,0,0,.12); transition:transform .12s; }
+    .theme-dot:active { transform:scale(.92); }
+    .theme-dot.active { box-shadow:0 0 0 2px rgb(var(--c-600)); transform:scale(1.1); }
+    /* 移动端底部标签栏激活态 */
+    .tab-active { color: rgb(var(--c-600)); }
+    .tab-active .tab-ico { transform: translateY(-1px) scale(1.1); }
+    #bottomTabs { padding-bottom: env(safe-area-inset-bottom); }
+    .labubu { display:block; width:100%; height:100%; }
+    .mod-icon { display:block; width:100%; height:100%; object-fit:cover; border-radius:9999px; }
+    .mod-icon-wrap { border-radius:9999px; overflow:hidden; background:#fff; box-shadow:0 2px 6px rgba(0,0,0,.12); border:2px solid rgba(255,255,255,.9); }
+    .progress-track { height:8px; border-radius:999px; background:#e2e8f0; overflow:hidden; }
+    .progress-fill { height:100%; border-radius:999px; background:rgb(var(--c-500)); transition:width .3s ease; }
+    .progress-fill.over { background:#ef4444; }
+    .progress-fill.ok { background:#22c55e; }
+    .fin-report-row { display:grid; grid-template-columns: 1fr auto; gap:.5rem; align-items:center; }
+    /* 用 CSS 变量直接覆盖 brand 工具类，确保主题切换即时生效（不依赖 Tailwind 配置解析） */
+    .bg-brand-50{background-color:rgb(var(--c-50))!important}
+    .bg-brand-100{background-color:rgb(var(--c-100))!important}
+    .bg-brand-200{background-color:rgb(var(--c-200))!important}
+    .bg-brand-400{background-color:rgb(var(--c-400))!important}
+    .bg-brand-600{background-color:rgb(var(--c-600))!important}
+    .bg-brand-700{background-color:rgb(var(--c-700))!important}
+    .text-brand-50{color:rgb(var(--c-50))!important}
+    .text-brand-100{color:rgb(var(--c-100))!important}
+    .text-brand-200{color:rgb(var(--c-200))!important}
+    .text-brand-400{color:rgb(var(--c-400))!important}
+    .text-brand-600{color:rgb(var(--c-600))!important}
+    .text-brand-700{color:rgb(var(--c-700))!important}
+    .hover\:bg-brand-100:hover{background-color:rgb(var(--c-100))!important}
+    .hover\:bg-brand-700:hover{background-color:rgb(var(--c-700))!important}
+    .hover\:text-brand-600:hover{color:rgb(var(--c-600))!important}
+    .ring-brand-200{--tw-ring-color:rgb(var(--c-200))!important}
+    .focus\:ring-brand-200:focus{--tw-ring-color:rgb(var(--c-200))!important}
+    /* 全局去白：所有白色面板改为主题浅色，确保无白色块 */
+    .bg-white { background-color: rgb(var(--c-50)) !important; }
+    .bg-white\/95 { background-color: rgb(var(--c-50) / .95) !important; }
+  </style>
+  <script>
+    /* 提前套用已保存主题，避免首屏闪白 */
+    (function(){ try{ var t=localStorage.getItem('wb_theme')||'blue'; document.documentElement.setAttribute('data-theme', t); }catch(e){} })();
+  </script>
+</head>
+<body class="text-slate-700 h-screen overflow-hidden">
+  <div class="flex flex-col h-screen w-full relative">
+
+    <!-- 移动端顶部栏（菜单按钮展开侧边抽屉；内容全宽） -->
+    <header class="md:hidden bg-white border-b-2 border-brand-200 flex flex-col shrink-0 z-30">
+      <div class="h-14 flex items-center justify-between px-4">
+        <div class="flex items-center gap-2">
+          <button id="btnMenu" class="w-9 h-9 flex items-center justify-center rounded-lg text-slate-600 hover:bg-brand-100" aria-label="菜单">
+            <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+          <span id="mobileTitle" class="font-semibold text-slate-800">每日财经</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <button id="btnExportAll" class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-600 hover:bg-brand-100" title="导出全部备份" aria-label="导出全部备份">
+            <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          </button>
+          <button id="btnImportAll" class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-600 hover:bg-brand-100" title="导入全部备份" aria-label="导入全部备份">
+            <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 9l5-5 5 5M12 4v12"/></svg>
+          </button>
+          <input id="allImportFile" type="file" accept="application/json" class="hidden">
+          <span class="text-xs text-slate-400" id="todayDate"></span>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 px-4 pb-2">
+        <span class="text-xs text-slate-400">主题</span>
+        <div class="flex items-center gap-2">
+          <button class="theme-dot w-6 h-6 rounded-full" data-theme="pink"   style="background:#ec4899" title="粉色"></button>
+          <button class="theme-dot w-6 h-6 rounded-full" data-theme="blue"   style="background:#2563eb" title="蓝色"></button>
+          <button class="theme-dot w-6 h-6 rounded-full" data-theme="green"  style="background:#16a34a" title="绿色"></button>
+          <button class="theme-dot w-6 h-6 rounded-full" data-theme="purple" style="background:#9333ea" title="紫色"></button>
+          <button class="theme-dot w-6 h-6 rounded-full" data-theme="yellow" style="background:#eab308" title="黄色"></button>
+        </div>
+      </div>
+    </header>
+
+    <!-- 左侧边栏：桌面常驻；手机端为可滑出抽屉（默认收起，内容全宽） -->
+    <div class="flex flex-1 min-h-0 flex-row">
+    <aside id="taskSidebar" class="fixed md:static top-0 left-0 z-50 flex flex-col h-full w-[200px] md:w-[230px] md:min-w-[230px] md:max-w-[300px] -translate-x-full md:translate-x-0 transition-transform duration-200 ease-out bg-white rounded-r-3xl border-r border-brand-200 shadow-[0_6px_24px_rgba(0,0,0,.12)] shrink-0">
+      <div class="p-3 md:p-4 border-b border-slate-100 brand-band text-white">
+        <div class="flex items-center gap-2 md:gap-3">
+          <div class="w-9 h-9 md:w-12 md:h-12 rounded-2xl brand-ring flex items-center justify-center text-xl md:text-2xl shadow-sm">💼</div>
+          <div>
+            <p class="font-semibold text-sm md:text-base">我的工作台</p>
+            <p class="text-[10px] md:text-xs text-white/80">个人效率中心</p>
+          </div>
+        </div>
+      </div>
+      <div id="menuList" class="flex-1 overflow-y-auto hide-scroll p-2 md:p-3 space-y-1"></div>
+      <div class="p-2 md:p-3 border-t border-slate-100 hidden md:block">
+        <p class="text-xs text-slate-400 mb-2">主题配色</p>
+        <div class="flex items-center gap-2" id="themePicker">
+          <button class="theme-dot w-7 h-7 rounded-full" data-theme="pink"   style="background:#ec4899" title="粉色"></button>
+          <button class="theme-dot w-7 h-7 rounded-full" data-theme="blue"   style="background:#2563eb" title="蓝色"></button>
+          <button class="theme-dot w-7 h-7 rounded-full" data-theme="green"  style="background:#16a34a" title="绿色"></button>
+          <button class="theme-dot w-7 h-7 rounded-full" data-theme="purple" style="background:#9333ea" title="紫色"></button>
+          <button class="theme-dot w-7 h-7 rounded-full" data-theme="yellow" style="background:#eab308" title="黄色"></button>
+        </div>
+      </div>
+      <div class="p-2 md:p-3 border-t border-slate-100">
+        <p class="text-[10px] md:text-xs text-slate-400 text-center mb-2">数据自动云同步，可一键备份到本机防丢</p>
+        <div class="flex items-center gap-2">
+          <button id="btnExportAll2" class="flex-1 text-xs px-2 py-1.5 rounded-lg bg-brand-100 text-brand-700 hover:bg-brand-200">导出全部</button>
+          <button id="btnImportAll2" class="flex-1 text-xs px-2 py-1.5 rounded-lg bg-brand-100 text-brand-700 hover:bg-brand-200">导入全部</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 主内容区 -->
+    <main class="flex-1 min-h-0 h-full overflow-y-auto hide-scroll p-3 md:p-6 pb-6">
+      <div class="max-w-4xl mx-auto">
+
+        <!-- 1 每日财经 -->
+        <section id="mod-finance" class="module active">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-bold text-slate-800">每日财经</h2>
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-slate-400" id="financeDate"></span>
+              <button id="btnRefreshFinance" class="text-xs px-3 py-1 bg-brand-600 text-white rounded-lg hover:bg-brand-700">刷新</button>
+            </div>
+          </div>
+          <div id="financeList" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+        </section>
+
+        <!-- 2 世界新闻 -->
+        <section id="mod-news" class="module">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-bold text-slate-800">世界新闻</h2>
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-slate-400" id="newsDate"></span>
+              <button id="btnRefreshNews" class="text-xs px-3 py-1 bg-brand-600 text-white rounded-lg hover:bg-brand-700">刷新</button>
+            </div>
+          </div>
+          <div id="newsList" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+        </section>
+
+        <!-- 3 英语学习 -->
+        <section id="mod-english" class="module">
+          <h2 class="text-xl font-bold text-slate-800 mb-4">英语学习</h2>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+            <div class="bg-white p-3 rounded-xl border border-slate-200"><p class="text-xs text-slate-400">已学单词</p><p id="statWords" class="text-2xl font-bold text-brand-600">0</p></div>
+            <div class="bg-white p-3 rounded-xl border border-slate-200"><p class="text-xs text-slate-400">今日对话</p><p id="statChatToday" class="text-2xl font-bold text-brand-600">0</p></div>
+            <div class="bg-white p-3 rounded-xl border border-slate-200"><p class="text-xs text-slate-400">累计练习</p><p id="statChatTotal" class="text-2xl font-bold text-brand-600">0</p></div>
+            <div class="bg-white p-3 rounded-xl border border-slate-200"><p class="text-xs text-slate-400">纠正次数</p><p id="statMistakes" class="text-2xl font-bold text-brand-600">0</p></div>
+          </div>
+          <div class="bg-white rounded-xl border border-slate-200 p-4 mb-4">
+            <h3 class="font-semibold text-slate-700 mb-2">单词库</h3>
+            <div class="flex gap-2 mb-3">
+              <input id="wordInput" type="text" placeholder="输入单词，多个用逗号分隔" class="flex-1 border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand-200" />
+              <button id="btnAddWords" class="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-lg text-sm">添加</button>
+            </div>
+            <div id="wordTags" class="flex flex-wrap gap-2"></div>
+            <p class="text-xs text-slate-400 mt-2">我会用你学过的单词组成句子向你提问，你尽量用学过的单词回答。</p>
+          </div>
+          <div class="bg-white rounded-xl border border-slate-200 p-4 mb-4">
+            <h3 class="font-semibold text-slate-700 mb-2">对话练习</h3>
+            <div id="chatBox" class="soft-surface rounded-lg p-3 h-64 overflow-y-auto hide-scroll mb-3"></div>
+            <div class="flex gap-2">
+              <input id="chatInput" type="text" placeholder="输入你的回答…" class="flex-1 border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand-200" />
+              <button id="btnSendChat" class="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-lg text-sm">发送</button>
+            </div>
+          </div>
+          <div class="bg-white rounded-xl border border-slate-200 p-4">
+            <h3 class="font-semibold text-slate-700 mb-3">学习报告</h3>
+            <div class="flex gap-2 mb-3">
+              <button class="report-tab px-3 py-1 rounded-lg text-sm bg-brand-600 text-white" data-period="day">日报</button>
+              <button class="report-tab px-3 py-1 rounded-lg text-sm bg-brand-100 text-slate-600" data-period="week">周报</button>
+              <button class="report-tab px-3 py-1 rounded-lg text-sm bg-brand-100 text-slate-600" data-period="month">月报</button>
+              <button class="report-tab px-3 py-1 rounded-lg text-sm bg-brand-100 text-slate-600" data-period="year">年报</button>
+            </div>
+            <div id="englishReport" class="text-sm text-slate-600 space-y-1"></div>
+          </div>
+        </section>
+
+        <!-- 4 剪辑学习 -->
+        <section id="mod-edit" class="module">
+          <h2 class="text-xl font-bold text-slate-800 mb-4">剪辑学习</h2>
+          <div class="bg-white rounded-xl border border-slate-200 p-4 mb-4">
+            <h3 class="font-semibold text-slate-700 mb-2">添加学习记录</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+              <input id="editDate" type="date" class="border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand-200" />
+              <input id="editDuration" type="number" placeholder="学习时长（分钟）" class="border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand-200" />
+            </div>
+            <textarea id="editPlan" placeholder="今日学习计划" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm mb-3 outline-none focus:ring-2 focus:ring-brand-200" rows="2"></textarea>
+            <textarea id="editReflection" placeholder="学后感 / 收获" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm mb-3 outline-none focus:ring-2 focus:ring-brand-200" rows="2"></textarea>
+            <button id="btnAddEdit" class="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-lg text-sm">保存记录</button>
+          </div>
+          <div class="bg-white rounded-xl border border-slate-200 p-4 mb-4">
+            <h3 class="font-semibold text-slate-700 mb-3">学习记录</h3>
+            <div id="editLogList" class="space-y-3 max-h-64 overflow-y-auto hide-scroll"></div>
+          </div>
+          <div class="bg-white rounded-xl border border-slate-200 p-4">
+            <h3 class="font-semibold text-slate-700 mb-3">学习汇总</h3>
+            <div class="flex gap-2 mb-3 flex-wrap">
+              <button class="edit-report-tab px-3 py-1 rounded-lg text-sm bg-brand-600 text-white" data-period="week">周报</button>
+              <button class="edit-report-tab px-3 py-1 rounded-lg text-sm bg-brand-100 text-slate-600" data-period="month">月报</button>
+              <button class="edit-report-tab px-3 py-1 rounded-lg text-sm bg-brand-100 text-slate-600" data-period="quarter">季报</button>
+              <button class="edit-report-tab px-3 py-1 rounded-lg text-sm bg-brand-100 text-slate-600" data-period="year">年报</button>
+            </div>
+            <div id="editReport" class="text-sm text-slate-600 space-y-1"></div>
+          </div>
+        </section>
+
+        <!-- 5 抖店运营 -->
+        <section id="mod-douyin" class="module">
+          <h2 class="text-xl font-bold text-slate-800 mb-4">抖店运营计划</h2>
+          <div id="douyinList" class="space-y-3 mb-5"></div>
+          <div class="bg-white rounded-xl border border-slate-200 p-4">
+            <h3 class="font-semibold text-slate-700 mb-3">运营建议</h3>
+            <ul id="suggestionList" class="space-y-2 text-sm text-slate-600 list-disc pl-5"></ul>
+          </div>
+        </section>
+
+        <!-- 6 音乐推荐 -->
+        <section id="mod-music" class="module">
+          <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
+            <h2 class="text-xl font-bold text-slate-800">国际音乐榜</h2>
+            <div class="flex items-center gap-2">
+              <div class="flex bg-brand-100 rounded-lg p-0.5 text-xs" id="musicTabs">
+                <button data-p="spotify" class="px-2.5 py-1 rounded-md font-medium">Spotify 全球</button>
+                <button data-p="billboard" class="px-2.5 py-1 rounded-md font-medium">Billboard</button>
+              </div>
+              <button id="btnRefreshMusic" class="text-xs px-3 py-1 bg-brand-600 text-white rounded-lg hover:bg-brand-700">刷新</button>
+            </div>
+          </div>
+          <p class="text-xs text-slate-400 mb-3" id="musicUpdated">数据来源：Spotify 全球周榜 · 点击刷新获取实时榜单</p>
+          <div id="musicList" class="bg-white rounded-xl border border-slate-200 divide-y divide-slate-100"></div>
+        </section>
+
+        <!-- 7 财务统筹 -->
+        <section id="mod-finplan" class="module">
+          <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center justify-between">
+            <span>财务统筹</span>
+            <span class="flex items-center gap-2">
+              <button id="btnExportFin" class="text-xs px-2 py-1 rounded-lg bg-brand-100 text-brand-700 hover:bg-brand-200">导出</button>
+              <button id="btnImportFin" class="text-xs px-2 py-1 rounded-lg bg-brand-100 text-brand-700 hover:bg-brand-200">导入</button>
+              <input id="finImportFile" type="file" accept="application/json" class="hidden">
+            </span>
+          </h2>
+
+          <!-- 子标签目标 -->
+          <div class="bg-white rounded-xl border border-slate-200 p-4 mb-4">
+            <h3 class="font-semibold text-slate-700 mb-3">子标签目标</h3>
+            <div id="subtagList" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+          </div>
+
+          <!-- 每月固定支出 -->
+          <div class="bg-white rounded-xl border border-slate-200 p-4 mb-4">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="font-semibold text-slate-700">每月固定支出</h3>
+              <span class="text-xs text-slate-400">单独显示，同时计入对应大类</span>
+            </div>
+            <div id="fixedList" class="space-y-2 mb-3"></div>
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-2">
+              <input id="fixedName" type="text" placeholder="名称（如车险）" class="md:col-span-1 border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand-200" />
+              <input id="fixedAmount" type="number" placeholder="金额" class="border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand-200" />
+              <select id="fixedCat" class="md:col-span-2 border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand-200 bg-white"></select>
+              <button id="btnAddFixed" class="bg-brand-600 hover:bg-brand-700 text-white rounded-lg text-sm px-3 py-2">添加</button>
+            </div>
+          </div>
+
+          <!-- 消费大类预算 -->
+          <div class="bg-white rounded-xl border border-slate-200 p-4 mb-4">
+            <h3 class="font-semibold text-slate-700 mb-3">消费大类预算</h3>
+            <div id="catList" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+          </div>
+
+          <!-- 新增支出 -->
+          <div class="bg-white rounded-xl border border-slate-200 p-4 mb-4">
+            <h3 class="font-semibold text-slate-700 mb-3">新增支出</h3>
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-2">
+              <select id="expenseCat" class="md:col-span-1 border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand-200 bg-white"></select>
+              <input id="expenseAmount" type="number" placeholder="金额" class="border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand-200" />
+              <input id="expenseDate" type="date" class="border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand-200" />
+              <input id="expenseNote" type="text" placeholder="备注（可选）" class="md:col-span-1 border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand-200" />
+              <button id="btnAddExpense" class="bg-brand-600 hover:bg-brand-700 text-white rounded-lg text-sm px-3 py-2">记一笔</button>
+            </div>
+            <div id="expenseLog" class="mt-3 space-y-2 max-h-48 overflow-y-auto hide-scroll"></div>
+          </div>
+
+          <!-- 消费报表 -->
+          <div class="bg-white rounded-xl border border-slate-200 p-4">
+            <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
+              <h3 class="font-semibold text-slate-700">消费报表</h3>
+              <div class="flex bg-brand-100 rounded-lg p-0.5 text-xs" id="finReportTabs">
+                <button data-period="half" class="px-3 py-1 rounded-md font-medium">半月</button>
+                <button data-period="month" class="px-3 py-1 rounded-md font-medium">月</button>
+                <button data-period="quarter" class="px-3 py-1 rounded-md font-medium">季度</button>
+                <button data-period="year" class="px-3 py-1 rounded-md font-medium">年</button>
+              </div>
+            </div>
+            <div id="finReportSummary" class="text-sm text-slate-600 mb-3"></div>
+            <div id="finReportList" class="space-y-3"></div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+    <div id="drawerBackdrop" class="hidden fixed inset-0 bg-black/30 z-40"></div>
+  </div>
+
+  <!-- 底部标签栏已合并到左侧导航栏（手机/桌面统一） -->
+  <nav id="bottomTabs" class="hidden"></nav>
+
+  <div id="toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-sm px-4 py-2 rounded-lg z-50"></div>
+
+<script>
+/* ===== 种子数据 ===== */
+const SEED = {"finance": [{"title": "A股科技板块出现调整", "summary": "机构观点认为，市场短期将维持区间震荡格局，投资者宜保持耐心。", "source": "中国经济网", "time": "2026/07/29 07:05", "tag": "股市"}, {"title": "九家公募齐出手", "summary": "新一批北交所主题基金发行材料获接收，中小企业融资渠道进一步拓宽。", "source": "中国经济网", "time": "2026/07/29 07:08", "tag": "基金"}, {"title": "多家上市银行部署下半年经营重点", "summary": "上市银行围绕信贷结构优化、风险防控和数字化转型为下半年工作划重点。", "source": "中国经济网", "time": "2026/07/29 08:00", "tag": "银行"}, {"title": "港股IPO市场持续升温", "summary": "科技与‘A+H’双轮驱动，港股上半年IPO活跃度显著提升。", "source": "中国经济网", "time": "2026/07/29 07:04", "tag": "港股"}, {"title": "二季度券商股获主动基金增持2.19亿股", "summary": "主动权益基金在二季度加大对券商板块配置，市场信心有所修复。", "source": "中国经济网", "time": "2026/07/29 07:59", "tag": "券商"}, {"title": "个贷融资成本明示即将实施", "summary": "多家金融机构提前完成合规布局，个人贷款信息披露将更加透明。", "source": "中国经济网", "time": "2026/07/29 07:06", "tag": "信贷"}, {"title": "银行理财信披新规实施在即", "summary": "理财产品信息披露新规进入验收倒计时，行业规范化步伐加快。", "source": "中国经济网", "time": "2026/07/29 07:59", "tag": "理财"}, {"title": "上半年24家A股公司赴港上市", "summary": "募资总额逾1200亿港元，港股成为A股企业国际化融资重要平台。", "source": "中国经济网", "time": "2026/07/28 07:10", "tag": "IPO"}, {"title": "国际油价28日显著下跌", "summary": "受需求预期调整影响，国际原油市场出现明显回调。", "source": "新华财经", "time": "2026/07/29", "tag": "能源"}, {"title": "美国7月消费者信心指数下滑", "summary": "美国经济数据走弱，消费者信心指数低于市场预期。", "source": "新华财经", "time": "2026/07/29", "tag": "国际"}], "news": [{"title": "日本首相：熊本地震已致13人死亡", "summary": "熊本地震灾情持续，首相确认死亡人数上升至13人，救援工作加紧进行。", "source": "网易新闻", "time": "2026/07/29 08:59", "tag": "国际"}, {"title": "乌方称袭击伊朗商船并非故意", "summary": "乌克兰方面表示袭击伊朗商船并非故意，伊朗方面要求赔偿。", "source": "网易新闻", "time": "2026/07/29 08:10", "tag": "国际"}, {"title": "内塔尼亚胡与特朗普举行会晤", "summary": "以色列总理称与特朗普进行了一次‘极佳的会晤’，双方就地区局势交换意见。", "source": "网易新闻", "time": "2026/07/29 07:55", "tag": "国际"}, {"title": "日本一商场坍塌数十人失联", "summary": "熊本县一商场发生坍塌，数十人失联，该县10年前地震曾致49人死亡。", "source": "网易新闻", "time": "2026/07/28 22:17", "tag": "国际"}, {"title": "特朗普称美国汽油储备可用1000年", "summary": "特朗普表示美国石油储备比中国多，汽油储备足以使用1000年。", "source": "网易新闻", "time": "2026/07/28 21:11", "tag": "国际"}, {"title": "基辅近郊无人机展遭袭11人身亡", "summary": "俄罗斯袭击基辅近郊无人机展，顶级无人机专家等11人在袭击中身亡。", "source": "网易新闻", "time": "2026/07/28 19:32", "tag": "国际"}, {"title": "巴基斯坦防务合作取得新进展", "summary": "巴基斯坦官员表示，科威特防务愿望清单‘包罗万象’，双方合作持续深化。", "source": "网易新闻", "time": "2026/07/28 22:37", "tag": "国际"}, {"title": "敦煌鸣沙山游客留下遍地垃圾", "summary": "敦煌鸣沙山景区游客散去后留下大量垃圾，环卫工人清理至凌晨4点。", "source": "网易新闻", "time": "2026/07/29 09:38", "tag": "国内"}, {"title": "四川独臂少年高考664分考上清华", "summary": "四川独臂少年高考取得664分，被清华大学录取，10岁时自己决定截肢。", "source": "网易新闻", "time": "2026/07/28 12:45", "tag": "国内"}, {"title": "港股版‘长鑫’要来了", "summary": "某半导体企业赴港上市在即，每股定价980港元，市场关注度较高。", "source": "网易新闻", "time": "2026/07/28 14:35", "tag": "国内"}], "musicSpotify": [{"rank": 1, "title": "Dai Dai", "artist": "Shakira", "platform": "Spotify Global"}, {"rank": 2, "title": "Beauty And A Beat", "artist": "Justin Bieber", "platform": "Spotify Global"}, {"rank": 3, "title": "hate that i made you love me", "artist": "Ariana Grande", "platform": "Spotify Global"}, {"rank": 4, "title": "Wonderwall - Remastered", "artist": "Oasis", "platform": "Spotify Global"}, {"rank": 5, "title": "Earrings", "artist": "Malcolm Todd", "platform": "Spotify Global"}, {"rank": 6, "title": "Billie Jean", "artist": "Michael Jackson", "platform": "Spotify Global"}, {"rank": 7, "title": "Babydoll", "artist": "Dominic Fike", "platform": "Spotify Global"}, {"rank": 8, "title": "SWIM", "artist": "BTS", "platform": "Spotify Global"}, {"rank": 9, "title": "The One That Got Away", "artist": "Katy Perry", "platform": "Spotify Global"}, {"rank": 10, "title": "the cure", "artist": "Olivia Rodrigo", "platform": "Spotify Global"}, {"rank": 11, "title": "stupid song", "artist": "Olivia Rodrigo", "platform": "Spotify Global"}, {"rank": 12, "title": "Self Aware", "artist": "Temper City", "platform": "Spotify Global"}, {"rank": 13, "title": "Iris", "artist": "The Goo Goo Dolls", "platform": "Spotify Global"}, {"rank": 14, "title": "drop dead", "artist": "Olivia Rodrigo", "platform": "Spotify Global"}, {"rank": 15, "title": "back to friends", "artist": "sombr", "platform": "Spotify Global"}, {"rank": 16, "title": "Choosin' Texas", "artist": "Ella Langley", "platform": "Spotify Global"}, {"rank": 17, "title": "End of Beginning", "artist": "Djo", "platform": "Spotify Global"}, {"rank": 18, "title": "Beat It", "artist": "Michael Jackson", "platform": "Spotify Global"}, {"rank": 19, "title": "DtMF", "artist": "Bad Bunny", "platform": "Spotify Global"}, {"rank": 20, "title": "Man I Need", "artist": "Olivia Dean", "platform": "Spotify Global"}],
+  "musicBillboard": [{"rank": 1, "title": "Choosin' Texas", "artist": "Ella Langley", "platform": "Billboard Hot 100"}, {"rank": 2, "title": "I Knew It, I Knew You", "artist": "Taylor Swift", "platform": "Billboard Hot 100"}, {"rank": 3, "title": "Boston", "artist": "Stella Lefty", "platform": "Billboard Hot 100"}, {"rank": 4, "title": "I Can't Love You Anymore", "artist": "Ella Langley & Morgan Wallen", "platform": "Billboard Hot 100"}, {"rank": 5, "title": "Hate That I Made You Love Me", "artist": "Ariana Grande", "platform": "Billboard Hot 100"}, {"rank": 6, "title": "Dracula", "artist": "Tame Impala & JENNIE", "platform": "Billboard Hot 100"}, {"rank": 7, "title": "So Easy (To Fall In Love)", "artist": "Olivia Dean", "platform": "Billboard Hot 100"}, {"rank": 8, "title": "Be Her", "artist": "Ella Langley", "platform": "Billboard Hot 100"}, {"rank": 9, "title": "Man I Need", "artist": "Olivia Dean", "platform": "Billboard Hot 100"}, {"rank": 10, "title": "I Just Might", "artist": "Bruno Mars", "platform": "Billboard Hot 100"}, {"rank": 11, "title": "Risk It All", "artist": "Bruno Mars", "platform": "Billboard Hot 100"}, {"rank": 12, "title": "Drop Dead", "artist": "Olivia Rodrigo", "platform": "Billboard Hot 100"}, {"rank": 13, "title": "Janice STFU", "artist": "Drake", "platform": "Billboard Hot 100"}, {"rank": 14, "title": "Midnight Sun", "artist": "Zara Larsson", "platform": "Billboard Hot 100"}, {"rank": 15, "title": "Stupid Song", "artist": "Olivia Rodrigo", "platform": "Billboard Hot 100"}, {"rank": 16, "title": "Don't We", "artist": "Morgan Wallen", "platform": "Billboard Hot 100"}, {"rank": 17, "title": "Dai Dai (FIFA World Cup Official Song 2026)", "artist": "Shakira X Burna Boy", "platform": "Billboard Hot 100"}, {"rank": 18, "title": "Dead Fresh", "artist": "Lil Baby", "platform": "Billboard Hot 100"}, {"rank": 19, "title": "Be By You", "artist": "Luke Combs", "platform": "Billboard Hot 100"}, {"rank": 20, "title": "Spend Dat", "artist": "Yung Miami", "platform": "Billboard Hot 100"}],
+  "douyin": [{"day": 1, "title": "先理清思路：合规运营", "summary": "抛弃粗暴搬运、海量铺货旧玩法，核心三点：合规运营、精细化选品、借助工具提升效率。", "read": false}, {"day": 2, "title": "选品是核心", "summary": "优先日用百货、小众刚需、季节性小件，避开美妆、食品、大牌复刻等高风险类目。", "read": false}, {"day": 3, "title": "规范上货操作", "summary": "货源优先对接1688一件代发；上架前检查标题违禁词、极限词；图片去水印防侵权。", "read": false}, {"day": 4, "title": "避免重复铺货", "summary": "不要完全照搬他人标题和详情，适当修改优化，降低重复铺货和搬运风险。", "read": false}, {"day": 5, "title": "简化履约流程", "summary": "开启订单自动同步、货源智能匹配、物流单号自动回传，贴合密文下单规则。", "read": false}, {"day": 6, "title": "日常维护与售后", "summary": "及时处理售后、清理滞销品、优化标题关键词，稳住店铺体验分和服务分。", "read": false}, {"day": 7, "title": "新人实用建议", "summary": "放平心态、远离违规、先跑通单店再矩阵放大、持续学习平台新规则。", "read": false}], "suggestions": ["每天花20分钟看同行爆款，记录标题、主图、定价和卖点。", "新店前7天重点做动销，不要急着投流，先把店铺体验分做起来。", "客服回复速度影响体验分，建议设置自动回复和快捷短语。", "每周用数据工具分析一次流量来源，重点放大自然搜索和推荐流量。", "不要一次上架太多类目，店铺标签越集中，系统推荐越精准。"]};
+
+/* ===== 本地存储 ===== */
+const K_WORDS = 'wb_words';
+const K_CHAT = 'wb_chat';
+const K_EDIT = 'wb_edit';
+const K_READ = 'wb_read';
+function getWords() { try { return JSON.parse(localStorage.getItem(K_WORDS)) || []; } catch(e){ return []; } }
+function setWords(v) { localStorage.setItem(K_WORDS, JSON.stringify(v)); }
+function getChat() { try { return JSON.parse(localStorage.getItem(K_CHAT)) || []; } catch(e){ return []; } }
+function setChat(v) { localStorage.setItem(K_CHAT, JSON.stringify(v)); }
+function getEdit() { try { return JSON.parse(localStorage.getItem(K_EDIT)) || []; } catch(e){ return []; } }
+function setEdit(v) { localStorage.setItem(K_EDIT, JSON.stringify(v)); }
+function getRead() { try { return JSON.parse(localStorage.getItem(K_READ)) || []; } catch(e){ return []; } }
+function setRead(v) { localStorage.setItem(K_READ, JSON.stringify(v)); }
+
+const MENUS = [
+  {id:'finance', name:'每日财经', icon:'📈', color:'#22c55e', variant:0, img:'labubu-icons/finance.png'},
+  {id:'news',    name:'世界新闻', icon:'🌍', color:'#3b82f6', variant:1, img:'labubu-icons/news.png'},
+  {id:'english', name:'英语学习', icon:'🔤', color:'#8b5cf6', variant:4, img:'labubu-icons/english.png'},
+  {id:'edit',    name:'剪辑学习', icon:'🎬', color:'#f97316', variant:2, img:'labubu-icons/edit.png'},
+  {id:'douyin',  name:'抖店运营', icon:'🛍️', color:'#f43f5e', variant:3, img:'labubu-icons/douyin.png'},
+  {id:'music',   name:'国际音乐榜', icon:'🎵', color:'#ec4899', variant:5, img:'labubu-icons/music.png'},
+  {id:'finplan', name:'财务统筹', icon:'💰', color:'#0ea5e9', variant:0, img:'labubu-icons/finplan.png'}
+];
+let activeModule = 'finance';
+
+/* ===== Labubu 图标生成（忠实还原泡泡玛特 Labubu：尖耳朵+大眼+咧嘴尖牙+头顶揪毛） ===== */
+function labubu(color, v){
+  const dark = '#2b2622';
+  // 又高又尖的毛绒耳朵 + 内侧高光
+  const earL = `<path d="M22 20 Q12 10 13 3 Q19 9 25 16 Z" fill="${color}"/><path d="M21 17 Q16 11 17 7 Q20 11 23 14 Z" fill="rgba(255,255,255,.35)"/>`;
+  const earR = `<path d="M42 20 Q52 10 51 3 Q45 9 39 16 Z" fill="${color}"/><path d="M43 17 Q48 11 47 7 Q44 11 41 14 Z" fill="rgba(255,255,255,.35)"/>`;
+  // 头顶小揪毛
+  const tuft = `<path d="M29 15 Q27 5 33 4 Q36 9 32 15 Z" fill="${color}"/>`;
+  // 圆脸 + 腮红
+  const face = `<circle cx="32" cy="36" r="19" fill="${color}"/>`;
+  const cheek = `<circle cx="22" cy="41" r="4" fill="rgba(255,255,255,.30)"/><circle cx="42" cy="41" r="4" fill="rgba(255,255,255,.30)"/>`;
+  // 大圆眼 + 高光
+  const eyeL = `<circle cx="25" cy="33" r="5.6" fill="${dark}"/><circle cx="26.6" cy="31.4" r="1.7" fill="#fff"/>`;
+  const eyeR = `<circle cx="39" cy="33" r="5.6" fill="${dark}"/><circle cx="40.6" cy="31.4" r="1.7" fill="#fff"/>`;
+  let eyes = eyeL + eyeR;
+  // 咧嘴露一排尖牙（Labubu 招牌）
+  let mouth;
+  const teeth = t => `<path d="M${t} 43 l2 0 l-1 3.2 z" fill="#fff"/><path d="M${t+4} 44 l2 0 l-1 3.2 z" fill="#fff"/><path d="M${t+8} 43 l2 0 l-1 3.2 z" fill="#fff"/>`;
+  if(v===1){ // 眨眼
+    eyes = `<path d="M21 33 Q25 29 29 33" stroke="${dark}" stroke-width="2.6" fill="none" stroke-linecap="round"/><circle cx="39" cy="33" r="5.6" fill="${dark}"/><circle cx="40.6" cy="31.4" r="1.7" fill="#fff"/>`;
+    mouth = `<path d="M23 42 Q32 51 41 42 Q32 47 23 42 Z" fill="${dark}"/>${teeth(26)}`;
+  } else if(v===2||v===3||v===5){ // 张嘴露牙（音乐/剪辑/通用）
+    mouth = `<path d="M23 42 Q32 53 41 42 Q32 48 23 42 Z" fill="${dark}"/>${teeth(26)}`;
+    if(v===3 || v===5) mouth += `<path d="M29 48 Q32 51 35 48 Q32 50 29 48 Z" fill="#ff7a9c"/>`;
+  } else if(v===4){ // 开心 ^^
+    mouth = `<path d="M24 43 Q28 38 32 43" stroke="${dark}" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M32 43 Q36 38 40 43" stroke="${dark}" stroke-width="2.6" fill="none" stroke-linecap="round"/>${teeth(27)}`;
+  } else { // 微笑露尖牙（默认）
+    mouth = `<path d="M23 42 Q32 52 41 42 Q32 48 23 42 Z" fill="${dark}"/>${teeth(26)}`;
+  }
+  return `<svg class="labubu" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">${earL}${earR}${tuft}${face}${cheek}${eyes}${mouth}</svg>`;
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.remove('hidden');
+  clearTimeout(t._timer); t._timer = setTimeout(()=>t.classList.add('hidden'), 1800);
+}
+function todayStr() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+/* ===== 菜单渲染 ===== */
+function renderMenu() {
+  const box = document.getElementById('menuList');
+  box.innerHTML = '';
+  MENUS.forEach(m => {
+    const active = m.id === activeModule;
+    const el = document.createElement('button');
+    el.className = `w-full flex items-center gap-2 md:gap-3 px-2 md:px-3 py-2 md:py-2.5 rounded-xl text-left transition ${
+      active ? 'bg-brand-50 text-brand-700 font-semibold' : 'text-slate-700 hover:bg-brand-50'
+    }`;
+    el.innerHTML = `
+      <span class="mod-icon-wrap w-10 h-10 flex items-center justify-center shrink-0"><img src="${m.img}" alt="" class="mod-icon"></span>
+      <span class="font-medium">${m.name}</span>`;
+    el.onclick = () => { activeModule = m.id; refreshNav(); showModule(m.id); };
+    box.appendChild(el);
+  });
+}
+function showModule(id) {
+  document.querySelectorAll('.module').forEach(s => s.classList.remove('active'));
+  document.getElementById('mod-'+id).classList.add('active');
+  document.getElementById('mobileTitle').textContent = MENUS.find(m=>m.id===id).name;
+  const main = document.querySelector('main');
+  if (main) main.scrollTop = 0;
+  closeDrawer();
+}
+
+/* 手机端侧边抽屉：默认收起，内容全宽；点菜单展开，选中后收起 */
+function openDrawer() {
+  const sb = document.getElementById('taskSidebar');
+  if(!sb) return;
+  sb.classList.remove('-translate-x-full'); sb.classList.add('translate-x-0');
+  document.getElementById('drawerBackdrop').classList.remove('hidden');
+}
+function closeDrawer() {
+  const sb = document.getElementById('taskSidebar');
+  if(!sb) return;
+  sb.classList.add('-translate-x-full'); sb.classList.remove('translate-x-0');
+  document.getElementById('drawerBackdrop').classList.add('hidden');
+}
+
+/* 同步更新桌面侧栏与移动端底部标签栏的选中态 */
+function refreshNav() {
+  renderMenu();
+  renderBottomTabs();
+}
+
+/* 移动端底部标签栏 */
+function renderBottomTabs() {
+  const nav = document.getElementById('bottomTabs');
+  if (!nav) return;
+  nav.innerHTML = '';
+  MENUS.forEach(m => {
+    const active = m.id === activeModule;
+    const b = document.createElement('button');
+    b.className = `flex flex-col items-center justify-center gap-0.5 py-2 px-1 transition ` + (active ? 'tab-active' : 'text-slate-400');
+    b.innerHTML = `<span class="tab-ico mod-icon-wrap w-7 h-7"><img src="${m.img}" alt="" class="mod-icon"></span><span class="text-[10px] leading-none">${m.name}</span>`;
+    b.onclick = () => { activeModule = m.id; refreshNav(); showModule(m.id); };
+    nav.appendChild(b);
+  });
+}
+
+/* ===== 财经 & 新闻 ===== */
+function renderFeed(listId, items, dateId) {
+  const box = document.getElementById(listId);
+  box.innerHTML = items.map(it => `
+    <div class="bg-white rounded-xl border border-slate-200 p-4 hover:shadow-sm transition">
+      <div class="flex items-center gap-2 mb-2">
+        <span class="text-xs px-2 py-0.5 bg-brand-50 text-brand-700 rounded-full">${it.tag}</span>
+        <span class="text-xs text-slate-400">${it.source}</span>
+      </div>
+      <h3 class="font-semibold text-slate-800 mb-1">${it.title}</h3>
+      <p class="text-sm text-slate-600 mb-2">${it.summary}</p>
+      <p class="text-xs text-slate-400">${it.time}</p>
+    </div>
+  `).join('');
+  if(dateId) document.getElementById(dateId).textContent = todayStr();
+}
+
+/* 公共跨域代理：前端直连第三方数据源，无需自建后端；每个代理最多等 9 秒，失败快速回退 */
+const PROXIES = ['https://api.allorigins.win/raw?url=', 'https://api.codetabs.com/v1/proxy/?quest='];
+async function fetchProxy(url){
+  let lastErr;
+  for(const base of PROXIES){
+    const ctrl = new AbortController();
+    const to = setTimeout(() => ctrl.abort(), 9000);
+    try {
+      const r = await fetch(base + encodeURIComponent(url), {cache:'no-store', signal: ctrl.signal});
+      clearTimeout(to);
+      if(!r.ok) throw new Error('http '+r.status);
+      return await r.text();
+    } catch(e){ clearTimeout(to); lastErr = e; }
+  }
+  throw lastErr;
+}
+function cleanHtml(s){ return (s||'').replace(/<[^>]+>/g,'').replace(/&[a-z#0-9]+;/gi,' ').replace(/\s+/g,' ').trim(); }
+function timeFmt(ts){ if(!ts) return ''; const d=new Date(ts*1000); const p=n=>(''+n).padStart(2,'0'); return `${d.getFullYear()}/${p(d.getMonth()+1)}/${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`; }
+
+/* 新浪财经滚动（lid=2509） */
+async function getSinaNews(lid, n=10){
+  const url = `https://feed.mix.sina.com.cn/api/roll/get?pageid=153&lid=${lid}&k=&num=${n}&order=1`;
+  const text = await fetchProxy(url);
+  const data = JSON.parse(text);
+  const items = (data.result && data.result.data) || [];
+  return items.sort((a,b)=>(parseInt(b.ctime)||0)-(parseInt(a.ctime)||0)).slice(0,n).map(it=>{
+    const title = cleanHtml(it.title||it.stitle||'');
+    let intro = cleanHtml(it.intro||it.summary||it.wapsummary||'');
+    if(intro.length>110) intro = intro.slice(0,110)+'…';
+    let t=''; try{ t = timeFmt(parseInt(it.ctime||0)); }catch(e){}
+    const kw = cleanHtml(it.keywords||'');
+    return {title, summary:intro, source: cleanHtml(it.media_name||'新浪财经'), time:t, tag: kw.split(',')[0]||'资讯'};
+  }).filter(it=>it.title);
+}
+/* 中国新闻网·国际 RSS */
+async function getChinanewsWorld(n=10){
+  const xml = await fetchProxy('https://www.chinanews.com.cn/rss/world.xml');
+  const doc = new DOMParser().parseFromString(xml, 'text/xml');
+  return Array.from(doc.querySelectorAll('item')).slice(0,n).map(it=>{
+    const g = t => { const e = it.querySelector(t); return e ? e.textContent.trim() : ''; };
+    let intro = g('description'); if(intro.length>110) intro = intro.slice(0,110)+'…';
+    let t=''; try{ t = g('pubDate').replace(/\s*\(.*\)$/,''); }catch(e){}
+    return {title:g('title'), summary:intro, source:'中国新闻网', time:t, tag: g('category')||'国际'};
+  }).filter(it=>it.title);
+}
+
+/* 财经/新闻：前端直连实时数据，失败则用本地缓存或种子数据兜底 */
+async function loadFeed(type) {
+  const listId = type === 'finance' ? 'financeList' : 'newsList';
+  const dateId = type === 'finance' ? 'financeDate' : 'newsDate';
+  const seed = type === 'finance' ? SEED.finance : SEED.news;
+  const btn = document.getElementById(type === 'finance' ? 'btnRefreshFinance' : 'btnRefreshNews');
+  if(btn) { btn.textContent = '刷新中…'; btn.disabled = true; }
+  try {
+    const items = type === 'finance' ? await getSinaNews(2509) : await getChinanewsWorld();
+    if(!items.length) throw new Error('empty');
+    renderFeed(listId, items, dateId);
+    localStorage.setItem('wb_news_' + type, JSON.stringify(items));
+    if(btn) btn.textContent = '刷新';
+  } catch(e) {
+    const cached = JSON.parse(localStorage.getItem('wb_news_' + type) || 'null');
+    renderFeed(listId, (cached && cached.length) ? cached : seed, dateId);
+    if(btn) btn.textContent = '刷新';
+  } finally {
+    if(btn) btn.disabled = false;
+  }
+}
+
+/* ===== 音乐 ===== */
+function getMusicData() {
+  const p = localStorage.getItem('wb_music_platform') || 'spotify';
+  const key = 'wb_music_' + p;
+  const seed = (p === 'spotify') ? SEED.musicSpotify : SEED.musicBillboard;
+  let songs = JSON.parse(localStorage.getItem(key) || 'null');
+  if (!songs || !songs.length) songs = seed;
+  return { platform: p, songs };
+}
+
+function renderMusic() {
+  const { platform, songs } = getMusicData();
+  const box = document.getElementById('musicList');
+  box.innerHTML = songs.map(s => `
+    <div class="flex items-center gap-3 p-3 hover:bg-brand-50 transition">
+      <span class="rank-badge w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold shrink-0">${s.rank}</span>
+      <div class="flex-1 min-w-0">
+        <p class="font-medium text-slate-800 truncate">${s.title}</p>
+        <p class="text-xs text-slate-500">${s.artist}</p>
+      </div>
+      <span class="platform-pill text-xs px-2 py-0.5 rounded-full whitespace-nowrap">${s.platform}</span>
+    </div>
+  `).join('');
+  document.querySelectorAll('#musicTabs button').forEach(b => {
+    const on = b.dataset.p === platform;
+    b.className = 'px-2.5 py-1 rounded-md font-medium ' + (on ? 'bg-white text-brand-700 shadow-sm' : 'text-slate-500');
+  });
+  const upd = localStorage.getItem('wb_music_updated_' + platform);
+  const label = (platform === 'spotify') ? 'Spotify 全球周榜' : 'Billboard Hot 100';
+  document.getElementById('musicUpdated').textContent =
+    '数据来源：' + label + (upd ? ' · 更新于 ' + upd : ' · 点击刷新获取实时榜单');
+}
+
+/* 音乐榜单：前端直连数据源（kworb / billboard），无需后端 */
+async function getSpotify(){
+  const html = await fetchProxy('https://kworb.net/spotify/country/global_weekly.html');
+  const rows = html.match(/<tr>[\s\S]*?<\/tr>/g) || [];
+  const out = []; let rank = 0;
+  for(const r of rows){
+    const div = r.match(/<td[^>]*>.*?<div>([\s\S]*?)<\/div>/);
+    if(!div) continue;
+    const links = (div[1].match(/<a[^>]*>([^<]+)<\/a>/g) || []).map(a => a.replace(/<[^>]+>/g,'').trim());
+    if(links.length < 2) continue;
+    rank++;
+    out.push({rank, title: links[1].trim(), artist: links[0].trim(), platform:'Spotify Global'});
+    if(rank >= 20) break;
+  }
+  return out;
+}
+async function getBillboard(){
+  const html = await fetchProxy('https://www.billboard.com/charts/hot-100/');
+  const rows = html.split('a-chart-result-item-container').slice(1);
+  const out = [];
+  for(const r of rows){
+    const mt = r.match(/class="[^"]*c-title[^"]*"[^>]*>([\s\S]*?)<\/h3>/);
+    const sp = r.match(/class="[^"]*c-label\s+a-no-trucate[^"]*"[^>]*>([\s\S]*?)<\/span>/);
+    if(!mt || !sp) continue;
+    const artist = cleanHtml(sp[1]);
+    if(!artist) continue;
+    out.push({rank: out.length+1, title: cleanHtml(mt[1]), artist, platform:'Billboard Hot 100'});
+    if(out.length >= 20) break;
+  }
+  return out;
+}
+async function refreshMusic() {
+  const btn = document.getElementById('btnRefreshMusic');
+  const p = localStorage.getItem('wb_music_platform') || 'spotify';
+  btn.textContent = '刷新中…'; btn.disabled = true;
+  try {
+    const songs = p === 'spotify' ? await getSpotify() : await getBillboard();
+    if (!songs || songs.length < 10) throw new Error('empty');
+    localStorage.setItem('wb_music_' + p, JSON.stringify(songs));
+    localStorage.setItem('wb_music_updated_' + p, todayStr());
+    renderMusic();
+    toast('榜单已更新（实时）');
+  } catch (e) {
+    toast('实时拉取失败，显示缓存榜单');
+  } finally {
+    btn.textContent = '刷新'; btn.disabled = false;
+  }
+}
+
+function switchMusicPlatform(p) {
+  localStorage.setItem('wb_music_platform', p);
+  renderMusic();
+}
+
+/* ===== 抖店 ===== */
+function renderDouyin() {
+  const read = getRead();
+  const box = document.getElementById('douyinList');
+  box.innerHTML = SEED.douyin.map((d,i) => {
+    const isRead = read.includes(i);
+    return `
+    <div class="bg-white rounded-xl border border-slate-200 p-4 ${
+      isRead ? 'opacity-70' : ''
+    }">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-xs font-semibold text-brand-600">第 ${d.day} 天</span>
+        <button class="text-xs px-2 py-1 rounded-lg ${
+          isRead ? 'bg-brand-100 text-slate-500' : 'bg-brand-50 text-brand-700 hover:bg-brand-100'
+        }" onclick="toggleRead(${i})">${isRead?'已学':'标记已学'}</button>
+      </div>
+      <h3 class="font-semibold text-slate-800 mb-1">${d.title}</h3>
+      <p class="text-sm text-slate-600">${d.summary}</p>
+    </div>`;
+  }).join('');
+  document.getElementById('suggestionList').innerHTML = SEED.suggestions.map(s=>`<li>${s}</li>`).join('');
+}
+function toggleRead(idx) {
+  let read = getRead();
+  if(read.includes(idx)) read = read.filter(i=>i!==idx);
+  else read.push(idx);
+  setRead(read); renderDouyin();
+}
+
+/* ===== 英语 ===== */
+function renderWords() {
+  const words = getWords();
+  const box = document.getElementById('wordTags');
+  box.innerHTML = words.map(w => `<span class="px-2 py-1 bg-brand-50 text-brand-700 rounded-lg text-sm flex items-center gap-1">${w} <button onclick="removeWord('${w}')" class="text-brand-400 hover:text-brand-600">×</button></span>`).join('');
+  document.getElementById('statWords').textContent = words.length;
+}
+function removeWord(w) {
+  const words = getWords().filter(x=>x!==w);
+  setWords(words); renderWords(); renderEnglishReport('day');
+}
+function addWords() {
+  const input = document.getElementById('wordInput');
+  const raw = input.value.trim();
+  if(!raw) return;
+  const newWords = raw.split(/[,，\s]+/).filter(Boolean).map(w=>w.trim().toLowerCase());
+  const words = [...new Set([...getWords(), ...newWords])];
+  setWords(words); input.value=''; renderWords(); renderEnglishReport('day'); toast(`已添加 ${newWords.length} 个单词`);
+}
+function addChat(question, answer, targetWord, mistakes) {
+  const chat = getChat();
+  chat.push({date: new Date().toISOString(), question, answer, targetWord, mistakes});
+  setChat(chat); renderChat(); renderEnglishReport('day');
+}
+function renderChat() {
+  const box = document.getElementById('chatBox');
+  const chat = getChat();
+  box.innerHTML = chat.slice(-50).map(c => `
+    <div class="chat-bubble chat-ai"><b>AI：</b>${c.question}</div>
+    <div class="chat-bubble chat-me"><b>我：</b>${c.answer}</div>
+    ${c.mistakes.length ? `<div class="chat-bubble chat-ai text-rose-600"><b>纠正：</b>${c.mistakes.join('；')}</div>` : ''}
+  `).join('');
+  box.scrollTop = box.scrollHeight;
+  const today = todayStr();
+  const todayCount = chat.filter(c => c.date.slice(0,10) === today).length;
+  document.getElementById('statChatToday').textContent = todayCount;
+  document.getElementById('statChatTotal').textContent = chat.length;
+  document.getElementById('statMistakes').textContent = chat.reduce((a,c)=>a+c.mistakes.length,0);
+}
+function sendChat() {
+  const words = getWords();
+  const input = document.getElementById('chatInput');
+  const answer = input.value.trim();
+  if(!answer) return;
+  if(words.length === 0) { toast('请先添加单词'); return; }
+  const last = getChat().slice(-1)[0];
+  let targetWord = last ? last.targetWord : words[Math.floor(Math.random()*words.length)];
+  if(!last) { startChat(); return; }
+  const ansLower = answer.toLowerCase();
+  const mistakes = [];
+  if(!ansLower.includes(targetWord.toLowerCase())) mistakes.push(`没有使用目标单词“${targetWord}”，请尝试用它造句。`);
+  const unknowns = ansLower.split(/[^a-zA-Z']+/).filter(w=>w && !words.includes(w.toLowerCase()) && w.length>1);
+  if(unknowns.length) mistakes.push(`检测到未学过的单词：${[...new Set(unknowns)].join('、')}，建议用已学词汇回答。`);
+  addChat(last.question, answer, targetWord, mistakes);
+  input.value = '';
+  if(mistakes.length === 0) setTimeout(()=>startChat(), 600);
+}
+function startChat() {
+  const words = getWords();
+  if(words.length === 0) { document.getElementById('chatBox').innerHTML = '<p class="text-sm text-slate-400 p-2">请先添加单词，然后开始对话练习。</p>'; return; }
+  const word = words[Math.floor(Math.random()*words.length)];
+  const templates = [
+    `请用 “${word}” 造一个句子。`,
+    `你能用 “${word}” 说一句话吗？`,
+    `试着用 “${word}” 回答：今天你想做什么？`
+  ];
+  const q = templates[Math.floor(Math.random()*templates.length)];
+  addChat(q, '', word, []);
+}
+
+function renderEnglishReport(period) {
+  const chat = getChat();
+  const words = getWords();
+  const now = new Date();
+  let start;
+  if(period==='day') start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  else if(period==='week') { const d = new Date(now); d.setDate(d.getDate()-d.getDay()); start = new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+  else if(period==='month') start = new Date(now.getFullYear(), now.getMonth(), 1);
+  else start = new Date(now.getFullYear(), 0, 1);
+  const filtered = chat.filter(c => new Date(c.date) >= start);
+  const mistakes = filtered.reduce((a,c)=>a+c.mistakes.length,0);
+  const label = {day:'今日',week:'本周',month:'本月',year:'本年'}[period];
+  document.getElementById('englishReport').innerHTML = `
+    <p><b>${label}新增单词：</b>${words.length} 个</p>
+    <p><b>${label}对话次数：</b>${filtered.length} 次</p>
+    <p><b>${label}纠正次数：</b>${mistakes} 次</p>
+    <p><b>最近一次练习：</b>${filtered.length ? new Date(filtered[filtered.length-1].date).toLocaleString('zh-CN') : '无'}</p>
+  `;
+}
+
+/* ===== 剪辑 ===== */
+function renderEdit() {
+  const logs = getEdit().sort((a,b)=>new Date(b.date)-new Date(a.date));
+  const box = document.getElementById('editLogList');
+  box.innerHTML = logs.map(l => `
+    <div class="soft-surface rounded-lg p-3 text-sm">
+      <div class="flex items-center justify-between mb-1">
+        <span class="font-semibold text-slate-700">${l.date}</span>
+        <span class="text-xs text-brand-600">${l.duration} 分钟</span>
+      </div>
+      <p class="text-slate-600 mb-1"><b>计划：</b>${l.plan}</p>
+      <p class="text-slate-600"><b>收获：</b>${l.reflection}</p>
+    </div>
+  `).join('');
+}
+function addEdit() {
+  const date = document.getElementById('editDate').value;
+  const duration = parseInt(document.getElementById('editDuration').value);
+  const plan = document.getElementById('editPlan').value.trim();
+  const reflection = document.getElementById('editReflection').value.trim();
+  if(!date || !duration || !plan) { toast('请填写完整信息'); return; }
+  const logs = getEdit();
+  logs.push({id: Date.now(), date, duration, plan, reflection});
+  setEdit(logs);
+  document.getElementById('editDuration').value='';
+  document.getElementById('editPlan').value='';
+  document.getElementById('editReflection').value='';
+  renderEdit(); renderEditReport('week'); toast('已保存');
+}
+function renderEditReport(period) {
+  const logs = getEdit();
+  const now = new Date();
+  let start;
+  if(period==='week') { const d = new Date(now); d.setDate(d.getDate()-d.getDay()); start = new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+  else if(period==='month') start = new Date(now.getFullYear(), now.getMonth(), 1);
+  else if(period==='quarter') start = new Date(now.getFullYear(), Math.floor(now.getMonth()/3)*3, 1);
+  else start = new Date(now.getFullYear(), 0, 1);
+  const filtered = logs.filter(l => new Date(l.date) >= start);
+  const totalMin = filtered.reduce((a,l)=>a+l.duration,0);
+  const label = {week:'本周',month:'本月',quarter:'本季',year:'本年'}[period];
+  document.getElementById('editReport').innerHTML = `
+    <p><b>${label}学习次数：</b>${filtered.length} 次</p>
+    <p><b>${label}学习时长：</b>${totalMin} 分钟（约 ${Math.round(totalMin/60*10)/10} 小时）</p>
+    <p><b>平均每次时长：</b>${filtered.length ? Math.round(totalMin/filtered.length) : 0} 分钟</p>
+    <p><b>收获摘要：</b>${filtered.map(l=>l.reflection).filter(Boolean).join('；') || '暂无'}</p>
+  `;
+}
+
+/* ===== 财务统筹 ===== */
+const FIN_CATS = ['餐饮零食','居住安居','交通出行','服饰美容','社交人情','通讯电子','医疗健康','教育成长','休闲娱乐'];
+function defaultFinplan() {
+  return {
+    cats: FIN_CATS.map(name => ({name, budget:0})),
+    fixed: [
+      {id:1, name:'车险', amount:0, cat:'交通出行'},
+      {id:2, name:'房租', amount:0, cat:'居住安居'},
+      {id:3, name:'油费', amount:0, cat:'交通出行'}
+    ],
+    expenses: [],
+    subtags: [{id:1,name:'',current:0,target:0},{id:2,name:'',current:0,target:0},{id:3,name:'',current:0,target:0},{id:4,name:'',current:0,target:0},{id:5,name:'',current:0,target:0}],
+    reportPeriod: 'month'
+  };
+}
+/* ===== 统一数据层：数据存于本机(localStorage)，配合「导出/导入」可跨设备/跨平台迁移 ===== */
+let APP = {
+  finplan: defaultFinplan(),
+  words: [],
+  chat: [],
+  edit: [],
+  read: []
+};
+function safeArr(k){ try { const v = JSON.parse(localStorage.getItem(k)); return Array.isArray(v)?v:[]; } catch(e){ return []; } }
+function cacheLocal(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
+function getFinplan(){ return APP.finplan; }
+function setFinplan(d){ APP.finplan = d; cacheLocal('wb_finplan', d); }
+function getWords(){ return APP.words; }
+function setWords(v){ APP.words = v; cacheLocal(K_WORDS, v); }
+function getChat(){ return APP.chat; }
+function setChat(v){ APP.chat = v; cacheLocal(K_CHAT, v); }
+function getEdit(){ return APP.edit; }
+function setEdit(v){ APP.edit = v; cacheLocal(K_EDIT, v); }
+function getRead(){ return APP.read; }
+function setRead(v){ APP.read = v; cacheLocal(K_READ, v); }
+async function initAllData(){
+  try { const f = JSON.parse(localStorage.getItem('wb_finplan')); if(f && f.cats) APP.finplan = f; } catch(e){}
+  APP.words = safeArr(K_WORDS);
+  APP.chat  = safeArr(K_CHAT);
+  APP.edit  = safeArr(K_EDIT);
+  APP.read  = safeArr(K_READ);
+}
+/* 单模块备份（财务统筹） */
+function exportFinplan(){
+  const blob = new Blob([JSON.stringify(APP.finplan, null, 2)], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = '财务统筹备份_' + todayStr() + '.json'; a.click(); URL.revokeObjectURL(a.href);
+  toast('已导出财务备份');
+}
+function importFinplan(file){
+  const reader = new FileReader();
+  reader.onload = () => { try {
+    const d = JSON.parse(reader.result);
+    if(!d || !Array.isArray(d.cats)) { toast('文件格式不正确'); return; }
+    setFinplan(Object.assign(defaultFinplan(), d));
+    renderSubtags(); renderFixed(); renderCats(); renderExpenseLog(); renderFinReport();
+    toast('已从备份恢复财务数据');
+  } catch(e){ toast('解析失败'); } };
+  reader.readAsText(file);
+}
+/* 全部数据一键导出 / 导入 */
+function collectAllData(){
+  return { version:1, exportedAt:new Date().toISOString(),
+    finplan:APP.finplan, words:APP.words, chat:APP.chat, edit:APP.edit, read:APP.read,
+    theme:(localStorage.getItem('wb_theme')||'blue') };
+}
+function exportAll(){
+  const blob = new Blob([JSON.stringify(collectAllData(), null, 2)], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = '工作台全部备份_' + todayStr() + '.json'; a.click(); URL.revokeObjectURL(a.href);
+  toast('已导出全部数据备份');
+}
+function applyAllData(d){
+  if(!d || typeof d !== 'object') { toast('文件格式不正确'); return; }
+  if(d.finplan && d.finplan.cats) setFinplan(Object.assign(defaultFinplan(), d.finplan));
+  if(Array.isArray(d.words)) setWords(d.words);
+  if(Array.isArray(d.chat)) setChat(d.chat);
+  if(Array.isArray(d.edit)) setEdit(d.edit);
+  if(Array.isArray(d.read)) setRead(d.read);
+  if(d.theme) applyTheme(d.theme);
+  renderSubtags(); renderFixed(); renderCats(); renderExpenseLog(); renderFinReport();
+  renderWords(); renderChat(); renderEdit(); renderEditReport('week'); renderDouyin();
+  toast('已从备份恢复全部数据');
+}
+function importAll(file){
+  const reader = new FileReader();
+  reader.onload = () => { try { applyAllData(JSON.parse(reader.result)); } catch(e){ toast('解析失败'); } };
+  reader.readAsText(file);
+}
+function finplanCatOptions(selected) {
+  return FIN_CATS.map(c => `<option value="${c}" ${c===selected?'selected':''}>${c}</option>`).join('');
+}
+function finplanFillSelects() {
+  const fc = document.getElementById('fixedCat');
+  const ec = document.getElementById('expenseCat');
+  if(fc) fc.innerHTML = finplanCatOptions('交通出行');
+  if(ec) ec.innerHTML = '<option value="">选择大类</option>' + finplanCatOptions('');
+}
+function renderSubtags() {
+  const box = document.getElementById('subtagList');
+  if(!box) return;
+  const data = getFinplan();
+  box.innerHTML = data.subtags.map(s => {
+    const pct = s.target > 0 ? Math.min(100, Math.round(s.current / s.target * 100)) : 0;
+    return `
+    <div class="bg-brand-50 rounded-xl p-3 border border-slate-100">
+      <input type="text" value="${s.name}" placeholder="子标签名称" data-id="${s.id}" data-field="name"
+        class="w-full bg-transparent font-medium text-slate-700 placeholder-slate-400 outline-none mb-2 fin-subtag-input">
+      <div class="flex items-center gap-2 mb-2">
+        <div class="flex-1"><span class="text-xs text-slate-400">当前</span>
+          <input type="number" value="${s.current}" data-id="${s.id}" data-field="current"
+            class="w-full fin-subtag-num border border-slate-200 rounded-lg px-2 py-1 text-sm mt-0.5"></div>
+        <div class="flex-1"><span class="text-xs text-slate-400">目标</span>
+          <input type="number" value="${s.target}" data-id="${s.id}" data-field="target"
+            class="w-full fin-subtag-num border border-slate-200 rounded-lg px-2 py-1 text-sm mt-0.5"></div>
+      </div>
+      <div class="flex items-center justify-between text-xs mb-1">
+        <span class="text-slate-500">完成进度</span>
+        <span class="font-semibold ${pct>=100?'text-green-600':'text-brand-600'}">${pct}%</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill ${pct>=100?'ok':''}" style="width:${pct}%"></div></div>
+    </div>`;
+  }).join('');
+  box.querySelectorAll('.fin-subtag-input, .fin-subtag-num').forEach(el => {
+    el.addEventListener('change', () => {
+      const data = getFinplan();
+      const item = data.subtags.find(s => s.id == el.dataset.id);
+      if(item) {
+        item[el.dataset.field] = el.dataset.field === 'name' ? el.value.trim() : parseFloat(el.value) || 0;
+        setFinplan(data);
+        renderSubtags();
+      }
+    });
+  });
+}
+function renderFixed() {
+  const box = document.getElementById('fixedList');
+  if(!box) return;
+  const data = getFinplan();
+  const total = data.fixed.reduce((a,f)=>a+(parseFloat(f.amount)||0),0);
+  box.innerHTML = data.fixed.map(f => `
+    <div class="flex items-center justify-between bg-brand-50 rounded-lg px-3 py-2 text-sm">
+      <div class="flex items-center gap-2">
+        <span class="font-medium text-slate-700">${f.name}</span>
+        <span class="text-xs px-2 py-0.5 rounded-full bg-brand-50 text-brand-700">${f.cat}</span>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="font-semibold text-slate-800">¥${(parseFloat(f.amount)||0).toFixed(2)}</span>
+        <button data-id="${f.id}" class="fin-del-fixed text-slate-400 hover:text-rose-500">×</button>
+      </div>
+    </div>`).join('') + `
+    <div class="flex items-center justify-between px-1 pt-1 text-sm text-slate-500">
+      <span>每月固定支出合计</span><span class="font-bold text-slate-800">¥${total.toFixed(2)}</span>
+    </div>`;
+  box.querySelectorAll('.fin-del-fixed').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const data = getFinplan();
+      data.fixed = data.fixed.filter(f => f.id != btn.dataset.id);
+      setFinplan(data);
+      renderFixed(); renderCats(); renderFinReport(); renderExpenseLog();
+    });
+  });
+}
+function addFixed() {
+  const name = document.getElementById('fixedName').value.trim();
+  const amount = parseFloat(document.getElementById('fixedAmount').value) || 0;
+  const cat = document.getElementById('fixedCat').value;
+  if(!name || amount <= 0) { toast('请填写名称和金额'); return; }
+  const data = getFinplan();
+  data.fixed.push({id: Date.now(), name, amount, cat});
+  setFinplan(data);
+  document.getElementById('fixedName').value='';
+  document.getElementById('fixedAmount').value='';
+  renderFixed(); renderCats(); renderFinReport(); renderExpenseLog(); toast('已添加固定支出');
+}
+function currentMonthExpenses(cat) {
+  const data = getFinplan();
+  const now = new Date();
+  const start = new Date(now.getFullYear(), now.getMonth(), 1);
+  const end = new Date(now.getFullYear(), now.getMonth()+1, 1);
+  const fixed = data.fixed.filter(f => f.cat === cat).reduce((a,f)=>a+(parseFloat(f.amount)||0),0);
+  const variable = data.expenses.filter(e => e.cat === cat && new Date(e.date) >= start && new Date(e.date) < end)
+    .reduce((a,e)=>a+(parseFloat(e.amount)||0),0);
+  return fixed + variable;
+}
+function renderCats() {
+  const box = document.getElementById('catList');
+  if(!box) return;
+  const data = getFinplan();
+  let totalBudget = 0, totalUsed = 0;
+  const cards = data.cats.map(c => {
+    const spent = currentMonthExpenses(c.name);
+    totalBudget += (parseFloat(c.budget) || 0);
+    totalUsed += spent;
+    const pct = c.budget > 0 ? Math.min(100, Math.round(spent / c.budget * 100)) : 0;
+    const over = c.budget > 0 && spent > c.budget;
+    return `
+    <div class="bg-brand-50 rounded-xl p-3 border border-slate-100">
+      <div class="flex items-center justify-between mb-2">
+        <span class="font-medium text-slate-700">${c.name}</span>
+        <div class="flex items-center gap-1 text-xs">
+          <span class="text-slate-400">预算</span>
+          <input type="number" value="${c.budget}" data-cat="${c.name}" class="fin-cat-budget w-16 border border-slate-200 rounded px-1 py-0.5 text-right">
+        </div>
+      </div>
+      <div class="flex items-center justify-between text-xs mb-1">
+        <span class="text-slate-500">已用 ¥${spent.toFixed(2)}</span>
+        <span class="font-semibold ${over?'text-rose-600':(pct>=100?'text-green-600':'text-brand-600')}">${pct}%</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill ${over?'over':(pct>=100?'ok':'')}" style="width:${pct}%"></div></div>
+    </div>`;
+  }).join('');
+  const totalPct = totalBudget > 0 ? Math.round(totalUsed / totalBudget * 100) : 0;
+  const summary = `
+    <div class="bg-brand-100 rounded-xl p-3 border border-slate-100 flex items-center justify-between">
+      <span class="font-semibold text-slate-700">合计</span>
+      <span class="text-sm text-slate-600">预算 <b class="text-slate-700">¥${totalBudget.toFixed(2)}</b> · 已用 <b class="${totalUsed>totalBudget?'text-rose-600':'text-brand-700'}">¥${totalUsed.toFixed(2)}</b>${totalBudget>0?` <span class="text-slate-400">(${totalPct}%)</span>`:''}</span>
+    </div>`;
+  box.innerHTML = cards + summary;
+  box.querySelectorAll('.fin-cat-budget').forEach(el => {
+    el.addEventListener('change', () => {
+      const data = getFinplan();
+      const cat = data.cats.find(c => c.name === el.dataset.cat);
+      if(cat) { cat.budget = parseFloat(el.value) || 0; setFinplan(data); renderCats(); renderFinReport(); }
+    });
+  });
+}
+function addExpense() {
+  const cat = document.getElementById('expenseCat').value;
+  const amount = parseFloat(document.getElementById('expenseAmount').value) || 0;
+  const date = document.getElementById('expenseDate').value || todayStr();
+  const note = document.getElementById('expenseNote').value.trim();
+  if(!cat || amount <= 0) { toast('请选择大类并填写金额'); return; }
+  const data = getFinplan();
+  data.expenses.push({id:Date.now(), cat, amount, date, note});
+  setFinplan(data);
+  document.getElementById('expenseAmount').value='';
+  document.getElementById('expenseNote').value='';
+  renderCats(); renderExpenseLog(); renderFinReport(); toast('已记录支出');
+}
+function renderExpenseLog() {
+  const box = document.getElementById('expenseLog');
+  if(!box) return;
+  const data = getFinplan();
+  const recent = data.expenses.slice().sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,20);
+  box.innerHTML = recent.length ? recent.map(e => `
+    <div class="flex items-center justify-between bg-brand-50 rounded-lg px-3 py-2 text-sm">
+      <div class="flex items-center gap-2 min-w-0">
+        <span class="text-xs px-2 py-0.5 rounded-full bg-brand-50 text-brand-700 shrink-0">${e.cat}</span>
+        <span class="text-slate-500 text-xs">${e.date}</span>
+        <span class="text-slate-700 truncate">${e.note || '支出'}</span>
+      </div>
+      <div class="flex items-center gap-2 shrink-0">
+        <span class="font-semibold text-slate-800">¥${(parseFloat(e.amount)||0).toFixed(2)}</span>
+        <button data-id="${e.id}" class="fin-del-expense text-slate-400 hover:text-rose-500">×</button>
+      </div>
+    </div>`).join('') : '<p class="text-xs text-slate-400">暂无支出记录</p>';
+  box.querySelectorAll('.fin-del-expense').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const data = getFinplan();
+      data.expenses = data.expenses.filter(e => e.id != btn.dataset.id);
+      setFinplan(data);
+      renderCats(); renderExpenseLog(); renderFinReport();
+    });
+  });
+}
+function getPeriodBounds(period) {
+  const now = new Date();
+  let start, end, label, mult;
+  if(period === 'half') {
+    const y = now.getFullYear(), m = now.getMonth();
+    if(now.getDate() <= 15) { start = new Date(y,m,1); end = new Date(y,m,16); label='本半月'; mult=0.5; }
+    else { start = new Date(y,m,16); end = new Date(y,m+1,1); label='本半月'; mult=0.5; }
+  } else if(period === 'month') {
+    start = new Date(now.getFullYear(), now.getMonth(), 1);
+    end = new Date(now.getFullYear(), now.getMonth()+1, 1);
+    label='本月'; mult=1;
+  } else if(period === 'quarter') {
+    const q = Math.floor(now.getMonth()/3);
+    start = new Date(now.getFullYear(), q*3, 1);
+    end = new Date(now.getFullYear(), q*3+3, 1);
+    label='本季度'; mult=3;
+  } else {
+    start = new Date(now.getFullYear(), 0, 1);
+    end = new Date(now.getFullYear()+1, 0, 1);
+    label='本年'; mult=12;
+  }
+  return {start, end, label, mult};
+}
+function computeFinReport(period) {
+  const data = getFinplan();
+  const {start, end, label, mult} = getPeriodBounds(period);
+  const rows = data.cats.map(c => {
+    const budget = c.budget * mult;
+    const fixed = data.fixed.filter(f => f.cat === c.name).reduce((a,f)=>a+(parseFloat(f.amount)||0),0) * mult;
+    const variable = data.expenses.filter(e => e.cat === c.name && new Date(e.date) >= start && new Date(e.date) < end)
+      .reduce((a,e)=>a+(parseFloat(e.amount)||0),0);
+    const actual = fixed + variable;
+    const diff = actual - budget;
+    const pct = budget > 0 ? Math.round(diff / budget * 100) : 0;
+    return {name:c.name, budget, actual, diff, pct};
+  });
+  const totalBudget = rows.reduce((a,r)=>a+r.budget,0);
+  const totalActual = rows.reduce((a,r)=>a+r.actual,0);
+  return {label, rows, totalBudget, totalActual};
+}
+function renderFinReport() {
+  const data = getFinplan();
+  const period = data.reportPeriod || 'month';
+  const tabs = document.getElementById('finReportTabs');
+  if(tabs) tabs.querySelectorAll('button').forEach(b => {
+    const on = b.dataset.period === period;
+    b.className = 'px-3 py-1 rounded-md font-medium ' + (on ? 'bg-white text-brand-700 shadow-sm' : 'text-slate-500');
+  });
+  const report = computeFinReport(period);
+  const summary = document.getElementById('finReportSummary');
+  if(summary) {
+    const diff = report.totalActual - report.totalBudget;
+    const pct = report.totalBudget > 0 ? Math.round(diff / report.totalBudget * 100) : 0;
+    summary.innerHTML = `<b>${report.label}汇总：</b>预算 ¥${report.totalBudget.toFixed(2)} · 实际 ¥${report.totalActual.toFixed(2)} · ` +
+      (diff > 0 ? `<span class="text-rose-600">超出 ${pct}%</span>` : `<span class="text-green-600">结余 ${Math.abs(pct)}%</span>`);
+  }
+  const box = document.getElementById('finReportList');
+  if(!box) return;
+  box.innerHTML = report.rows.map(r => {
+    if(r.budget <= 0 && r.actual <= 0) return '';
+    const over = r.diff > 0;
+    const pct = Math.abs(r.pct);
+    const barPct = r.budget > 0 ? Math.min(100, Math.round(r.actual / r.budget * 100)) : (r.actual > 0 ? 100 : 0);
+    return `
+    <div class="bg-brand-50 rounded-xl p-3 border border-slate-100">
+      <div class="fin-report-row mb-1">
+        <span class="font-medium text-slate-700">${r.name}</span>
+        <span class="text-xs font-semibold ${over?'text-rose-600':'text-green-600'}">${over?'超出':'结余'} ${pct}%</span>
+      </div>
+      <div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+        <span>预算 ¥${r.budget.toFixed(2)}</span>
+        <span>实际 ¥${r.actual.toFixed(2)}</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill ${over?'over':(barPct>=100?'ok':'')}" style="width:${barPct}%"></div></div>
+    </div>`;
+  }).join('') || '<p class="text-sm text-slate-400">请设置预算或添加支出后查看报表</p>';
+}
+function switchFinReport(period) {
+  const data = getFinplan();
+  data.reportPeriod = period;
+  setFinplan(data);
+  renderFinReport();
+}
+
+/* ===== 事件绑定 ===== */
+document.getElementById('btnAddWords').addEventListener('click', addWords);
+document.getElementById('wordInput').addEventListener('keydown', e => { if(e.key==='Enter') addWords(); });
+document.getElementById('btnSendChat').addEventListener('click', sendChat);
+document.getElementById('chatInput').addEventListener('keydown', e => { if(e.key==='Enter') sendChat(); });
+document.getElementById('btnAddEdit').addEventListener('click', addEdit);
+document.getElementById('btnRefreshMusic').addEventListener('click', refreshMusic);
+document.getElementById('btnRefreshFinance').addEventListener('click', () => loadFeed('finance'));
+document.getElementById('btnRefreshNews').addEventListener('click', () => loadFeed('news'));
+document.getElementById('btnMenu').addEventListener('click', openDrawer);
+document.getElementById('drawerBackdrop').addEventListener('click', closeDrawer);
+document.querySelectorAll('#musicTabs button').forEach(b => {
+  b.addEventListener('click', () => switchMusicPlatform(b.dataset.p));
+});
+document.querySelectorAll('.report-tab').forEach(b => b.addEventListener('click', e => {
+  document.querySelectorAll('.report-tab').forEach(x=>{x.classList.remove('bg-brand-600','text-white'); x.classList.add('bg-brand-100','text-slate-600');});
+  e.target.classList.remove('bg-brand-100','text-slate-600'); e.target.classList.add('bg-brand-600','text-white');
+  renderEnglishReport(e.target.dataset.period);
+}));
+document.querySelectorAll('.edit-report-tab').forEach(b => b.addEventListener('click', e => {
+  document.querySelectorAll('.edit-report-tab').forEach(x=>{x.classList.remove('bg-brand-600','text-white'); x.classList.add('bg-brand-100','text-slate-600');});
+  e.target.classList.remove('bg-brand-100','text-slate-600'); e.target.classList.add('bg-brand-600','text-white');
+  renderEditReport(e.target.dataset.period);
+}));
+document.getElementById('btnAddFixed').addEventListener('click', addFixed);
+document.getElementById('btnExportFin').addEventListener('click', exportFinplan);
+document.getElementById('btnImportFin').addEventListener('click', () => document.getElementById('finImportFile').click());
+document.getElementById('finImportFile').addEventListener('change', e => { if(e.target.files[0]) importFinplan(e.target.files[0]); e.target.value=''; });
+document.getElementById('btnExportAll').addEventListener('click', exportAll);
+document.getElementById('btnImportAll').addEventListener('click', () => document.getElementById('allImportFile').click());
+document.getElementById('allImportFile').addEventListener('change', e => { if(e.target.files[0]) importAll(e.target.files[0]); e.target.value=''; });
+document.getElementById('btnExportAll2').addEventListener('click', exportAll);
+document.getElementById('btnImportAll2').addEventListener('click', () => document.getElementById('allImportFile').click());
+document.getElementById('btnAddExpense').addEventListener('click', addExpense);
+document.querySelectorAll('#finReportTabs button').forEach(b => b.addEventListener('click', () => switchFinReport(b.dataset.period)));
+
+/* ===== 主题切换 ===== */
+const THEME_META = { pink:'#db2777', blue:'#2563eb', green:'#16a34a', purple:'#9333ea', yellow:'#ca8a04' };
+function applyTheme(name){
+  name = name || 'blue';
+  document.documentElement.setAttribute('data-theme', name);
+  localStorage.setItem('wb_theme', name);
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if(meta) meta.setAttribute('content', THEME_META[name] || '#2563eb');
+  document.querySelectorAll('.theme-dot').forEach(d => d.classList.toggle('active', d.dataset.theme === name));
+}
+document.querySelectorAll('.theme-dot').forEach(d => d.addEventListener('click', () => applyTheme(d.dataset.theme)));
+
+/* ===== 初始化 ===== */
+applyTheme(localStorage.getItem('wb_theme') || 'blue');
+document.getElementById('todayDate').textContent = todayStr();
+document.getElementById('editDate').value = todayStr();
+document.getElementById('expenseDate').value = todayStr();
+document.getElementById('financeDate').textContent = todayStr();
+document.getElementById('newsDate').textContent = todayStr();
+finplanFillSelects();
+renderMenu();
+renderBottomTabs();
+loadFeed('finance');
+loadFeed('news');
+renderMusic();
+renderDouyin();
+renderWords();
+renderChat();
+renderEnglishReport('day');
+renderEdit();
+renderEditReport('week');
+// 所有用户数据以服务器为准：先拉取再渲染，避免本地默认覆盖旧数据
+initAllData().then(() => {
+  renderSubtags(); renderFixed(); renderCats(); renderExpenseLog(); renderFinReport();
+  renderWords(); renderChat(); renderEdit(); renderEditReport('week'); renderDouyin();
+});
+
+/* ===== 心跳保活：打开 APP 后每 30 秒 ping 服务器，减少被平台判定为空闲而暂停 ===== */
+setInterval(() => {
+  if(document.hidden) return;
+  fetch('/api/keepalive', {cache:'no-store', keepalive:true}).catch(()=>{});
+}, 30000);
+
+/* ===== Service Worker ===== */
+if('serviceWorker' in navigator) {
+  window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(()=>{}); });
+}
+</script>
+</body>
+</html>
