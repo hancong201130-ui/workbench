@@ -322,6 +322,78 @@
           <div id="movieList" class="space-y-3"></div>
         </section>
 
+        <!-- 7.5 书单推荐 -->
+        <section id="mod-books" class="module">
+          <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+            <h2 class="text-xl font-bold text-slate-800">📚 书单推荐</h2>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-sm text-slate-500" id="bookCount">共 0 本</span>
+              <button id="btnBookTip" class="text-xs px-3 py-1 bg-violet-100 text-violet-700 rounded-lg hover:bg-violet-200">💡 不会读书？</button>
+              <button id="btnRefreshBooks" class="text-xs px-3 py-1 bg-violet-100 text-violet-700 rounded-lg hover:bg-violet-200">联网查书评</button>
+              <button id="btnAddBook" class="text-xs px-3 py-1 bg-violet-600 text-white rounded-lg hover:bg-violet-700">+ 添加</button>
+            </div>
+          </div>
+
+          <!-- 阅读方法提示 -->
+          <div id="bookTip" class="hidden bg-violet-50 border border-violet-200 rounded-xl p-4 mb-4">
+            <h3 class="font-semibold text-violet-800 mb-2">为什么"读了后面忘前面"？——6 个可立刻用的方法</h3>
+            <ul class="text-sm text-slate-700 space-y-1.5 list-disc pl-5">
+              <li><b>主动回忆</b>：读完一章合上书，用自己的话复述 3 个要点——比划线有效得多。</li>
+              <li><b>间隔重复</b>：第 1 / 2 / 4 / 7 天回看笔记，对抗遗忘曲线。</li>
+              <li><b>输出倒逼输入</b>：写卡片笔记或讲给别人听，能讲清楚才是真懂。</li>
+              <li><b>主题阅读</b>：围绕一个问题读 3 本，比逐本精读更成体系。</li>
+              <li><b>检视阅读</b>：先花 15 分钟翻目录/结论，判断值不值得精读（详见《如何阅读一本书》）。</li>
+              <li><b>二刷法</b>：经典书读第二遍只看第一次的批注与未解之问。</li>
+            </ul>
+            <p class="text-xs text-violet-500 mt-2">核心理念：读书的目标不是"读完"，而是"留下并能用"。把书加进下方「想读」，按计划读、读后写一句话就胜过多读十本。</p>
+          </div>
+
+          <!-- 状态/分类筛选 -->
+          <div id="bookFilter" class="flex flex-wrap gap-2 mb-4"></div>
+
+          <!-- 对比视图 -->
+          <div id="bookCompare" class="hidden bg-white rounded-xl border border-slate-200 p-4 mb-4 overflow-x-auto"></div>
+
+          <!-- 添加/编辑表单（默认隐藏） -->
+          <div id="bookForm" class="hidden bg-white rounded-xl border border-slate-200 p-4 mb-4">
+            <h3 class="font-semibold text-slate-700 mb-3" id="bookFormTitle">添加书单</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+              <input id="bookTitle" type="text" placeholder="书名" class="border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-violet-200" />
+              <input id="bookAuthor" type="text" placeholder="作者" class="border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-violet-200" />
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
+              <input id="bookHighlight" type="text" placeholder="一句话亮点（≤15字）" class="border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-violet-200" />
+              <select id="bookDecision" class="border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-violet-200"></select>
+              <select id="bookStatus" class="border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-violet-200"></select>
+            </div>
+            <p id="bookHint" class="text-xs text-violet-500 mb-3 h-4"></p>
+            <input id="bookTags" type="text" placeholder="标签（逗号分隔，如：心理学,决策）" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm mb-3 outline-none focus:ring-2 focus:ring-violet-200" />
+            <input id="bookForWho" type="text" placeholder="适合谁读（人群/阶段/心境）" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm mb-3 outline-none focus:ring-2 focus:ring-violet-200" />
+            <input id="bookLevel" type="text" placeholder="阅读门槛/耗时（如：通俗易懂，约6小时）" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm mb-3 outline-none focus:ring-2 focus:ring-violet-200" />
+            <textarea id="bookCore" placeholder="核心内容提炼（每行一个要点，3-5个）" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm mb-3 outline-none focus:ring-2 focus:ring-violet-200" rows="3"></textarea>
+            <textarea id="bookQuotes" placeholder="金句摘录（每行一句，1-2句）" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm mb-3 outline-none focus:ring-2 focus:ring-violet-200" rows="2"></textarea>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+              <input id="bookEdition" type="text" placeholder="版本校验（推荐版本/最佳译本）" class="border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-violet-200" />
+              <select id="bookSource" class="border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-violet-200">
+                <option value="原书+书评">原书+书评</option>
+                <option value="原书">原书</option>
+                <option value="书评">书评</option>
+                <option value="二手解读">二手解读</option>
+              </select>
+            </div>
+            <textarea id="bookControversy" placeholder="争议提示（可选，如：近年有读者批评案例过时…）" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm mb-3 outline-none focus:ring-2 focus:ring-violet-200" rows="2"></textarea>
+            <textarea id="bookAlt" placeholder="替代推荐（可选，如：太学术可换《XX》更易读）" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm mb-3 outline-none focus:ring-2 focus:ring-violet-200" rows="2"></textarea>
+            <textarea id="bookCompare" placeholder="对比建议（可选，如：先读哪本/与哪本互补）" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm mb-3 outline-none focus:ring-2 focus:ring-violet-200" rows="2"></textarea>
+            <div class="flex gap-2">
+              <button id="btnSaveBook" class="bg-violet-600 hover:bg-violet-700 text-white px-4 py-2 rounded-lg text-sm">保存</button>
+              <button id="btnCancelBook" class="bg-slate-100 hover:bg-slate-200 text-slate-600 px-4 py-2 rounded-lg text-sm">取消</button>
+            </div>
+          </div>
+
+          <!-- 书单列表 -->
+          <div id="bookList" class="space-y-3"></div>
+        </section>
+
         <!-- 8 财务统筹 -->
         <section id="mod-finplan" class="module">
           <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center justify-between">
@@ -455,6 +527,123 @@ const SEED_MOVIES = [
   {id:'m39', title:'预产期(小罗伯特)', cat:'喜剧', rating:0, note:'', addedAt:'2026-07-30T00:00:00.000Z'},
   {id:'m40', title:'新恋爱世纪(黎明)', cat:'爱情', rating:0, note:'', addedAt:'2026-07-30T00:00:00.000Z'}
 ];
+
+/* ===== 书单推荐 ===== */
+const K_BOOKS = 'wb_books';
+const BOOK_DECISIONS = ['强烈推荐','值得略读','仅参考特定章节','不推荐'];
+const BOOK_STATUSES = [['wish','想读'],['reading','在读'],['done','读完']];
+const SEED_BOOKS = [
+  {id:'b01', title:'思考，快与慢', author:'丹尼尔·卡尼曼', status:'wish', tags:['心理学','决策'],
+   highlight:'两大系统，看清算力盲区',
+   core:['系统1（直觉快思）与系统2（慢思）的分工与各自易错点','启发性偏差：锚定、代表性、可得性错觉','过度自信与前景理论（损失厌恶）','何时信直觉、何时必须慢下来'],
+   forWho:'做决策/带团队/做投资的人；总被直觉坑的管理者',
+   level:'需一定耐心，约12小时，可碎片化读',
+   decision:'强烈推荐',
+   quotes:['我们并非天生就能正确思考，大脑出厂设置如此。','噪声与偏差一样，都是错误的一部分。'],
+   rating:8.1, ratingSrc:'豆瓣(编辑整理)',
+   edition:'中信出版社2012年版（孙路弘等译，经典译本）',
+   controversy:'2019年多位心理学家对书中部分经典实验（如启动效应）提出可复现性质疑；框架价值不受影响，但引用具体实验需谨慎。',
+   alt:'嫌学术可换《怪诞行为学》（故事化、更易读的行为经济学）',
+   compare:'与《噪声》同源：先读本书打认知基础，再读《噪声》看"如何减少判断中的随机误差"。',
+   source:'原书+书评'},
+  {id:'b02', title:'噪声', author:'卡尼曼 / 西博尼 / 桑斯坦', status:'wish', tags:['决策','管理'],
+   highlight:'误差=偏差+噪声，减噪更值钱',
+   core:['噪声定义：同一问题不同判断者/不同时间的不一致（vs 偏差是系统性偏离）','错误=偏差+噪声，组织常只盯偏差忽视噪声','司法、医疗、招聘中的噪声代价','减噪策略：用规则代替自由裁量、独立判断、评分卡'],
+   forWho:'管理者、法官、HR、医疗决策者；建流程/做评估的人',
+   level:'偏学术但案例丰富，约10小时',
+   decision:'强烈推荐',
+   quotes:['在两个完全相同的情况下做出不同判决，这就是噪声。'],
+   rating:8.1, ratingSrc:'豆瓣(编辑整理)',
+   edition:'中信出版社2021年9月版（最佳译本）',
+   controversy:'案例偏欧美，落地国内组织需改造；方法论扎实但读来稍枯燥。',
+   alt:'想要更轻量可换《助推》（同作者桑斯坦，更贴近政策 nudges）',
+   compare:'是《思考，快与慢》的"应用篇"，建议先读快与慢。',
+   source:'原书+书评'},
+  {id:'b03', title:'如何阅读一本书', author:'莫提默·艾德勒 / 查尔斯·范多伦', status:'wish', tags:['方法','学习'],
+   highlight:'读得多不如读得对，四层法',
+   core:['阅读的四个层次：基础/检视/分析/主题阅读','检视阅读：15分钟判断一本书值不值得读','分析阅读：懂结构、抓主旨、评断真伪','主题阅读：就一个问题读多本书，形成自己的见解','不同书用不同速度与方法（论说类/想象文学分野）'],
+   forWho:'总说"读了后面忘前面"的人；学生与终身学习者',
+   level:'方法书，通俗易懂，约9小时',
+   decision:'强烈推荐',
+   quotes:['读得懂的书不值得读第二遍；读不懂的才需要重读。','读书不是为了懂作者，而是为了懂自己。'],
+   rating:8.5, ratingSrc:'豆瓣(编辑整理)',
+   edition:'商务印书馆2014年版（郝明义、朱衣译，经典）',
+   controversy:'方法偏"经典文本/论说类"，对小说、网络文学适用度有限；篇幅较长、略说教。',
+   alt:'想要更现代的"输出防遗忘"框架可换《卡片笔记写作法》',
+   source:'原书+书评'},
+  {id:'b04', title:'原子习惯', author:'詹姆斯·克利尔', status:'wish', tags:['自我提升','习惯'],
+   highlight:'每天1%进步，复利改写人生',
+   core:['身份认同驱动习惯（想成为谁，而非想做什么）','习惯四法则：提示/渴求/反应/奖赏（建立与打破）','两分钟法则、环境设计、"不求完美，但求重复"','习惯记分卡与"不中断链"'],
+   forWho:'想养成运动/学习/写作习惯的人；拖延者',
+   level:'通俗易懂、故事化，约6小时，碎片化可读',
+   decision:'强烈推荐',
+   quotes:['你并非目标不高，而是系统不对。'],
+   rating:8.0, ratingSrc:'豆瓣(编辑整理)',
+   edition:'北京联合出版公司2019年版（迩东晨译；台版《原子习惯》亦佳）',
+   controversy:'方法论脱胎于习惯科学并不新颖，胜在体系化与可操作；有评论认为过度简化。',
+   alt:'想要更"为什么"可换《习惯的力量》（杜希格）',
+   source:'原书+书评'},
+  {id:'b05', title:'穷查理宝典', author:'查理·芒格（编）', status:'wish', tags:['投资','思维'],
+   highlight:'多元思维模型，反盲维决策',
+   core:['多元思维模型：跨心理学/数学/生物/经济看问题','人类误判心理学25种倾向','反过来想：想明白怎么失败，就避开失败','能力圈：只在懂的边界内下注','坐等投资法、长期主义'],
+   forWho:'投资者、创业者、需对复杂问题做判断的人',
+   level:'演讲集，跳跃但好读，约13小时',
+   decision:'值得略读',
+   quotes:['如果知道我会死在哪里，我就永远不去那里。'],
+   rating:8.5, ratingSrc:'豆瓣(编辑整理)',
+   edition:'中信出版社2010/2016年版（李继宏等译；上海人民出版社版亦可）',
+   controversy:'内容为演讲/访谈汇编，重复度高、略散；部分投资观偏"价值投资原教旨"。',
+   alt:'嫌散可换《纳瓦尔宝典》（更浓缩的现代智慧）',
+   source:'原书+书评'},
+  {id:'b06', title:'影响力', author:'罗伯特·西奥迪尼', status:'wish', tags:['心理学','营销'],
+   highlight:'六大说服术，识破被操控',
+   core:['互惠、承诺一致、社会认同、喜好、权威、稀缺','每个原理背后的心理学实验与商业滥用','如何抵御"自动顺从"'],
+   forWho:'销售、运营、市场、怕被营销带节奏的人',
+   level:'通俗易懂、案例多，约8小时',
+   decision:'强烈推荐',
+   quotes:['触发特征一旦释放，就会让我们不假思索地行动。'],
+   rating:8.6, ratingSrc:'豆瓣(编辑整理)',
+   edition:'中国人民大学出版社/北京联合版（闾佳译较优）',
+   controversy:'早年版案例偏旧，新版有"自动化时代"补充；原理通用但部分实验年代久。',
+   alt:'想要更新案例可换《先发影响力》（同作者续作）',
+   source:'原书+书评'},
+  {id:'b07', title:'置身事内', author:'兰小欢', status:'wish', tags:['经济','中国'],
+   highlight:'读懂中国经济的政府逻辑',
+   core:['地方政府投融资：土地财政、城投、招商引资','分税制、官员考核与GDP竞赛','工业化中的政府与产业政策','理解"城投债""房地产"等制度根源'],
+   forWho:'关心中国经济/投资/政策的职场人与创业者',
+   level:'通俗严谨，约10小时，无需专业背景',
+   decision:'强烈推荐',
+   quotes:['生活过得好一点，比大多数宏观数据都重要。'],
+   rating:9.1, ratingSrc:'豆瓣(编辑整理)',
+   edition:'世纪文景·上海人民出版社2021年版（最佳且唯一权威版）',
+   controversy:'视角偏"政府有为"一方，市场派学者认为对风险与约束着墨不足；宜搭配对立观点读。',
+   alt:'想要市场视角可换《以利为利》（周飞舟，学术向）',
+   source:'原书+书评'},
+  {id:'b08', title:'人类简史', author:'尤瓦尔·赫拉利', status:'wish', tags:['历史','宏观'],
+   highlight:'钱/帝国/宗教，都是讲故事',
+   core:['认知革命：虚构故事让大规模协作成为可能','农业革命是"史上最大骗局"的反思','金钱、帝国、宗教三大秩序','科学革命与"想象的现实"'],
+   forWho:'对历史/人类命运好奇的泛读者；想建立大框架的人',
+   level:'通俗好读，约11小时',
+   decision:'值得略读',
+   quotes:['大规模人类合作，靠的是共同相信的"故事"。'],
+   rating:8.5, ratingSrc:'豆瓣(编辑整理)',
+   edition:'中信出版社2014/2017年版（林俊宏译，经典）',
+   controversy:'多位历史学家批评其过度概括、决定论、史料取舍服务于叙事；当作启发读物而非严谨学术。',
+   alt:'想要更严谨可换《枪炮、病菌与钢铁》（戴蒙德，同行认可度高）',
+   source:'书评+原书'},
+  {id:'b09', title:'纳瓦尔宝典', author:'埃里克·乔根森（编）', status:'wish', tags:['财富','幸福'],
+   highlight:'财富与幸福，都可被设计',
+   core:['财富=用杠杆（代码/媒体）放大专长，而非卖时间','复利思维、特定知识、承担责任','幸福是技能可训练；减少欲望、活在当下','远离嫉妒、做减法'],
+   forWho:'创业者、自由职业者、想理清"钱与意义"的年轻人',
+   level:'碎片化可读，语录体，约5小时',
+   decision:'值得略读',
+   quotes:['用杠杆放大你的专长，而不是出售时间。'],
+   rating:8.4, ratingSrc:'豆瓣(编辑整理)',
+   edition:'中信出版集团2022年版（直译即可，无译本优劣之争）',
+   controversy:'内容多为推特精选，深度有限；部分观点偏硅谷精英视角。',
+   alt:'想要系统投资框架可换《穷查理宝典》',
+   source:'原书+书评'}
+];
 /* 电影类型智能识别：按顺序匹配（更具体的类型优先）。本地规则，不联网。 */
 const MOVIE_GUESS_RULES = [
   ['动画', ['动画','千与千寻','你的名字','铃芽','龙猫','天空之城','幽灵公主','魔女','起风了','波妞','罗小黑','大鱼海棠','大圣','哪吒','白蛇','熊出没','喜羊羊','猫和老鼠','米老鼠','迪士尼','皮克斯','玩具总动员','飞屋','冰雪奇缘','超人总动员','寻梦','疯狂动物城','头脑特工队','平行宇宙','灌篮高手','樱桃小丸子','宫崎骏','新海诚','吉卜力','海绵宝宝','蜡笔小新','哆啦','宝可梦','名侦探柯南','数码宝贝','奥特曼','猪猪侠','舒克','小猪佩奇']],
@@ -507,6 +696,7 @@ const MENUS = [
   {id:'douyin',  name:'抖店运营', icon:'🛍️', color:'#f43f5e', variant:3, img:'labubu-icons/douyin.png'},
   {id:'music',   name:'国际音乐榜', icon:'🎵', color:'#ec4899', variant:5, img:'labubu-icons/music.png'},
   {id:'movies',  name:'电影收藏', icon:'🍿', color:'#f59e0b', variant:6, img:''},
+  {id:'books',   name:'书单推荐', icon:'📚', color:'#8b5cf6', variant:7, img:''},
   {id:'finplan', name:'财务统筹', icon:'💰', color:'#0ea5e9', variant:0, img:'labubu-icons/finplan.png'}
 ];
 let activeModule = 'finance';
@@ -777,6 +967,211 @@ function toggleRead(idx) {
   if(read.includes(idx)) read = read.filter(i=>i!==idx);
   else read.push(idx);
   setRead(read); renderDouyin();
+}
+
+/* ===== 书单推荐 ===== */
+let bookFilterStatus = '全部';
+let editingBookId = null;
+let bookCompareSel = [];
+let bookReviewsData = null;   // 联网书评（Open Library 等），按书名索引
+let bookReviewsUpdated = '';
+
+const DECISION_BADGE = {
+  '强烈推荐': 'bg-emerald-100 text-emerald-700',
+  '值得略读': 'bg-blue-100 text-blue-700',
+  '仅参考特定章节': 'bg-amber-100 text-amber-700',
+  '不推荐': 'bg-rose-100 text-rose-700'
+};
+function decisionBadge(d){ return `<span class="text-xs px-2 py-0.5 rounded-full ${DECISION_BADGE[d]||'bg-slate-100 text-slate-600'}">${d}</span>`; }
+function statusBadge(s){ const m={'wish':'bg-violet-100 text-violet-700','reading':'bg-sky-100 text-sky-700','done':'bg-emerald-100 text-emerald-700'}; return `<span class="text-xs px-2 py-0.5 rounded-full ${m[s]||'bg-slate-100 text-slate-600'}">${statusLabel(s)}</span>`; }
+function statusLabel(s){ return (BOOK_STATUSES.find(x=>x[0]===s)||['','未知'])[1]; }
+function liveRating(b){
+  const r = bookReviewsData && bookReviewsData[b.title];
+  if(r && r.rating) return `<span class="text-xs text-amber-600">联网 ★${r.rating}（${r.count||'?'}人）</span>`;
+  if(b.rating) return `<span class="text-xs text-slate-400">${b.ratingSrc||'评分'} ${b.rating}</span>`;
+  return '';
+}
+
+function renderBookFilter() {
+  const box = document.getElementById('bookFilter');
+  const opts = ['全部', ...BOOK_STATUSES.map(x=>x[1])];
+  box.innerHTML = opts.map(c => {
+    const active = c === bookFilterStatus;
+    return `<button data-s="${c}" class="px-3 py-1 rounded-full text-xs border transition ${
+      active ? 'bg-violet-500 text-white border-violet-500' : 'bg-white text-slate-600 border-slate-200 hover:border-violet-300'
+    }">${c}</button>`;
+  }).join('');
+  box.querySelectorAll('button').forEach(b => {
+    b.addEventListener('click', () => { bookFilterStatus = b.dataset.s; renderBookFilter(); renderBooks(); });
+  });
+}
+
+function openBookForm(id=null) {
+  const form = document.getElementById('bookForm');
+  const isEdit = id !== null;
+  document.getElementById('bookFormTitle').textContent = isEdit ? '编辑书单' : '添加书单';
+  const decSel = document.getElementById('bookDecision');
+  decSel.innerHTML = BOOK_DECISIONS.map(d => `<option value="${d}">${d}</option>`).join('');
+  const stSel = document.getElementById('bookStatus');
+  stSel.innerHTML = BOOK_STATUSES.map(s => `<option value="${s[0]}">${s[1]}</option>`).join('');
+  if(isEdit){
+    const b = getBooks().find(x => x.id === id);
+    if(!b) return;
+    editingBookId = id;
+    document.getElementById('bookTitle').value = b.title || '';
+    document.getElementById('bookAuthor').value = b.author || '';
+    document.getElementById('bookHighlight').value = b.highlight || '';
+    decSel.value = b.decision || BOOK_DECISIONS[0];
+    stSel.value = b.status || 'wish';
+    document.getElementById('bookTags').value = (b.tags||[]).join('，');
+    document.getElementById('bookForWho').value = b.forWho || '';
+    document.getElementById('bookLevel').value = b.level || '';
+    document.getElementById('bookCore').value = (b.core||[]).join('\n');
+    document.getElementById('bookQuotes').value = (b.quotes||[]).join('\n');
+    document.getElementById('bookEdition').value = b.edition || '';
+    document.getElementById('bookSource').value = b.source || '原书+书评';
+    document.getElementById('bookControversy').value = b.controversy || '';
+    document.getElementById('bookAlt').value = b.alt || '';
+    document.getElementById('bookCompare').value = b.compare || '';
+  } else {
+    editingBookId = null;
+    ['bookTitle','bookAuthor','bookHighlight','bookTags','bookForWho','bookLevel','bookCore','bookQuotes','bookEdition','bookControversy','bookAlt','bookCompare'].forEach(k=>document.getElementById(k).value='');
+    decSel.value = BOOK_DECISIONS[0];
+    stSel.value = 'wish';
+  }
+  document.getElementById('bookHint').textContent = '';
+  form.classList.remove('hidden');
+  document.getElementById('bookTitle').focus();
+}
+function onBookHighlightInput(){
+  const v = document.getElementById('bookHighlight').value.trim();
+  const hint = document.getElementById('bookHint');
+  if(v.length > 15) hint.textContent = `亮点建议≤15字（当前 ${v.length} 字），可精简`;
+  else hint.textContent = '';
+}
+
+function saveBook() {
+  const title = document.getElementById('bookTitle').value.trim();
+  const author = document.getElementById('bookAuthor').value.trim();
+  if(!title) { toast('请输入书名'); return; }
+  const b = {
+    id: editingBookId || (Date.now().toString(36) + Math.random().toString(36).slice(2,6)),
+    title, author,
+    highlight: document.getElementById('bookHighlight').value.trim(),
+    decision: document.getElementById('bookDecision').value,
+    status: document.getElementById('bookStatus').value,
+    tags: document.getElementById('bookTags').value.split(/[，,]/).map(s=>s.trim()).filter(Boolean),
+    forWho: document.getElementById('bookForWho').value.trim(),
+    level: document.getElementById('bookLevel').value.trim(),
+    core: document.getElementById('bookCore').value.split('\n').map(s=>s.trim()).filter(Boolean),
+    quotes: document.getElementById('bookQuotes').value.split('\n').map(s=>s.trim()).filter(Boolean),
+    edition: document.getElementById('bookEdition').value.trim(),
+    source: document.getElementById('bookSource').value,
+    controversy: document.getElementById('bookControversy').value.trim(),
+    alt: document.getElementById('bookAlt').value.trim(),
+    compare: document.getElementById('bookCompare').value.trim()
+  };
+  const books = getBooks();
+  const idx = books.findIndex(x => x.id === b.id);
+  if(idx >= 0) books[idx] = Object.assign({}, books[idx], b);
+  else books.unshift(b);
+  setBooks(books);
+  closeBookForm();
+  renderBooks();
+  toast(editingBookId ? '已保存' : '已加入书单');
+}
+function closeBookForm(){ document.getElementById('bookForm').classList.add('hidden'); editingBookId = null; }
+function deleteBook(id){ if(!confirm('确定删除这本书吗？')) return; setBooks(getBooks().filter(m=>m.id!==id)); renderBooks(); }
+function editBook(id){ openBookForm(id); }
+function moveBookStatus(id, status){
+  const books = getBooks(); const i = books.findIndex(x=>x.id===id);
+  if(i>=0){ books[i] = Object.assign({}, books[i], {status}); setBooks(books); renderBooks(); }
+}
+
+function toggleBookCompare(id){
+  const i = bookCompareSel.indexOf(id);
+  if(i>=0) bookCompareSel.splice(i,1);
+  else { if(bookCompareSel.length>=2) bookCompareSel.shift(); bookCompareSel.push(id); }
+  renderBooks(); renderBookCompare();
+}
+function renderBookCompare(){
+  const box = document.getElementById('bookCompare');
+  if(bookCompareSel.length !== 2){ box.classList.add('hidden'); box.innerHTML=''; return; }
+  const bs = bookCompareSel.map(id => getBooks().find(x=>x.id===id)).filter(Boolean);
+  if(bs.length<2){ box.classList.add('hidden'); return; }
+  const rows = [
+    ['书名 / 作者', bs.map(b=>`<b>${b.title}</b><br><span class="text-xs text-slate-400">${b.author||''}</span>`)],
+    ['一句话亮点', bs.map(b=>b.highlight||'—')],
+    ['决策建议', bs.map(b=>decisionBadge(b.decision))],
+    ['适合谁读', bs.map(b=>b.forWho||'—')],
+    ['门槛/耗时', bs.map(b=>b.level||'—')],
+    ['争议提示', bs.map(b=>b.controversy?`<span class="text-rose-600 text-xs">${b.controversy}</span>`:'—')],
+    ['替代推荐', bs.map(b=>b.alt?`<span class="text-xs">${b.alt}</span>`:'—')],
+    ['对比建议', bs.map(b=>b.compare?`<span class="text-xs text-violet-600">${b.compare}</span>`:'—')]
+  ];
+  box.innerHTML = `<div class="flex items-center justify-between mb-2"><h3 class="font-semibold text-slate-700">⚖ 横向对比</h3><button onclick="bookCompareSel=[];renderBooks();renderBookCompare()" class="text-xs px-2 py-1 bg-slate-100 rounded-lg text-slate-500">清空</button></div>
+    <table class="w-full text-sm"><tbody>${rows.map(r=>`<tr class="border-t border-slate-100"><td class="py-2 pr-3 text-slate-400 whitespace-nowrap align-top w-24">${r[0]}</td>${r[1].map(c=>`<td class="py-2 px-3 align-top border-l border-slate-100">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+  box.classList.remove('hidden');
+}
+
+function renderBooks() {
+  const all = getBooks();
+  const fs = bookFilterStatus === '全部' ? all : all.filter(m => statusLabel(m.status) === bookFilterStatus);
+  document.getElementById('bookCount').textContent = `共 ${all.length} 本 · 想读 ${all.filter(m=>m.status==='wish').length} / 在读 ${all.filter(m=>m.status==='reading').length} / 读完 ${all.filter(m=>m.status==='done').length}`;
+  const box = document.getElementById('bookList');
+  if(!fs.length){
+    box.innerHTML = `<div class="bg-white rounded-xl border border-slate-200 p-8 text-center text-slate-400"><div class="text-4xl mb-2">📚</div><p class="text-sm">还没有书，点右上角 + 添加你的第一本</p></div>`;
+    return;
+  }
+  box.innerHTML = fs.map(b => {
+    const sel = bookCompareSel.includes(b.id);
+    return `<div class="bg-white rounded-xl border ${sel?'border-violet-400 ring-1 ring-violet-200':'border-slate-200'} p-4 hover:shadow-sm transition">
+      <div class="flex items-start justify-between gap-3">
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2 flex-wrap mb-1">
+            <h3 class="font-semibold text-slate-800">${b.title}</h3>
+            ${statusBadge(b.status)} ${decisionBadge(b.decision)} ${liveRating(b)}
+          </div>
+          <p class="text-xs text-slate-400 mb-1">${b.author||''} ${b.tags&&b.tags.length?('· '+b.tags.join(' / ')):''} ${b.edition?('· <span class="text-slate-400">'+b.edition+'</span>'):''}</p>
+          ${b.highlight?`<p class="text-sm font-medium text-violet-700 mb-2">✨ ${b.highlight}</p>`:''}
+          ${b.core&&b.core.length?`<div class="text-sm text-slate-600 mb-2"><b class="text-slate-500">核心内容：</b><ul class="list-disc pl-5 mt-0.5 space-y-0.5">${b.core.map(c=>`<li>${c}</li>`).join('')}</ul></div>`:''}
+          ${b.forWho?`<p class="text-xs text-slate-500 mb-1"><b>适合谁读：</b>${b.forWho}</p>`:''}
+          ${b.level?`<p class="text-xs text-slate-500 mb-1"><b>门槛/耗时：</b>${b.level}</p>`:''}
+          ${b.quotes&&b.quotes.length?`<div class="text-xs text-slate-500 italic border-l-2 border-violet-200 pl-2 my-1">${b.quotes.map(q=>`"${q}"`).join('<br>')}</div>`:''}
+          ${b.controversy?`<p class="text-xs text-rose-600 bg-rose-50 rounded p-1.5 mt-1">⚠ 争议：${b.controversy}</p>`:''}
+          ${b.alt?`<p class="text-xs text-slate-500 bg-slate-50 rounded p-1.5 mt-1">🔁 替代：${b.alt}</p>`:''}
+          ${b.compare?`<p class="text-xs text-violet-600 bg-violet-50 rounded p-1.5 mt-1">⚖ 对比：${b.compare}</p>`:''}
+          ${b.source?`<p class="text-[10px] text-slate-300 mt-1">信息来源：${b.source}${bookReviewsUpdated?(' · 联网书评 '+bookReviewsUpdated):''}</p>`:''}
+        </div>
+        <div class="flex flex-col items-end gap-1 shrink-0">
+          <div class="flex gap-1">
+            <button class="text-xs px-2 py-1 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200" onclick="editBook('${b.id}')">编辑</button>
+            <button class="text-xs px-2 py-1 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-100" onclick="deleteBook('${b.id}')">删除</button>
+          </div>
+          <button class="text-xs px-2 py-1 rounded-lg ${sel?'bg-violet-600 text-white':'bg-violet-50 text-violet-600 hover:bg-violet-100'}" onclick="toggleBookCompare('${b.id}')">${sel?'✓ 对比':'⚖ 对比'}</button>
+          <select class="text-xs border border-slate-200 rounded-lg px-1 py-1 text-slate-600" onchange="moveBookStatus('${b.id}', this.value)">
+            ${BOOK_STATUSES.map(s=>`<option value="${s[0]}" ${b.status===s[0]?'selected':''}>${s[1]}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function loadBookReviews() {
+  const btn = document.getElementById('btnRefreshBooks');
+  if(btn){ btn.textContent='查询中…'; btn.disabled=true; }
+  try {
+    const data = await fetchDataJson('books-reviews.json');
+    if(data && data.books){
+      bookReviewsData = {};
+      data.books.forEach(r => { if(r.title) bookReviewsData[r.title] = r; });
+      bookReviewsUpdated = data.updated || '';
+      renderBooks();
+      toast('已更新联网书评');
+    } else { toast('暂无可更新的书评数据'); }
+  } catch(e) { toast('联网书评暂不可用（将显示本地评分）'); }
+  finally { if(btn){ btn.textContent='联网查书评'; btn.disabled=false; } }
 }
 
 /* ===== 电影收藏 ===== */
@@ -1099,7 +1494,8 @@ let APP = {
   chat: [],
   edit: [],
   read: [],
-  movies: []
+  movies: [],
+  books: []
 };
 function safeArr(k){ try { const v = JSON.parse(localStorage.getItem(k)); return Array.isArray(v)?v:[]; } catch(e){ return []; } }
 function cacheLocal(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
@@ -1115,6 +1511,8 @@ function getRead(){ return APP.read; }
 function setRead(v){ APP.read = v; cacheLocal(K_READ, v); }
 function getMovies(){ return APP.movies; }
 function setMovies(v){ APP.movies = v; cacheLocal(K_MOVIES, v); }
+function getBooks(){ return APP.books || []; }
+function setBooks(v){ APP.books = v; cacheLocal(K_BOOKS, v); }
 async function initAllData(){
   try { const f = JSON.parse(localStorage.getItem('wb_finplan')); if(f && f.cats) APP.finplan = f; } catch(e){}
   APP.words = safeArr(K_WORDS);
@@ -1126,6 +1524,11 @@ async function initAllData(){
   if(APP.movies.length === 0 && localStorage.getItem('wb_movies_seeded') !== '1'){
     setMovies(SEED_MOVIES);
     localStorage.setItem('wb_movies_seeded', '1');
+  }
+  APP.books = safeArr(K_BOOKS);
+  if(APP.books.length === 0 && localStorage.getItem('wb_books_seeded') !== '1'){
+    setBooks(SEED_BOOKS);
+    localStorage.setItem('wb_books_seeded', '1');
   }
   // 用种子电影的分类初始化「智能识别」记忆，使已有影片也能被自动识别
   seedMovieLearnFromSeed();
@@ -1164,7 +1567,7 @@ function importFinplan(file){
 /* 全部数据一键导出 / 导入 */
 function collectAllData(){
   return { version:1, exportedAt:new Date().toISOString(),
-    finplan:APP.finplan, words:APP.words, chat:APP.chat, edit:APP.edit, read:APP.read, movies:APP.movies,
+    finplan:APP.finplan, words:APP.words, chat:APP.chat, edit:APP.edit, read:APP.read, movies:APP.movies, books:APP.books,
     theme:(localStorage.getItem('wb_theme')||'blue') };
 }
 function exportAll(){
@@ -1181,9 +1584,10 @@ function applyAllData(d){
   if(Array.isArray(d.edit)) setEdit(d.edit);
   if(Array.isArray(d.read)) setRead(d.read);
   if(Array.isArray(d.movies)) setMovies(d.movies);
+  if(Array.isArray(d.books)) setBooks(d.books);
   if(d.theme) applyTheme(d.theme);
   renderSubtags(); renderFixed(); renderCats(); renderExpenseLog(); renderFinReport();
-  renderWords(); renderChat(); renderEdit(); renderEditReport('week'); renderDouyin(); renderMovies();
+  renderWords(); renderChat(); renderEdit(); renderEditReport('week'); renderDouyin(); renderMovies(); renderBooks();
   toast('已从备份恢复全部数据');
 }
 function importAll(file){
@@ -1493,6 +1897,18 @@ document.getElementById('btnCancelMovie').addEventListener('click', closeMovieFo
 document.getElementById('movieTitle').addEventListener('keydown', e => { if(e.key==='Enter') saveMovie(); });
 document.getElementById('movieTitle').addEventListener('input', onMovieTitleInput);
 
+/* ===== 书单推荐 事件绑定 ===== */
+document.getElementById('btnBookTip').addEventListener('click', () => {
+  const t = document.getElementById('bookTip');
+  t.classList.toggle('hidden');
+});
+document.getElementById('btnAddBook').addEventListener('click', () => openBookForm());
+document.getElementById('btnSaveBook').addEventListener('click', saveBook);
+document.getElementById('btnCancelBook').addEventListener('click', closeBookForm);
+document.getElementById('btnRefreshBooks').addEventListener('click', loadBookReviews);
+document.getElementById('bookHighlight').addEventListener('input', onBookHighlightInput);
+document.getElementById('bookTitle').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('bookAuthor').focus(); });
+
 /* ===== 主题切换 ===== */
 const THEME_META = { pink:'#db2777', blue:'#2563eb', green:'#16a34a', purple:'#9333ea', yellow:'#ca8a04' };
 function applyTheme(name){
@@ -1521,6 +1937,8 @@ loadMusicAuto();
 renderDouyin();
 renderMovieFilter();
 renderMovies();
+renderBookFilter();
+renderBooks();
 renderWords();
 renderChat();
 renderEnglishReport('day');
@@ -1529,7 +1947,7 @@ renderEditReport('week');
 // 所有用户数据以服务器为准：先拉取再渲染，避免本地默认覆盖旧数据
 initAllData().then(() => {
   renderSubtags(); renderFixed(); renderCats(); renderExpenseLog(); renderFinReport();
-  renderWords(); renderChat(); renderEdit(); renderEditReport('week'); renderDouyin(); renderMovies();
+  renderWords(); renderChat(); renderEdit(); renderEditReport('week'); renderDouyin(); renderMovies(); renderBooks();
 });
 
 /* ===== 心跳保活：打开 APP 后每 30 秒 ping 服务器，减少被平台判定为空闲而暂停 ===== */

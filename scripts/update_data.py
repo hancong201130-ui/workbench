@@ -15,7 +15,9 @@ import os
 import re
 import json
 import html
+import time
 import urllib.request
+import urllib.parse
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone, timedelta
 
@@ -167,6 +169,47 @@ def fetch_billboard(n=20):
     return out
 
 
+def fetch_book_reviews():
+    """联网获取书评（Open Library 公开 API，无需密钥）。
+    以英文标题查询，结果按中文展示名回写，便于前端按书名匹配。
+    失败的单本跳过；整体不可达则抛错，由 guard_fetch 保留旧文件。"""
+    queries = [
+        ('思考，快与慢', 'Thinking Fast and Slow', 'Kahneman'),
+        ('噪声', 'Noise A Flaw in Human Judgment', 'Kahneman'),
+        ('如何阅读一本书', 'How to Read a Book', 'Adler'),
+        ('原子习惯', 'Atomic Habits', 'Clear'),
+        ('穷查理宝典', 'Poor Charlie', 'Munger'),
+        ('影响力', 'Influence The Psychology of Persuasion', 'Cialdini'),
+        ('置身事内', '置身事内', '兰小欢'),
+        ('人类简史', 'Sapiens A Brief History of Humankind', 'Harari'),
+        ('纳瓦尔宝典', 'The Almanack of Naval Ravikant', 'Ravikant'),
+    ]
+    out = []
+    for disp, title, author in queries:
+        try:
+            q = urllib.parse.quote(title)
+            a = urllib.parse.quote(author)
+            url = ('https://openlibrary.org/search.json?title=' + q + '&author=' + a +
+                   '&fields=title,ratings_average,ratings_count,first_publish_year&limit=1')
+            d = json.loads(get(url, timeout=15))
+            docs = d.get('docs') or []
+            if docs:
+                doc = docs[0]
+                ra = doc.get('ratings_average')
+                rc = doc.get('ratings_count')
+                if ra is not None:
+                    out.append({
+                        'title': disp,
+                        'rating': round(float(ra), 1),
+                        'count': int(rc) if rc else 0,
+                        'year': doc.get('first_publish_year') or '',
+                    })
+        except Exception as e:
+            print(f'[WARN] book review {disp}: {e}')
+        time.sleep(0.5)  # 礼貌限速
+    return out
+
+
 def write_json(name, payload):
     path = os.path.join(REPO, name)
     with open(path, 'w', encoding='utf-8') as f:
@@ -194,4 +237,5 @@ if __name__ == '__main__':
     ok_n = guard_fetch('news', lambda: fetch_news(15), 'news.json', 'items')
     ok_s = guard_fetch('spotify', lambda: fetch_spotify(20), 'music-spotify.json', 'songs')
     ok_b = guard_fetch('billboard', lambda: fetch_billboard(20), 'music-billboard.json', 'songs')
-    print('DONE', {'finance': ok_f, 'news': ok_n, 'spotify': ok_s, 'billboard': ok_b})
+    ok_bk = guard_fetch('books', lambda: fetch_book_reviews(), 'books-reviews.json', 'books')
+    print('DONE', {'finance': ok_f, 'news': ok_n, 'spotify': ok_s, 'billboard': ok_b, 'books': ok_bk})

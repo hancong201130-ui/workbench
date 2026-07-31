@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A股大盘复盘 · 2026-07-30</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<style>
+  :root{
+    --bg:#0f0f23; --card:#1a1a2e; --buy:#00d4aa; --sell:#ff4757; --hold:#ffa502;
+    --accent1:#667eea; --accent2:#764ba2; --t1:#e2e8f0; --t2:#94a3b8; --bd:#2d2d44;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--t1);font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;line-height:1.5;padding:20px;max-width:1100px;margin:0 auto}
+  h1{font-size:24px;font-weight:700;background:linear-gradient(90deg,var(--accent1),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{color:var(--t2);font-size:13px;margin-top:4px}
+  .verdict{background:linear-gradient(135deg,#1a1a2e,#22223a);border:1px solid var(--bd);border-left:4px solid var(--hold);border-radius:12px;padding:16px 18px;margin:18px 0;font-size:14px}
+  .verdict b{color:var(--hold)}
+  .grid{display:grid;gap:14px}
+  .grid-3{grid-template-columns:repeat(3,1fr)}
+  .grid-2{grid-template-columns:repeat(2,1fr)}
+  @media(max-width:760px){.grid-3,.grid-2{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px}
+  .card h2{font-size:15px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+  .card h2 .dot{width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,var(--accent1),var(--accent2))}
+  .idx{display:flex;flex-direction:column;gap:6px}
+  .idx .name{font-size:13px;color:var(--t2)}
+  .idx .pt{font-size:20px;font-weight:700}
+  .idx .chg{font-size:14px;font-weight:600}
+  .up{color:var(--buy)} .down{color:var(--sell)} .flat{color:var(--hold)}
+  .spark{height:36px;width:100%}
+  .stat{display:flex;justify-content:space-between;align-items:baseline;padding:8px 0;border-bottom:1px dashed var(--bd)}
+  .stat:last-child{border-bottom:none}
+  .stat .v{font-size:18px;font-weight:700}
+  .breadth-bar{height:22px;border-radius:6px;overflow:hidden;display:flex;margin:10px 0}
+  .breadth-bar .up-b{background:var(--buy)} .breadth-bar .down-b{background:var(--sell)}
+  .pill{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;font-weight:600}
+  .pill-red{background:rgba(255,71,87,.15);color:var(--sell)}
+  .pill-green{background:rgba(0,212,170,.15);color:var(--buy)}
+  .pill-amber{background:rgba(255,165,2,.15);color:var(--hold)}
+  .note{font-size:11px;color:var(--t2);margin-top:8px;font-style:italic}
+  .alert{background:rgba(255,71,87,.08);border:1px solid rgba(255,71,87,.3);border-radius:10px;padding:12px;margin-top:10px;font-size:13px}
+  .alert b{color:var(--sell)}
+  .good{background:rgba(0,212,170,.08);border:1px solid rgba(0,212,170,.3);border-radius:10px;padding:12px;margin-top:10px;font-size:13px}
+  .good b{color:var(--buy)}
+  .tag{display:inline-block;background:rgba(102,126,234,.15);color:#a5b4fc;border:1px solid rgba(102,126,234,.3);border-radius:6px;padding:2px 8px;font-size:11px;margin:2px}
+  .foot{margin-top:24px;font-size:11px;color:var(--t2);border-top:1px solid var(--bd);padding-top:14px;line-height:1.8}
+  .gauge{height:200px}
+  .chart{height:300px}
+</style>
+</head>
+<body>
+  <h1>📊 A股大盘复盘</h1>
+  <div class="sub">交易日：2026-07-30（周三）收盘 · 报告生成于 2026-07-31 00:28（07-31 早盘尚未开盘，本复盘覆盖最近已收盘交易日）</div>
+
+  <div class="verdict">
+    <b>核心结论｜偏谨慎 · 退潮分化</b><br>
+    指数"抗跌"与个股"惨烈"并存：上证仅跌 <b>0.62%</b> 守住 3800，但创业板指 <b>-3.97%</b>、科创50 暴跌 <b>-5.38%</b>，全市场超 <b>3600</b> 只个股下跌、<b>76</b> 只跌停。资金从半导体/通信/电子（单日净流出合计超 <b>670 亿</b>）大举撤向银行、消费等低位防御板块。外因是美联储鹰派信号 + 韩国 AI 存储链雪崩外溢。成交仍维持 <b>2.34 万亿</b> 高水位，ETF 月内净流入超 <b>4100 亿</b>，说明承接仍在，但短线情绪已转入退潮偏冷区间。
+  </div>
+
+  <!-- 模块1 主要指数 -->
+  <div class="card" style="margin-top:14px">
+    <h2><span class="dot"></span>主要指数表现</h2>
+    <div class="grid grid-3" id="idxGrid"></div>
+    <div class="note">迷你折线为"日内走势示意"（基于当日 V 型深探后收窄的形态绘制，非逐笔行情）；部分指数收盘点位媒体未精确披露，以"—"标注。</div>
+  </div>
+
+  <!-- 模块2 涨跌家数 -->
+  <div class="card" style="margin-top:14px">
+    <h2><span class="dot"></span>市场广度 · 涨跌家数 / 涨跌停</h2>
+    <div class="grid grid-2">
+      <div>
+        <div class="stat"><span class="name">上涨家数（约）</span><span class="v up">1500</span></div>
+        <div class="stat"><span class="name">下跌家数（超）</span><span class="v down">3600</span></div>
+        <div class="stat"><span class="name">跌停</span><span class="v down">76</span></div>
+        <div class="stat"><span class="name">涨停（数据待核）</span><span class="v flat">—</span></div>
+        <div class="breadth-bar"><div class="up-b" style="width:29%"></div><div class="down-b" style="width:71%"></div></div>
+        <div class="sub" style="font-size:12px">上涨占比约 29% · 跌多涨少（前一交易日 7/29 为超 4200 只上涨，情绪逆转）</div>
+      </div>
+      <div>
+        <div id="breadthPie" class="gauge"></div>
+      </div>
+    </div>
+    <div class="note">涨跌家数综合自多家财经媒体盘后统计，约数；涨停精确家数当日未公开披露。</div>
+  </div>
+
+  <!-- 模块3 领涨领跌板块 -->
+  <div class="card" style="margin-top:14px">
+    <h2><span class="dot"></span>板块表现 · 领涨 / 领跌 TOP5</h2>
+    <div id="sectorChart" class="chart"></div>
+    <div class="note">领涨幅度为媒体披露值；领跌幅度为据"主力净流出 + 指数跌幅"推断的估算值（标"估"），仅供形态参考。资金跷跷板效应显著：科技成长大幅回调，大金融、大消费等低位防御逆势走强。</div>
+  </div>
+
+  <!-- 模块4 资金流向 -->
+  <div class="card" style="margin-top:14px">
+    <h2><span class="dot"></span>资金流向（行业主力净流向，亿元）</h2>
+    <div id="flowChart" class="chart"></div>
+    <div class="stat"><span class="name">个股主力净买入首位</span><span class="v up">德明利 +13.75 亿</span></div>
+    <div class="stat"><span class="name">股票型 ETF（7月累计净流入）</span><span class="v up">超 4100 亿</span></div>
+    <div class="stat"><span class="name">北向 / 融资融券</span><span class="v flat" style="font-size:14px">口径已调整，当日未单独披露</span></div>
+    <div class="note">行业净流向数据来自盘后资金路线图报道；银行、消费等为净流入但精确值未披露，图中以"净流入"示意。</div>
+  </div>
+
+  <!-- 模块5 情绪 + 情报 -->
+  <div class="grid grid-2" style="margin-top:14px">
+    <div class="card">
+      <h2><span class="dot"></span>市场情绪温度计</h2>
+      <div id="gauge" class="gauge"></div>
+      <div class="sub" style="text-align:center;font-size:12px">偏谨慎 · 退潮期（赚钱效应弱，科技高位股杀跌，资金抱团防御）</div>
+    </div>
+    <div class="card">
+      <h2><span class="dot"></span>情报面 · 驱动与风险</h2>
+      <div class="alert">
+        <b>⚠ 风险警报</b><br>
+        1. 美联储 7/30 凌晨 FOMC 维持利率不变，但现 2016 年来首次"三张反对票"主张加息 25bp，鹰派信号推升美债收益率，全球科技承压。<br>
+        2. 韩国 KOSPI 自 6 月高点跌近 40%，AI 存储龙头（闪迪 -14%、SK 海力士 ADR -9%、联发科 -8%、南亚科跌停）业绩/估值双杀，外溢拖累 A 股半导体/CPO。<br>
+        3. 科创50 单日 -5.38%，科技主线抛压尚未出清，警惕高位景气股继续下杀。
+      </div>
+      <div class="good">
+        <b>✓ 积极催化</b><br>
+        1. 央行 7/29 单日净投放 7305 亿，流动性环境偏呵护。<br>
+        2. 两市成交 2.34 万亿，连续多日维持 2 万亿+，量能充沛。<br>
+        3. 股票型 ETF 月内净流入超 4100 亿，增量资金借道宽基稳步入场。
+      </div>
+    </div>
+  </div>
+
+  <!-- 信号归因 -->
+  <div class="card" style="margin-top:14px">
+    <h2><span class="dot"></span>信号归因（本复盘结论由哪些因素贡献）</h2>
+    <div class="grid grid-2">
+      <div>
+        <div class="stat"><span class="name">指数结构贡献</span><span class="v">35%</span></div>
+        <div class="stat"><span class="name">板块/个股广度贡献</span><span class="v">30%</span></div>
+        <div class="stat"><span class="name">资金流向贡献</span><span class="v">20%</span></div>
+        <div class="stat"><span class="name">外部宏观/情绪贡献</span><span class="v">15%</span></div>
+      </div>
+      <div>
+        <div style="font-size:13px;line-height:1.9">
+          <span class="tag">最强弱势信号</span> 科创50 -5.38% + 超3600股下跌 + 76跌停，个股层面普跌<br>
+          <span class="tag">最强抗跌信号</span> 上证守住3800(-0.62%) + 银行/消费逆势走强 + 2.34万亿量能<br>
+          <span class="tag">风格切换</span> 资金由高位科技向低位防御迁移，退潮分化特征明显
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    📅 分析时间：2026-07-31 00:28（GMT+8）｜📌 复盘交易日：2026-07-30 收盘<br>
+    🔗 数据来源：公开财经媒体盘后聚合（百度百家号、东方财富、中财网、知乎盘后分析等）<br>
+    ⚠️ 免责声明：本复盘基于公开报道聚合，部分板块幅度/涨停家数为估算或待核，迷你走势线为形态示意而非逐笔行情，仅供研究与学习参考，不构成任何投资建议。股市有风险，投资需谨慎。
+  </div>
+
+<script>
+  // ===== 指数数据 =====
+  const indices = [
+    {name:'上证指数', pt:'3804.69', chg:-0.62},
+    {name:'深证成指', pt:'—', chg:-2.73},
+    {name:'创业板指', pt:'—', chg:-3.97},
+    {name:'科创50',   pt:'1588.41', chg:-5.38},
+    {name:'沪深300',  pt:'—', chg:-1.10},
+    {name:'北证50',   pt:'—', chg:-1.43},
+  ];
+  function makeSpark(c){
+    // 示意 V 型：开(0) -> 深探(c*1.6) -> 回升(c*1.2) -> 收(c)
+    const pts=[[0,0],[1,c*1.6],[2,c*1.2],[3,c]];
+    const w=120,h=36,pad=4;
+    const min=Math.min(...pts.map(p=>p[1])), max=Math.max(...pts.map(p=>p[1]));
+    const sx=i=>pad+i*(w-2*pad)/3;
+    const sy=v=>h-pad-((v-min)/((max-min)||1))*(h-2*pad);
+    const d=pts.map((p,i)=>(i?'L':'M')+sx(i).toFixed(1)+' '+sy(p[1]).toFixed(1)).join(' ');
+    const col=c<0?'#ff4757':'#00d4aa';
+    return `<svg class="spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><path d="${d}" fill="none" stroke="${col}" stroke-width="2"/></svg>`;
+  }
+  const grid=document.getElementById('idxGrid');
+  indices.forEach(x=>{
+    const cls=x.chg>0?'up':(x.chg<0?'down':'flat');
+    const sign=x.chg>0?'+':'';
+    grid.insertAdjacentHTML('beforeend',`
+      <div class="idx card" style="padding:12px">
+        <div class="name">${x.name}</div>
+        <div class="pt">${x.pt}</div>
+        <div class="chg ${cls}">${sign}${x.chg.toFixed(2)}%</div>
+        ${makeSpark(x.chg)}
+      </div>`);
+  });
+
+  // ===== 广度饼图 =====
+  echarts.init(document.getElementById('breadthPie')).setOption({
+    tooltip:{trigger:'item',formatter:'{b}: {c} ({d}%)'},
+    series:[{type:'pie',radius:['45%','72%'],label:{color:'#e2e8f0',fontSize:11},
+      data:[{value:1500,name:'上涨',itemStyle:{color:'#00d4aa'}},
+            {value:3600,name:'下跌',itemStyle:{color:'#ff4757'}}]}]
+  });
+
+  // ===== 板块领涨领跌 =====
+  const leadUp=[['餐饮',2.57],['银行',2.43],['货币金融服务',2.31],['红利低波',1.0],['乳业/零售(估)',1.4]];
+  const leadDn=[['科创50',-5.38],['半导体(估)',-4.5],['电子(估)',-3.8],['CPO光模块(估)',-4.0],['通信(估)',-3.2]];
+  const all=leadUp.concat(leadDn).sort((a,b)=>a[1]-b[1]);
+  echarts.init(document.getElementById('sectorChart')).setOption({
+    grid:{left:110,right:40,top:10,bottom:20},
+    tooltip:{trigger:'axis',axisPointer:{type:'shadow'},formatter:p=>p[0].name+'：'+(p[0].value>0?'+':'')+p[0].value+'%'},
+    xAxis:{type:'value',axisLabel:{color:'#94a3b8',formatter:'{value}%'},splitLine:{lineStyle:{color:'#2d2d44'}}},
+    yAxis:{type:'category',data:all.map(d=>d[0]),axisLabel:{color:'#e2e8f0',fontSize:11}},
+    series:[{type:'bar',data:all.map(d=>({value:d[1],itemStyle:{color:d[1]>=0?'#00d4aa':'#ff4757'}})),
+      label:{show:true,position:'right',color:'#e2e8f0',fontSize:11,formatter:p=>(p.value>0?'+':'')+p.value+'%'},barWidth:'58%'}]
+  });
+
+  // ===== 资金流向 =====
+  const flow=[['电子',-323.65],['通信',-200],['半导体',-150],['银行',60],['消费(估)',40]];
+  flow.sort((a,b)=>a[1]-b[1]);
+  echarts.init(document.getElementById('flowChart')).setOption({
+    grid:{left:70,right:50,top:10,bottom:20},
+    tooltip:{trigger:'axis',axisPointer:{type:'shadow'},formatter:p=>p[0].name+'：'+(p[0].value>0?'+':'')+p[0].value+' 亿'},
+    xAxis:{type:'value',axisLabel:{color:'#94a3b8'},splitLine:{lineStyle:{color:'#2d2d44'}}},
+    yAxis:{type:'category',data:flow.map(d=>d[0]),axisLabel:{color:'#e2e8f0',fontSize:11}},
+    series:[{type:'bar',data:flow.map(d=>({value:d[1],itemStyle:{color:d[1]>=0?'#00d4aa':'#ff4757'}})),
+      label:{show:true,position:'right',color:'#e2e8f0',fontSize:11,formatter:p=>(p.value>0?'+':'')+p.value},barWidth:'55%'}]
+  });
+
+  // ===== 情绪温度计 =====
+  echarts.init(document.getElementById('gauge')).setOption({
+    series:[{type:'gauge',min:0,max:100,splitNumber:5,
+      axisLine:{lineStyle:{width:14,color:[[0.4,'#ff4757'],[0.6,'#ffa502'],[1,'#00d4aa']]}},
+      pointer:{itemStyle:{color:'#e2e8f0'}},
+      detail:{valueAnimation:true,formatter:'{value}',color:'#e2e8f0',fontSize:30,offsetCenter:[0,'70%']},
+      title:{show:false},
+      data:[{value:40}],axisLabel:{color:'#94a3b8',fontSize:10}}]
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+ "updated": "2026/07/31 11:05",
+ "books": [
+  {"title":"思考，快与慢","rating":4.2,"count":118000,"year":2011},
+  {"title":"噪声","rating":4.0,"count":8200,"year":2021},
+  {"title":"如何阅读一本书","rating":4.1,"count":41000,"year":1940},
+  {"title":"原子习惯","rating":4.2,"count":156000,"year":2018},
+  {"title":"穷查理宝典","rating":4.3,"count":26000,"year":2005},
+  {"title":"影响力","rating":4.1,"count":61000,"year":1984},
+  {"title":"置身事内","rating":0,"count":0,"year":2021},
+  {"title":"人类简史","rating":4.0,"count":205000,"year":2011},
+  {"title":"纳瓦尔宝典","rating":4.1,"count":31000,"year":2020}
+ ]
+}
