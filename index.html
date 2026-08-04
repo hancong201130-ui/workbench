@@ -394,6 +394,46 @@
           <div id="bookList" class="space-y-3"></div>
         </section>
 
+        <!-- 8.5 外卖比价 -->
+        <section id="mod-takeout" class="module">
+          <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+            <h2 class="text-xl font-bold text-slate-800">🍱 外卖比价</h2>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-sm text-slate-500" id="takeoutCount">共 0 条</span>
+              <button id="btnAddTakeout" class="text-xs px-3 py-1 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600">+ 添加</button>
+            </div>
+          </div>
+
+          <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-3 mb-4 text-xs text-slate-600 leading-relaxed">
+            💡 美团 / 淘宝 / 京东没有公开菜单价格接口，无法自动抓取。你首次把一家店的「菜品 + 三平台价格」记下来（几秒），它会<b>永久记住、自动归类、跨平台比价</b>，并标出最便宜的平台和「省 X 元」。选店铺即看该店全部饭菜的三平台对比。
+          </div>
+
+          <div id="takeoutStoreFilter" class="flex flex-wrap gap-2 mb-3"></div>
+          <div class="mb-3">
+            <input id="takeoutSearch" type="text" placeholder="搜索菜品或店铺名…" class="w-full md:w-72 border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-yellow-200" />
+          </div>
+
+          <div id="takeoutForm" class="hidden bg-white rounded-xl border border-slate-200 p-4 mb-4">
+            <h3 class="font-semibold text-slate-700 mb-3" id="takeoutFormTitle">添加比价</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+              <input id="tkStore" type="text" placeholder="店铺名称（如：老王家番茄饭）" class="border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-yellow-200" />
+              <input id="tkDish" type="text" placeholder="菜品名称（如：番茄拌饭）" class="border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-yellow-200" />
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
+              <input id="tkTb" type="number" step="0.1" min="0" placeholder="淘宝闪购 ¥" class="border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-yellow-200" />
+              <input id="tkMt" type="number" step="0.1" min="0" placeholder="美团外卖 ¥" class="border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-yellow-200" />
+              <input id="tkJd" type="number" step="0.1" min="0" placeholder="京东秒送 ¥" class="border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-yellow-200" />
+            </div>
+            <input id="tkNote" type="text" placeholder="备注（选填，如：份量/口味）" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm mb-3 outline-none focus:ring-2 focus:ring-yellow-200" />
+            <div class="flex gap-2">
+              <button id="btnSaveTakeout" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm">保存</button>
+              <button id="btnCancelTakeout" class="bg-slate-100 hover:bg-slate-200 text-slate-600 px-4 py-2 rounded-lg text-sm">取消</button>
+            </div>
+          </div>
+
+          <div id="takeoutList" class="space-y-3"></div>
+        </section>
+
         <!-- 8 财务统筹 -->
         <section id="mod-finplan" class="module">
           <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center justify-between">
@@ -644,6 +684,22 @@ const SEED_BOOKS = [
    alt:'想要系统投资框架可换《穷查理宝典》',
    source:'原书+书评'}
 ];
+
+/* ===== 外卖比价 ===== */
+const K_TAKEOUT = 'wb_takeout';
+const TAKEOUT_PLATFORMS = [
+  {key:'tb', name:'淘宝闪购', color:'#ff6a00'},
+  {key:'mt', name:'美团外卖', color:'#ffc300'},
+  {key:'jd', name:'京东秒送', color:'#e1251b'}
+];
+const SEED_TAKEOUT = [
+  {id:'t01', store:'示例·番茄饭专门店', dish:'番茄拌饭',     tb:11,  mt:15, jd:10, note:''},
+  {id:'t02', store:'示例·番茄饭专门店', dish:'红烧肉双拼饭', tb:18,  mt:20, jd:17, note:''},
+  {id:'t03', store:'示例·番茄饭专门店', dish:'紫菜蛋花汤',   tb:4,   mt:5,  jd:4,  note:''},
+  {id:'t04', store:'示例·咖啡角',       dish:'生椰拿铁',     tb:9.9, mt:13, jd:12, note:''},
+  {id:'t05', store:'示例·咖啡角',       dish:'美式咖啡',     tb:8.9, mt:11, jd:10, note:''}
+];
+
 /* 电影类型智能识别：按顺序匹配（更具体的类型优先）。本地规则，不联网。 */
 const MOVIE_GUESS_RULES = [
   ['动画', ['动画','千与千寻','你的名字','铃芽','龙猫','天空之城','幽灵公主','魔女','起风了','波妞','罗小黑','大鱼海棠','大圣','哪吒','白蛇','熊出没','喜羊羊','猫和老鼠','米老鼠','迪士尼','皮克斯','玩具总动员','飞屋','冰雪奇缘','超人总动员','寻梦','疯狂动物城','头脑特工队','平行宇宙','灌篮高手','樱桃小丸子','宫崎骏','新海诚','吉卜力','海绵宝宝','蜡笔小新','哆啦','宝可梦','名侦探柯南','数码宝贝','奥特曼','猪猪侠','舒克','小猪佩奇']],
@@ -697,6 +753,7 @@ const MENUS = [
   {id:'music',   name:'国际音乐榜', icon:'🎵', color:'#ec4899', variant:5, img:'labubu-icons/music.png'},
   {id:'movies',  name:'电影收藏', icon:'🍿', color:'#f59e0b', variant:6, img:''},
   {id:'books',   name:'书单推荐', icon:'📚', color:'#8b5cf6', variant:7, img:''},
+  {id:'takeout', name:'外卖比价', icon:'🍱', color:'#eab308', variant:8, img:''},
   {id:'finplan', name:'财务统筹', icon:'💰', color:'#0ea5e9', variant:0, img:'labubu-icons/finplan.png'}
 ];
 let activeModule = 'finance';
@@ -1174,6 +1231,158 @@ async function loadBookReviews() {
   finally { if(btn){ btn.textContent='联网查书评'; btn.disabled=false; } }
 }
 
+/* ===== 外卖比价 ===== */
+let takeoutStoreFilter = '全部';
+let takeoutDishSearch = '';
+let editingTakeoutId = null;
+
+function takeoutStores(){
+  const s = [];
+  getTakeout().forEach(t => { if(!s.includes(t.store)) s.push(t.store); });
+  return s;
+}
+function platformName(k){ return (TAKEOUT_PLATFORMS.find(p=>p.key===k)||{}).name || k; }
+function platformColor(k){ return (TAKEOUT_PLATFORMS.find(p=>p.key===k)||{}).color || '#94a3b8'; }
+function dishPrices(t){
+  return TAKEOUT_PLATFORMS.map(p => {
+    const raw = t[p.key];
+    const v = (raw!=null && raw!=='') ? parseFloat(raw) : null;
+    return {key:p.key, name:p.name, color:p.color, v};
+  }).filter(x => x.v!=null && !isNaN(x.v));
+}
+function cheapestOf(prices){ return prices.length ? prices.reduce((a,b)=> b.v<a.v?b:a) : null; }
+function dearestOf(prices){ return prices.length ? prices.reduce((a,b)=> b.v>a.v?b:a) : null; }
+
+function renderTakeoutFilter(){
+  const box = document.getElementById('takeoutStoreFilter');
+  const stores = ['全部', ...takeoutStores()];
+  box.innerHTML = stores.map(s => {
+    const active = s === takeoutStoreFilter;
+    return `<button data-s="${s}" class="px-3 py-1 rounded-full text-xs border transition ${active?'bg-yellow-500 text-white border-yellow-500':'bg-white text-slate-600 border-slate-200 hover:border-yellow-300'}">${s}</button>`;
+  }).join('');
+  box.querySelectorAll('button').forEach(b => {
+    b.addEventListener('click', () => { takeoutStoreFilter = b.dataset.s; renderTakeoutFilter(); renderTakeout(); });
+  });
+}
+
+function openTakeoutForm(id=null){
+  const form = document.getElementById('takeoutForm');
+  const isEdit = id !== null;
+  document.getElementById('takeoutFormTitle').textContent = isEdit ? '编辑比价' : '添加比价';
+  if(isEdit){
+    const t = getTakeout().find(x => x.id === id);
+    if(!t) return;
+    editingTakeoutId = id;
+    document.getElementById('tkStore').value = t.store || '';
+    document.getElementById('tkDish').value = t.dish || '';
+    document.getElementById('tkTb').value = (t.tb!=null && t.tb!=='') ? t.tb : '';
+    document.getElementById('tkMt').value = (t.mt!=null && t.mt!=='') ? t.mt : '';
+    document.getElementById('tkJd').value = (t.jd!=null && t.jd!=='') ? t.jd : '';
+    document.getElementById('tkNote').value = t.note || '';
+  } else {
+    editingTakeoutId = null;
+    ['tkStore','tkDish','tkTb','tkMt','tkJd','tkNote'].forEach(k => document.getElementById(k).value='');
+  }
+  form.classList.remove('hidden');
+  document.getElementById('tkStore').focus();
+}
+function closeTakeoutForm(){ document.getElementById('takeoutForm').classList.add('hidden'); editingTakeoutId = null; }
+
+function saveTakeout(){
+  const store = document.getElementById('tkStore').value.trim();
+  const dish = document.getElementById('tkDish').value.trim();
+  if(!store) { toast('请输入店铺名称'); return; }
+  if(!dish) { toast('请输入菜品名称'); return; }
+  const num = el => { const v = document.getElementById(el).value.trim(); return v==='' ? '' : (isNaN(parseFloat(v)) ? '' : parseFloat(v)); };
+  const t = {
+    id: editingTakeoutId || (Date.now().toString(36) + Math.random().toString(36).slice(2,6)),
+    store, dish,
+    tb: num('tkTb'), mt: num('tkMt'), jd: num('tkJd'),
+    note: document.getElementById('tkNote').value.trim()
+  };
+  const arr = getTakeout();
+  const idx = arr.findIndex(x => x.id === t.id);
+  if(idx >= 0) arr[idx] = Object.assign({}, arr[idx], t); else arr.unshift(t);
+  setTakeout(arr);
+  closeTakeoutForm();
+  renderTakeoutFilter(); renderTakeout();
+  toast(editingTakeoutId ? '已保存' : '已添加比价');
+}
+function deleteTakeout(id){ if(!confirm('确定删除这条比价吗？')) return; setTakeout(getTakeout().filter(t=>t.id!==id)); renderTakeoutFilter(); renderTakeout(); }
+function editTakeout(id){ openTakeoutForm(id); }
+
+function priceCell(t, key){
+  const v = t[key];
+  const prices = dishPrices(t);
+  const cheap = cheapestOf(prices);
+  const has = (v!=null && v!=='' && !isNaN(parseFloat(v)));
+  if(!has) return `<td class="px-2 py-1.5 text-center text-slate-300">—</td>`;
+  const fv = parseFloat(v);
+  const isCheap = cheap && Math.abs(fv - cheap.v) < 1e-9 && prices.length > 1;
+  return `<td class="px-2 py-1.5 text-center ${isCheap?'bg-emerald-50 font-semibold text-emerald-700':''}">
+    <span class="inline-block w-2 h-2 rounded-full mr-1 align-middle" style="background:${platformColor(key)}"></span>¥${fv}
+    ${isCheap?'<div class="text-[10px] text-emerald-600 leading-none">最低</div>':''}
+  </td>`;
+}
+
+function renderTakeout(){
+  let items = getTakeout();
+  if(takeoutStoreFilter !== '全部') items = items.filter(t => t.store === takeoutStoreFilter);
+  if(takeoutDishSearch.trim()){ const q = takeoutDishSearch.trim(); items = items.filter(t => t.dish.includes(q) || t.store.includes(q)); }
+  document.getElementById('takeoutCount').textContent = `共 ${getTakeout().length} 条比价 · ${takeoutStores().length} 家店`;
+  const box = document.getElementById('takeoutList');
+  if(!items.length){
+    box.innerHTML = `<div class="bg-white rounded-xl border border-slate-200 p-8 text-center text-slate-400"><div class="text-4xl mb-2">🍱</div><p class="text-sm">还没有比价，点右上角 + 添加店铺菜品与三平台价格</p></div>`;
+    return;
+  }
+  const groups = {};
+  items.forEach(t => { (groups[t.store] = groups[t.store] || []).push(t); });
+  box.innerHTML = Object.keys(groups).map(store => {
+    const list = groups[store];
+    const totals = {};
+    TAKEOUT_PLATFORMS.forEach(p => {
+      let s=0, c=0;
+      list.forEach(t => { const v=t[p.key]; if(v!=null && v!=='' && !isNaN(parseFloat(v))){ s+=parseFloat(v); c++; } });
+      if(c>0) totals[p.key] = {sum:s, c};
+    });
+    const totalArr = Object.keys(totals).map(k => ({key:k, ...totals[k]}));
+    const best = totalArr.length ? totalArr.reduce((a,b)=> b.sum<a.sum?b:a) : null;
+    const worst = totalArr.length ? totalArr.reduce((a,b)=> b.sum>a.sum?b:a) : null;
+    const save = (best && worst) ? (worst.sum - best.sum) : 0;
+    const summary = best ? `<span class="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700">整单最省：${platformName(best.key)} ¥${best.sum.toFixed(1)}</span>${save>0?`<span class="text-xs text-slate-400 ml-2">比最贵省 ¥${save.toFixed(1)}</span>`:''}` : '';
+    const rows = list.map(t => {
+      const prices = dishPrices(t);
+      const cheap = cheapestOf(prices), dear = dearestOf(prices);
+      const saveDish = (cheap && dear) ? (dear.v - cheap.v) : 0;
+      return `<tr class="border-t border-slate-100">
+        <td class="px-2 py-1.5 font-medium text-slate-800 whitespace-nowrap">${t.dish}${t.note?`<div class="text-[10px] text-slate-400">${t.note}</div>`:''}</td>
+        ${priceCell(t,'tb')}${priceCell(t,'mt')}${priceCell(t,'jd')}
+        <td class="px-2 py-1.5 text-center text-emerald-600 text-xs whitespace-nowrap">${saveDish>0?('省¥'+saveDish.toFixed(1)):'—'}</td>
+        <td class="px-2 py-1.5 text-right whitespace-nowrap">
+          <button class="text-xs px-2 py-0.5 rounded bg-slate-100 text-slate-600 hover:bg-slate-200" onclick="editTakeout('${t.id}')">编辑</button>
+          <button class="text-xs px-2 py-0.5 rounded bg-rose-50 text-rose-600 hover:bg-rose-100" onclick="deleteTakeout('${t.id}')">删</button>
+        </td>
+      </tr>`;
+    }).join('');
+    return `<div class="bg-white rounded-xl border border-slate-200 p-4">
+      <div class="flex items-center justify-between mb-2 flex-wrap gap-2">
+        <h3 class="font-semibold text-slate-800">🏪 ${store}</h3>
+        <div>${summary}</div>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead><tr class="text-slate-400 text-xs">
+            <th class="px-2 py-1.5 text-left">菜品</th>
+            ${TAKEOUT_PLATFORMS.map(p=>`<th class="px-2 py-1.5 text-center"><span class="inline-block w-2 h-2 rounded-full mr-1 align-middle" style="background:${p.color}"></span>${p.name}</th>`).join('')}
+            <th class="px-2 py-1.5 text-center">本菜最省</th><th></th>
+          </tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </div>`;
+  }).join('');
+}
+
 /* ===== 电影收藏 ===== */
 let movieFilterCat = '全部';
 let editingMovieId = null;
@@ -1495,7 +1704,8 @@ let APP = {
   edit: [],
   read: [],
   movies: [],
-  books: []
+  books: [],
+  takeout: []
 };
 function safeArr(k){ try { const v = JSON.parse(localStorage.getItem(k)); return Array.isArray(v)?v:[]; } catch(e){ return []; } }
 function cacheLocal(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
@@ -1513,6 +1723,8 @@ function getMovies(){ return APP.movies; }
 function setMovies(v){ APP.movies = v; cacheLocal(K_MOVIES, v); }
 function getBooks(){ return APP.books || []; }
 function setBooks(v){ APP.books = v; cacheLocal(K_BOOKS, v); }
+function getTakeout(){ return APP.takeout || []; }
+function setTakeout(v){ APP.takeout = v; cacheLocal(K_TAKEOUT, v); }
 async function initAllData(){
   try { const f = JSON.parse(localStorage.getItem('wb_finplan')); if(f && f.cats) APP.finplan = f; } catch(e){}
   APP.words = safeArr(K_WORDS);
@@ -1529,6 +1741,11 @@ async function initAllData(){
   if(APP.books.length === 0 && localStorage.getItem('wb_books_seeded') !== '1'){
     setBooks(SEED_BOOKS);
     localStorage.setItem('wb_books_seeded', '1');
+  }
+  APP.takeout = safeArr(K_TAKEOUT);
+  if(APP.takeout.length === 0 && localStorage.getItem('wb_takeout_seeded') !== '1'){
+    setTakeout(SEED_TAKEOUT);
+    localStorage.setItem('wb_takeout_seeded', '1');
   }
   // 用种子电影的分类初始化「智能识别」记忆，使已有影片也能被自动识别
   seedMovieLearnFromSeed();
@@ -1567,7 +1784,7 @@ function importFinplan(file){
 /* 全部数据一键导出 / 导入 */
 function collectAllData(){
   return { version:1, exportedAt:new Date().toISOString(),
-    finplan:APP.finplan, words:APP.words, chat:APP.chat, edit:APP.edit, read:APP.read, movies:APP.movies, books:APP.books,
+    finplan:APP.finplan, words:APP.words, chat:APP.chat, edit:APP.edit, read:APP.read, movies:APP.movies, books:APP.books, takeout:APP.takeout,
     theme:(localStorage.getItem('wb_theme')||'blue') };
 }
 function exportAll(){
@@ -1585,6 +1802,7 @@ function applyAllData(d){
   if(Array.isArray(d.read)) setRead(d.read);
   if(Array.isArray(d.movies)) setMovies(d.movies);
   if(Array.isArray(d.books)) setBooks(d.books);
+  if(Array.isArray(d.takeout)) setTakeout(d.takeout);
   if(d.theme) applyTheme(d.theme);
   renderSubtags(); renderFixed(); renderCats(); renderExpenseLog(); renderFinReport();
   renderWords(); renderChat(); renderEdit(); renderEditReport('week'); renderDouyin(); renderMovies(); renderBooks();
@@ -1903,6 +2121,11 @@ document.getElementById('btnBookTip').addEventListener('click', () => {
   t.classList.toggle('hidden');
 });
 document.getElementById('btnAddBook').addEventListener('click', () => openBookForm());
+/* ===== 外卖比价 事件绑定 ===== */
+document.getElementById('btnAddTakeout').addEventListener('click', () => openTakeoutForm());
+document.getElementById('btnSaveTakeout').addEventListener('click', saveTakeout);
+document.getElementById('btnCancelTakeout').addEventListener('click', closeTakeoutForm);
+document.getElementById('takeoutSearch').addEventListener('input', e => { takeoutDishSearch = e.target.value.trim(); renderTakeout(); });
 document.getElementById('btnSaveBook').addEventListener('click', saveBook);
 document.getElementById('btnCancelBook').addEventListener('click', closeBookForm);
 document.getElementById('btnRefreshBooks').addEventListener('click', loadBookReviews);
@@ -1939,6 +2162,8 @@ renderMovieFilter();
 renderMovies();
 renderBookFilter();
 renderBooks();
+renderTakeoutFilter();
+renderTakeout();
 renderWords();
 renderChat();
 renderEnglishReport('day');
@@ -1947,7 +2172,7 @@ renderEditReport('week');
 // 所有用户数据以服务器为准：先拉取再渲染，避免本地默认覆盖旧数据
 initAllData().then(() => {
   renderSubtags(); renderFixed(); renderCats(); renderExpenseLog(); renderFinReport();
-  renderWords(); renderChat(); renderEdit(); renderEditReport('week'); renderDouyin(); renderMovies(); renderBooks();
+  renderWords(); renderChat(); renderEdit(); renderEditReport('week'); renderDouyin(); renderMovies(); renderBooks(); renderTakeout();
 });
 
 /* ===== 心跳保活：打开 APP 后每 30 秒 ping 服务器，减少被平台判定为空闲而暂停 ===== */
