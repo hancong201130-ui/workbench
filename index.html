@@ -354,6 +354,22 @@
           <!-- 对比视图 -->
           <div id="bookCompare" class="hidden bg-white rounded-xl border border-slate-200 p-4 mb-4 overflow-x-auto"></div>
 
+          <!-- 主动推荐：为你推荐（兴趣匹配 + 主题书单） -->
+          <div class="bg-gradient-to-r from-violet-50 to-indigo-50 border border-violet-200 rounded-xl p-4 mb-4">
+            <div class="flex items-center justify-between mb-2 flex-wrap gap-2">
+              <h3 class="font-semibold text-violet-800">🤖 为你推荐</h3>
+              <span class="text-xs text-violet-500">选兴趣，越选越准；也可直接看下方主题书单</span>
+            </div>
+            <div id="bookInterests" class="flex flex-wrap gap-2 mb-3"></div>
+            <div id="bookReco" class="space-y-3"></div>
+          </div>
+
+          <!-- 主题精选书单 -->
+          <div class="mb-4">
+            <h3 class="font-semibold text-slate-700 mb-2">📚 主题精选书单</h3>
+            <div id="bookThemeLists" class="space-y-4"></div>
+          </div>
+
           <!-- 添加/编辑表单（默认隐藏） -->
           <div id="bookForm" class="hidden bg-white rounded-xl border border-slate-200 p-4 mb-4">
             <h3 class="font-semibold text-slate-700 mb-3" id="bookFormTitle">添加书单</h3>
@@ -530,6 +546,7 @@ const SEED_MOVIES = [
 
 /* ===== 书单推荐 ===== */
 const K_BOOKS = 'wb_books';
+const K_BOOK_INTERESTS = 'wb_book_interests';
 const BOOK_DECISIONS = ['强烈推荐','值得略读','仅参考特定章节','不推荐'];
 const BOOK_STATUSES = [['wish','想读'],['reading','在读'],['done','读完']];
 const SEED_BOOKS = [
@@ -643,6 +660,427 @@ const SEED_BOOKS = [
    controversy:'内容多为推特精选，深度有限；部分观点偏硅谷精英视角。',
    alt:'想要系统投资框架可换《穷查理宝典》',
    source:'原书+书评'}
+];
+
+/* ===== 主动推荐：书库池（候选书，尚未进入用户书单） ===== */
+/* 每本含完整卡片字段 + reco（推荐理由）；tags 用于兴趣匹配。 */
+const RECO_POOL = [
+  {id:'r01', title:'怪诞行为学', author:'丹·艾瑞里', tags:['心理学','决策'],
+   highlight:'用实验拆解人性陷阱',
+   core:['相对性：用"诱饵"操纵选择','社会规范 vs 市场规范','所有权错觉与宜家效应','自我控制与拖延的真相'],
+   forWho:'被营销带节奏、总冲动消费的人',
+   level:'故事化、好读，约8小时', decision:'值得略读',
+   quotes:['我们并非理性，只是善于合理化。','免费的东西最贵，因为它让人忘记成本。'],
+   rating:8.0, ratingSrc:'豆瓣(编辑整理)',
+   edition:'中信出版社2010/2018年版（赵德亮等译）',
+   controversy:'部分实验后被指出样本小、可复现性存疑；读其"现象"而非"定论"。',
+   alt:'想要更系统可换《思考，快与慢》',
+   compare:'与《影响力》互补：一个讲"被外部说服"，一个讲"自己骗自己"。',
+   source:'原书+书评',
+   reco:'你已收了《思考，快与慢》，这本用一连串行为实验把"非理性"讲得更鲜活，适合想看案例的人。'},
+  {id:'r02', title:'清醒思考的艺术', author:'罗尔夫·多贝里', tags:['思维','决策'],
+   highlight:'52个思维谬误速览',
+   core:['幸存者偏差、泳池错觉等52个常见谬误','每个谬误一页讲清+例子','"少犯错"比"更聪明"更可行'],
+   forWho:'想快速给自己装一套"避坑清单"的人',
+   level:'短文合集，碎片化可读，约5小时', decision:'值得略读',
+   quotes:['你不需要更聪明，只需要少犯错。'],
+   rating:7.6, ratingSrc:'豆瓣(编辑整理)',
+   edition:'中信出版社2016年版（朱菲译）',
+   controversy:'内容脱胎于通俗心理学，深度有限、偏"金句集"；与其姊妹篇《明智行动的艺术》重复。',
+   alt:'想要更深入可换《思考，快与慢》',
+   compare:'当《思考，快与慢》的"速查口袋版"用。',
+   source:'原书+书评',
+   reco:'如果你嫌《思考，快与慢》太厚，这本52个谬误可当随身避坑卡。'},
+  {id:'r03', title:'模型思维', author:'斯科特·佩奇', tags:['思维','决策'],
+   highlight:'多模型，看透复杂问题',
+   core:['为什么单一模型会误导（铁锤人倾向）','70+ 思维模型：临界、网络、博弈、涌现','用多模型做更稳健的判断'],
+   forWho:'做战略/研究/复杂决策，想升级思考工具箱的人',
+   level:'偏学术但通俗，约12小时', decision:'值得略读',
+   quotes:['多一个模型，就多一种看到真相的方式。'],
+   rating:8.0, ratingSrc:'豆瓣(编辑整理)',
+   edition:'浙江教育出版社/湛庐2020年版（贾拥民译）',
+   controversy:'数学模型部分对文科读者有门槛；宜跳读、取"多模型"心法。',
+   alt:'嫌数学可换《穷查理宝典》（多元思维模型）',
+   compare:'是《穷查理宝典》"多元思维模型"的学术展开版。',
+   source:'原书+书评',
+   reco:'你收了《穷查理宝典》的多元思维，这本把"模型"系统讲透，适合作者型读者。'},
+  {id:'r04', title:'随机漫步的傻瓜', author:'纳西姆·塔勒布', tags:['投资','思维'],
+   highlight:'运气≠实力，警惕幸存者',
+   core:['区分"运气"与"技能"','幸存者偏差：你只看到赢家','路径依赖与黑天鹅前奏','以"宁可错过也不送命"的方式活着'],
+   forWho:'投资者、交易者、创业者；易被短期结果骗到的人',
+   level:'散文体、略带傲慢但好读，约8小时', decision:'强烈推荐',
+   quotes:['幸运的傻瓜不会承认自己是傻瓜。'],
+   rating:8.0, ratingSrc:'豆瓣(编辑整理)',
+   edition:'中信出版社2012/2019年版（周洛华译）',
+   controversy:'文风刺人、重复度高；观点与《黑天鹅》《反脆弱》重叠。',
+   alt:'想系统可换《黑天鹅》《反脆弱》',
+   compare:'塔勒布"不确定性三部曲"之一，先读这本入门最轻松。',
+   source:'原书+书评',
+   reco:'想读懂投资里的"运气成分"，这本比财报通俗，适合和《穷查理宝典》搭着读。'},
+  {id:'r05', title:'反脆弱', author:'纳西姆·塔勒布', tags:['思维','投资'],
+   highlight:'从混乱中受益的系统',
+   core:['三元结构：脆弱/坚固/反脆弱','如何从波动和压力下变强','杠铃策略：守住底线+博高收益','少预测，多构建"能扛事"的生活'],
+   forWho:'想让职业/投资/身体更抗打击的人',
+   level:'散文体、观点密集，约10小时', decision:'强烈推荐',
+   quotes:['风会熄灭蜡烛，却能让火越烧越旺。'],
+   rating:8.1, ratingSrc:'豆瓣(编辑整理)',
+   edition:'中信出版社2014年版（雨珂译）',
+   controversy:'文风偏激、对现代医学/职场多有抨击；取其"杠铃/反脆弱"内核即可。',
+   alt:'想入门可换《随机漫步的傻瓜》',
+   compare:'是《随机漫步的傻瓜》的升级：不止识别风险，更要从中获益。',
+   source:'原书+书评',
+   reco:'如果你担心"意外打乱计划"，这本教你把不确定性变成养分。'},
+  {id:'r06', title:'漫步华尔街', author:'伯顿·马尔基尔', tags:['投资','财富'],
+   highlight:'散户别想战胜市场',
+   core:['随机漫步：股价短期不可预测','基本面与技术分析都有限','长期持有指数、分散配置','生命周期资产配置法'],
+   forWho:'想稳健理财、不想被"股神"忽悠的普通人',
+   level:'通俗严谨，约11小时', decision:'强烈推荐',
+   quotes:['不要试图挑选赢家，拥有整个市场。'],
+   rating:8.5, ratingSrc:'豆瓣(编辑整理)',
+   edition:'机械工业出版社2012/2018年版（骆玉鼎等译）',
+   controversy:'核心主张"买指数"对主动交易者不友好；部分数据偏美股。',
+   alt:'想看A股实操可换《指数基金投资指南》',
+   compare:'与《随机漫步的傻瓜》同讲"别自负"，这本给具体配置法。',
+   source:'原书+书评',
+   reco:'你若想开始理财又怕踩坑，这本是"买指数基金"最经典的教科书。'},
+  {id:'r07', title:'穷爸爸富爸爸', author:'罗伯特·清崎', tags:['财富','金钱'],
+   highlight:'资产与负债，思维分野',
+   core:['穷爸爸重工资，富爸爸重资产','资产带来现金流，负债吃掉现金','财商＞学历','让钱为你工作'],
+   forWho:'理财小白、想摆脱"拿死工资"思维的人',
+   level:'故事化、极易读，约5小时', decision:'值得略读',
+   quotes:['穷人为钱工作，富人让钱为自己工作。'],
+   rating:8.0, ratingSrc:'豆瓣(编辑整理)',
+   edition:'四川人民出版社/中信等多版（最受欢迎入门版即可）',
+   controversy:'理财观偏"房产/创业"，部分建议过时；重"思维启蒙"轻"具体方法"。',
+   alt:'想要具体配置可换《漫步华尔街》',
+   compare:'打财商地基，再读《漫步华尔街》学具体打法。',
+   source:'原书+书评',
+   reco:'理财的"第一颗扣子"——先分清资产与负债，比看任何指标都重要。'},
+  {id:'r08', title:'致富心态', author:'摩根·豪泽尔', tags:['财富','金钱'],
+   highlight:'财富是行为，不是算术',
+   core:['财富≠收入，是没花掉的钱','复利、耐心与"足够"','运气与风险同样被低估','用"随时能喊停"的方式生活'],
+   forWho:'赚得到但存不下、对钱有焦虑的人',
+   level:'短文故事化，约6小时', decision:'强烈推荐',
+   quotes:['财富是你看不见的那些东西。'],
+   rating:8.3, ratingSrc:'豆瓣(编辑整理)',
+   edition:'中信出版集团2022年版（李青译）',
+   controversy:'观点不新，胜在叙事与共情；偏"心态"轻"实操"。',
+   alt:'想要实操可换《漫步华尔街》',
+   compare:'与《纳瓦尔宝典》都讲"钱与自由"，这本更接地气。',
+   source:'原书+书评',
+   reco:'你收了《纳瓦尔宝典》，这本补上"普通人怎么和钱相处"的行为视角。'},
+  {id:'r09', title:'指数基金投资指南', author:'银行螺丝钉', tags:['投资','中国'],
+   highlight:'A股定投，普通人可学',
+   core:['指数基金是什么、为何适合普通人','估值法：在便宜时买','定投策略与止盈','避开常见坑'],
+   forWho:'A股散户、想定投但不懂估值的人',
+   level:'本土化、实操强，约6小时', decision:'值得略读',
+   quotes:['好品种+好价格+长期持有。'],
+   rating:8.2, ratingSrc:'豆瓣(编辑整理)',
+   edition:'中信出版社2017年版（最适合A股新手）',
+   controversy:'策略基于历史估值，极端行情会失效；当方法书而非"代码"。',
+   alt:'想学理论可换《漫步华尔街》',
+   compare:'把《漫步华尔街》的"买指数"落到A股具体估值操作。',
+   source:'原书+书评',
+   reco:'想在国内市场实操定投，这本比洋教材更对味。'},
+  {id:'r10', title:'原则', author:'瑞·达利欧', tags:['投资','思维','管理'],
+   highlight:'把决策变成算法',
+   core:['极度求真、极度透明','用"原则"把经验变成可复用规则','可信度加权决策','痛苦+反思=进步'],
+   forWho:'管理者、创业者、想建立个人决策系统的人',
+   level:'体量大、前松后紧，约13小时', decision:'值得略读',
+   quotes:['痛苦+反思=进步。'],
+   rating:8.3, ratingSrc:'豆瓣(编辑整理)',
+   edition:'中信出版社2018年版（刘波等译，分上下册/简版）',
+   controversy:'桥水式"极度透明"被部分员工质疑高压；方法论可学、文化未必照搬。',
+   alt:'嫌厚可换《原则（绘本版）》或《纳瓦尔宝典》',
+   compare:'是《穷查理宝典》"原则化"的工程版。',
+   source:'原书+书评',
+   reco:'若你想要一套可执行的"决策系统"，这本比格言式宝典更落地。'},
+  {id:'r11', title:'大国大城', author:'陆铭', tags:['中国','经济'],
+   highlight:'人口自由流动才高效',
+   core:['城市集聚的经济逻辑','户籍与土地制度约束','"均匀发展"的误区','都市圈是未来'],
+   forWho:'关心城市化/房价/区域政策的职场人',
+   level:'通俗严谨，约7小时', decision:'强烈推荐',
+   quotes:['人往高处走，城市向效率聚。'],
+   rating:8.7, ratingSrc:'豆瓣(编辑整理)',
+   edition:'上海人民出版社2016年版（最佳且权威）',
+   controversy:'主张"大城市扩容"与控人政策有张力；宜与对立观点同读。',
+   alt:'想要历史纵深可换《历代经济变革得失》',
+   compare:'是《置身事内》的"空间维度"补充：政府逻辑→城市格局。',
+   source:'原书+书评',
+   reco:'你收了《置身事内》，这本从"人往哪去"补上城市与房价的底层逻辑。'},
+  {id:'r12', title:'解读中国经济', author:'林毅夫', tags:['中国','经济'],
+   highlight:'后发优势，增长逻辑',
+   core:['中国高增长的结构性原因','比较优势与产业升级','转型中的"休克疗法"反思','未来增长空间'],
+   forWho:'想系统理解中国经济脉络的人',
+   level:'讲座体、清晰，约7小时', decision:'值得略读',
+   quotes:['要看清一个经济体，先看清它的结构。'],
+   rating:8.5, ratingSrc:'豆瓣(编辑整理)',
+   edition:'北京大学出版社2012/2018年版（经典讲义整理）',
+   controversy:'新结构经济学有学派争议；偏"增长乐观"，对风险着墨少。',
+   alt:'想要市场视角可换《置身事内》',
+   compare:'与《置身事内》同源互补：一个讲政府，一个讲产业与比较优势。',
+   source:'原书+书评',
+   reco:'想把《置身事内》的"政府逻辑"接到"产业增长"，这本最顺。'},
+  {id:'r13', title:'八次危机', author:'温铁军', tags:['中国','经济','历史'],
+   highlight:'三农化解历次危机',
+   core:['建国以来八次经济危机的复盘','"成本转嫁"与城乡二元缓冲','乡土是中国周期的蓄水池','去工业化与内需'],
+   forWho:'想理解中国经济周期性、对主流叙事存疑的人',
+   level:'学术随笔、信息密，约9小时', decision:'值得略读',
+   quotes:['中国的稳定，常靠乡土兜底。'],
+   rating:8.8, ratingSrc:'豆瓣(编辑整理)',
+   edition:'东方出版社2013年版（最佳权威版）',
+   controversy:'"成本转嫁"框架视角独特但非主流；数据与方法有学界争论。',
+   alt:'想要主流框架可换《解读中国经济》',
+   compare:'与《置身事内》互为对照：一个讲政府有为，一个讲危机代价。',
+   source:'原书+书评',
+   reco:'想听不同于课本的中国经济叙事，这本视角稀缺。'},
+  {id:'r14', title:'浪潮之巅', author:'吴军', tags:['科技','商业'],
+   highlight:'科技公司的兴衰规律',
+   core:['AT&T、IBM、微软、谷歌的兴衰','"70-20-10"定律与颠覆','基因决定论：大公司为何掉队','信息产业规律'],
+   forWho:'科技从业者、投资者、对商业史感兴趣的人',
+   level:'好读、故事性强，约12小时', decision:'值得略读',
+   quotes:['基因，决定了一家公司能走多远。'],
+   rating:9.0, ratingSrc:'豆瓣(编辑整理)',
+   edition:'人民邮电出版社2011/2019年版（上下册/续作亦可）',
+   controversy:'案例偏硅谷与早期IT，对移动互联网/AI着墨有限；当商业史读。',
+   alt:'想看当下可换更新的科技商业书',
+   compare:'与《置身事内》不同赛道：一个讲科技产业规律，一个讲政府经济。',
+   source:'原书+书评',
+   reco:'想看懂科技公司为什么"起高楼宴宾客楼塌了"，这本最生动。'},
+  {id:'r15', title:'历代经济变革得失', author:'吴晓波', tags:['中国','经济','历史'],
+   highlight:'两千年的财税主线',
+   core:['商鞅→汉武帝→唐宋→明清的变法','中央集权与工商的关系','"均输平准"到现代宏观调控','改革与开放的周期性'],
+   forWho:'喜欢从历史看当下经济的人',
+   level:'通俗好读，约8小时', decision:'值得略读',
+   quotes:['所有的改革，本质都是利益的重分。'],
+   rating:8.0, ratingSrc:'豆瓣(编辑整理)',
+   edition:'浙江大学出版社2013年版（最佳版）',
+   controversy:'偏财经作家视角，史料取舍服务于叙事；当普及读物。',
+   alt:'想要学术可换《中国历代政治得失》（钱穆）',
+   compare:'把《置身事内》的"当代政府逻辑"往前推两千年。',
+   source:'原书+书评',
+   reco:'想用历史镜头理解"今天的政策从哪来"，这本很顺。'},
+  {id:'r16', title:'高效能人士的七个习惯', author:'史蒂芬·柯维', tags:['自我提升','方法'],
+   highlight:'由内而外的成熟模型',
+   core:['主动积极、以终为始、要事第一','双赢思维、知彼解己、统合综效','不断更新（自我投资）','依赖→独立→互赖'],
+   forWho:'职场人、管理者、想提升"底层效能"的人',
+   level:'经典、结构清晰，约10小时', decision:'值得略读',
+   quotes:['重要的事，很少是紧急的。'],
+   rating:8.4, ratingSrc:'豆瓣(编辑整理)',
+   edition:'中国青年出版社2015/2018年版（高新勇等译）',
+   controversy:'体系经典但略"正确废话"，需结合自己场景落地。',
+   alt:'想要精力管理可换《深度工作》',
+   compare:'与《原子习惯》互补：一个定"原则"，一个给"微操作"。',
+   source:'原书+书评',
+   reco:'你收了《原子习惯》做微操作，这本补上"先定原则再谈习惯"。'},
+  {id:'r17', title:'深度工作', author:'卡尔·纽波特', tags:['自我提升','效率'],
+   highlight:'专注力是稀缺竞争力',
+   core:['深度工作≠忙碌，产出来自专注','减少碎片化、戒"浮浅"','节奏哲学/禁欲哲学等4种模式','用刻意练习训练专注'],
+   forWho:'知识工作者、易分心、想做出深度产出的人',
+   level:'好读、可操作，约6小时', decision:'强烈推荐',
+   quotes:['你的专注力，就是你的身价。'],
+   rating:8.2, ratingSrc:'豆瓣(编辑整理)',
+   edition:'江西人民出版社2017年版（宋伟译）',
+   controversy:'对协作型/客服类岗位适用性有限；需自己设计节奏。',
+   alt:'想要习惯化可换《原子习惯》',
+   compare:'是《原子习惯》的"专注专项版"。',
+   source:'原书+书评',
+   reco:'如果你总被消息打断、一天下来啥也没干，这本直接对症。'},
+  {id:'r18', title:'卡片笔记写作法', author:'申克·阿伦斯', tags:['方法','学习'],
+   highlight:'用笔记复利知识',
+   core:['卢曼"卡片盒"法：每条笔记连成网','永久笔记 vs fleeting/文献笔记','写作即思考，从下往上长','让想法自动涌现'],
+   forWho:'学生、写作者、研究者；总"读了就忘"的人',
+   level:'方法书、轻学术，约6小时', decision:'值得略读',
+   quotes:['不写下来，就等于没思考。'],
+   rating:8.0, ratingSrc:'豆瓣(编辑整理)',
+   edition:'人民邮电出版社2021年版（陈琳译）',
+   controversy:'方法需工具配合（如 Obsidian/Logseq），入门有门槛；重理念轻步骤。',
+   alt:'想要读书法可换《如何阅读一本书》',
+   compare:'是《如何阅读一本书》的"输出闭环"：读了→写成卡片→长成自己的东西。',
+   source:'原书+书评',
+   reco:'你抱怨"读了后面忘前面"，这本给你一套让知识留下来的笔记系统。'},
+  {id:'r19', title:'刻意练习', author:'安德斯·艾利克森', tags:['学习','自我提升'],
+   highlight:'天才=正确练习',
+   core:['天赋被高估，练习质量决定一切','心理表征：高手的内功','走出舒适区、即时反馈','一万小时≠重复，要有目标'],
+   forWho:'想精进技能（语言/乐器/专业）的人',
+   level:'通俗严谨，约8小时', decision:'值得略读',
+   quotes:['大师，是被练出来的。'],
+   rating:8.0, ratingSrc:'豆瓣(编辑整理)',
+   edition:'机械工业出版社2016年版（王正林译）',
+   controversy:'部分领域（如创作）难以"刻意练习"；对天赋完全否定有过激处。',
+   alt:'想要习惯可换《原子习惯》',
+   compare:'与《原子习惯》互补：一个讲"练对"，一个讲"坚持"。',
+   source:'原书+书评',
+   reco:'想真正掌握一项技能而不是"假努力"，这本讲清"怎么练才有效"。'},
+  {id:'r20', title:'微习惯', author:'斯蒂芬·盖斯', tags:['习惯','自我提升'],
+   highlight:'小到不可能失败',
+   core:['把目标缩到"1个俯卧撑"','用超低门槛绕过意志力抵抗','习惯链+逐渐加码','适合总半途而废的人'],
+   forWho:'拖延者、多次立flag又倒下的人',
+   level:'极短、轻松，约3小时', decision:'值得略读',
+   quotes:['小到不会失败，才能开始。'],
+   rating:7.5, ratingSrc:'豆瓣(编辑整理)',
+   edition:'江西人民出版社2016年版（洪怡译）',
+   controversy:'核心就一句话，书略注水；取其"超低门槛"心法即可。',
+   alt:'想要系统可换《原子习惯》',
+   compare:'是《原子习惯》的"极简入门版"。',
+   source:'原书+书评',
+   reco:'如果你连《原子习惯》都"读不完"，先这本，30分钟看完就能动。'},
+  {id:'r21', title:'自控力', author:'凯利·麦格尼格尔', tags:['自我提升','心理学'],
+   highlight:'意志力的科学用法',
+   core:['意志力是有限资源、会消耗','"我想要/不要/承诺"三力','延迟满足与"10分钟法则"','睡眠、呼吸与自我同情'],
+   forWho:'想减肥/戒手机/坚持目标但总失控的人',
+   level:'科普好读，约7小时', decision:'值得略读',
+   quotes:['你越强求自控，越容易失控。'],
+   rating:8.2, ratingSrc:'豆瓣(编辑整理)',
+   edition:'文化发展出版社2012/2017年版（王岑卉译）',
+   controversy:'部分"意志力可锻炼"结论后被质疑；取其实用小技巧。',
+   alt:'想要习惯可换《原子习惯》',
+   compare:'与《原子习惯》不同路：一个讲"环境设计"，一个讲"内在能量"。',
+   source:'原书+书评',
+   reco:'想搞清楚"为什么道理都懂却做不到"，这本从脑科学给答案。'},
+  {id:'r22', title:'被讨厌的勇气', author:'岸见一郎 / 古贺史健', tags:['幸福','人生','哲学'],
+   highlight:'课题分离，自由地活',
+   core:['阿德勒心理学：目的论而非原因论','课题分离：别人的情绪不是你的责任','共同体感觉与"他者贡献"','勇气，是被讨厌也没关系'],
+   forWho:'讨好型人格、内耗严重、怕得罪人的人',
+   level:'对话体、好读，约6小时', decision:'强烈推荐',
+   quotes:['一切烦恼，都来自人际关系。'],
+   rating:8.6, ratingSrc:'豆瓣(编辑整理)',
+   edition:'机械工业出版社2015年版（渠海霞译，经典）',
+   controversy:'"原因论无用"被批过于绝对；当心理启蒙而非心理治疗。',
+   alt:'想要更深的自我探索可换《活出生命的意义》',
+   compare:'与《原子习惯》都讲"行动改变状态"，这本从关系切入。',
+   source:'原书+书评',
+   reco:'你若总在"别人怎么看我"里打转，这本帮你把课题还给别人。'},
+  {id:'r23', title:'心流', author:'米哈里·契克森米哈赖', tags:['幸福','心理学'],
+   highlight:'专注本身，就是幸福',
+   core:['心流：挑战与技能匹配的忘我状态','如何把工作/爱好设计成心流','目标清晰、即时反馈、全神贯注','用"自成目标"对抗空虚'],
+   forWho:'常感无聊/焦虑、想提升生活质感的人',
+   level:'学术通俗化，约9小时', decision:'值得略读',
+   quotes:['幸福，不是得到，而是投入。'],
+   rating:8.3, ratingSrc:'豆瓣(编辑整理)',
+   edition:'中信出版社2014/2017年版（张定绮译）',
+   controversy:'概念好但落地需自设计；部分论述偏理想化。',
+   alt:'想要实操可换《深度工作》',
+   compare:'是《深度工作》的"幸福理论版"：专注为何让人满足。',
+   source:'原书+书评',
+   reco:'想让日常不再"刷完手机更空虚"，这本讲清"投入感"从哪来。'},
+  {id:'r24', title:'活出生命的意义', author:'维克多·弗兰克尔', tags:['人生','哲学'],
+   highlight:'人在极限，仍可选择',
+   core:['集中营中"意义"支撑人活下来','意义三大来源：创造/体验/态度','不可控的苦难，可控的态度','logotherapy 核心'],
+   forWho:'经历低谷、迷茫、想找"为什么活"的人',
+   level:'薄而深刻，约4小时', decision:'强烈推荐',
+   quotes:['知道为什么而活的人，便能生存。'],
+   rating:8.8, ratingSrc:'豆瓣(编辑整理)',
+   edition:'华夏出版社2010/2018年版（吕娜译，经典）',
+   controversy:'创伤叙事沉重，不适合脆弱期硬啃；当"意义启蒙"而非疗愈。',
+   alt:'想要轻盈可换《被讨厌的勇气》',
+   compare:'与《被讨厌的勇气》同属"意义/勇气"系，这本更厚重。',
+   source:'原书+书评',
+   reco:'当你觉得"努力没意义"时，这本用真实极端处境，把意义讲到底。'},
+  {id:'r25', title:'非暴力沟通', author:'马歇尔·卢森堡', tags:['沟通','人生'],
+   highlight:'用四步，好好说话',
+   core:['观察—感受—需要—请求 四步','把"评判"换成"需要"','化解冲突与自我和解','先对自己非暴力'],
+   forWho:'夫妻、亲子、职场关系总吵架的人',
+   level:'实操强、好读，约6小时', decision:'值得略读',
+   quotes:['耳朵是通向心灵的路。'],
+   rating:8.4, ratingSrc:'豆瓣(编辑整理)',
+   edition:'华夏出版社2009/2018年版（阮胤华译，经典）',
+   controversy:'公式化表达在中文语境略生硬；取其"先谈感受与需要"内核。',
+   alt:'想要关系深度可换《被讨厌的勇气》',
+   compare:'与《被讨厌的勇气》互补：一个教"对内课题分离"，一个教"对外怎么讲"。',
+   source:'原书+书评',
+   reco:'想把"明明为你好却吵起来"的次数降下来，这套四步很实用。'},
+  {id:'r26', title:'枪炮、病菌与钢铁', author:'贾雷德·戴蒙德', tags:['历史','宏观'],
+   highlight:'地理，决定文明命运',
+   core:['为何是欧亚征服世界而非相反','可驯化动植物→粮食→人口→技术','病菌是"隐形征服者"','地理与生态的长期力量'],
+   forWho:'对"大历史/人类文明"好奇的人',
+   level:'通俗厚重，约12小时', decision:'强烈推荐',
+   quotes:['历史，并不站在最强者一边，而站在最被地理偏爱者一边。'],
+   rating:8.8, ratingSrc:'豆瓣(编辑整理)',
+   edition:'上海译文出版社2000/2016年版（谢延光译，经典）',
+   controversy:'"地理决定论"被批忽视文化与偶然；当宏大解释框架而非定论。',
+   alt:'想要中国视角可换《万历十五年》',
+   compare:'是《人类简史》的"硬核证据版"：同样讲大历史，更讲因果。',
+   source:'原书+书评',
+   reco:'你收了《人类简史》，这本用大量证据把"为什么是欧亚"讲透。'},
+  {id:'r27', title:'万历十五年', author:'黄仁宇', tags:['历史','中国'],
+   highlight:'大失败，始于平淡年',
+   core:['1587看似无事，却埋下王朝拐点','从皇帝/首辅/将领/文人看制度困局','"数目字管理"缺失的深层症结','大历史观：以小见大'],
+   forWho:'想读懂中国传统官僚与制度的人',
+   level:'细腻考据、半文半白，约8小时', decision:'值得略读',
+   quotes:['无关紧要的一年，藏着帝国的全部病灶。'],
+   rating:8.9, ratingSrc:'豆瓣(编辑整理)',
+   edition:'生活·读书·新知三联书店1997/2017年版（黄仁宇自译，权威）',
+   controversy:'"大历史观"取舍服务于论点；部分人物评价有争议。',
+   alt:'想要通俗可换《明朝那些事儿》',
+   compare:'与《置身事内》跨朝代呼应：一个看古代制度，一个看当代政府。',
+   source:'原书+书评',
+   reco:'想从"一个平淡年份"读懂中国官僚逻辑，这本是绕不开的经典。'},
+  {id:'r28', title:'明朝那些事儿', author:'当年明月', tags:['历史','中国'],
+   highlight:'把明朝讲成段子',
+   core:['从朱元璋到崇祯的鲜活叙事','帝王将相的性情与命运','把权谋、战争写得像小说','严肃史实的轻松外壳'],
+   forWho:'怕枯燥、想先"读进去"历史的人',
+   level:'极好读、像听书，约20小时（多卷）', decision:'值得略读',
+   quotes:['成功只有一种，按自己的方式过一生。'],
+   rating:9.0, ratingSrc:'豆瓣(编辑整理)',
+   edition:'浙江人民出版社/北京联合等版（当年明月著，选正版即可）',
+   controversy:'文学性强于严谨；末卷抒情偏多。当"历史入门"而非学术。',
+   alt:'想要严谨可换《万历十五年》',
+   compare:'是《万历十五年》的"通俗前置阅读"：先有兴趣，再读深。',
+   source:'原书+书评',
+   reco:'如果你一看正史就犯困，先用这本把明史读成故事，再啃《万历十五年》。'},
+  {id:'r29', title:'乡土中国', author:'费孝通', tags:['中国','社会'],
+   highlight:'读懂中国社会的根',
+   core:['差序格局：以"我"为中心的关系网','礼治秩序 vs 法治','熟人社会与面子','从乡土到现代的转型张力'],
+   forWho:'想理解中国式人情、关系、社会结构的人',
+   level:'薄、社会学经典，约4小时', decision:'值得略读',
+   quotes:['中国社会的根，扎在乡土里。'],
+   rating:9.0, ratingSrc:'豆瓣(编辑整理)',
+   edition:'生活·读书·新知三联书店/人民出版社版（费孝通著，经典）',
+   controversy:'写于1940年代，部分论断随城市化变化；其"差序格局"仍极有解释力。',
+   alt:'想要经济视角可换《置身事内》',
+   compare:'与《置身事内》互补：一个讲"社会根基"，一个讲"政府经济"。',
+   source:'原书+书评',
+   reco:'想搞懂"为什么中国人和老外想问题不一样"，这本薄薄一册点透。'},
+  {id:'r30', title:'丝绸之路', author:'彼得·弗兰科潘', tags:['历史','宏观'],
+   highlight:'世界中心，不在西方',
+   core:['以"丝绸之路"重述世界史','文明、贸易、宗教在欧亚腹地交汇','东方长期是财富与枢纽','被西方中心叙事忽略的千年'],
+   forWho:'想打破"欧洲中心"、看全球贸易脉络的人',
+   level:'叙事宏阔、好读，约10小时', decision:'值得略读',
+   quotes:['世界的中心，曾长期在东方。'],
+   rating:8.0, ratingSrc:'豆瓣(编辑整理)',
+   edition:'浙江大学出版社2016年版（邵旭东等译）',
+   controversy:'"中心"视角有其侧重；史料取舍服务于叙事。当开阔视野读物。',
+   alt:'想要硬核可换《枪炮、病菌与钢铁》',
+   compare:'与《枪炮》互补：一个讲"为什么欧亚胜出"，一个讲"枢纽如何在东方"。',
+   source:'原书+书评',
+   reco:'想跳出"西方中心"看历史，这本把视线拉回欧亚腹地。'}
+];
+
+/* 兴趣标签（用于"为你推荐"匹配；每个兴趣对应一组书 tags） */
+const BOOK_INTERESTS = [
+  {label:'认知与决策', tags:['心理学','决策','思维']},
+  {label:'投资与财富', tags:['投资','财富','金钱','商业']},
+  {label:'中国与宏观', tags:['中国','经济','宏观','社会']},
+  {label:'自我提升', tags:['习惯','自我提升','效率','方法','学习']},
+  {label:'幸福与人生', tags:['幸福','人生','哲学','沟通']},
+  {label:'历史与格局', tags:['历史']}
+];
+
+/* 主题精选书单（引用 RECO_POOL 的 id 与用户书单种子 id） */
+const RECO_THEMES = [
+  {id:'t_money', name:'搞懂钱该怎么想', emoji:'💰', desc:'从思维到实操，建立不被忽悠的金钱观',
+   books:['r06','r07','r08','r04','r09','b05']},
+  {id:'t_china', name:'读懂中国', emoji:'🇨🇳', desc:'政府、城市、产业与历史，看懂脚下这片土地',
+   books:['b07','r11','r12','r13','r15','r29']},
+  {id:'t_peace', name:'告别精神内耗', emoji:'🌿', desc:'把"别人怎么看我"还回去，找回自己的节奏',
+   books:['r22','r23','r25','r24','r21']},
+  {id:'t_cog', name:'新手认知启蒙', emoji:'🧠', desc:'先装一套避坑思维，再读更厚的书',
+   books:['r02','r01','r03','r10','b06']},
+  {id:'t_history', name:'历史与大局观', emoji:'🏛', desc:'用千年尺度，给当下一点从容',
+   books:['r26','r27','r28','r30','b08']},
+  {id:'t_sys', name:'高效能人生系统', emoji:'⚙', desc:'原则+习惯+专注+输出，搭好自己的操作系统',
+   books:['b04','r16','r17','r18','r19','r20']}
 ];
 
 /* 电影类型智能识别：按顺序匹配（更具体的类型优先）。本地规则，不联网。 */
@@ -1175,6 +1613,129 @@ async function loadBookReviews() {
   finally { if(btn){ btn.textContent='联网查书评'; btn.disabled=false; } }
 }
 
+/* ===== 书单主动推荐 ===== */
+let bookInterests = [];   // 用户兴趣（BOOK_INTERESTS 的 label 列表），持久化
+
+function poolById(id){ return RECO_POOL.find(x=>x.id===id) || getBooks().find(x=>x.id===id); }
+function myLibTitles(){ return new Set(getBooks().map(b=>(b.title||'').trim().toLowerCase())); }
+function inMyLib(title){ return myLibTitles().has((title||'').trim().toLowerCase()); }
+
+function renderBookInterests(){
+  const box = document.getElementById('bookInterests');
+  if(!box) return;
+  box.innerHTML = BOOK_INTERESTS.map(it => {
+    const active = bookInterests.includes(it.label);
+    return `<button data-label="${it.label}" class="px-3 py-1 rounded-full text-xs border transition ${
+      active ? 'bg-violet-500 text-white border-violet-500' : 'bg-white text-slate-600 border-slate-200 hover:border-violet-300'
+    }">${it.label}</button>`;
+  }).join('');
+  box.querySelectorAll('button').forEach(b => {
+    b.addEventListener('click', () => {
+      const l = b.dataset.label;
+      const i = bookInterests.indexOf(l);
+      if(i>=0) bookInterests.splice(i,1); else bookInterests.push(l);
+      cacheLocal(K_BOOK_INTERESTS, bookInterests);
+      renderBookInterests(); renderReco();
+    });
+  });
+}
+
+function renderReco(){
+  const box = document.getElementById('bookReco');
+  if(!box) return;
+  const myBooks = getBooks();
+  const myByTag = {};
+  myBooks.forEach(b => (b.tags||[]).forEach(t => { (myByTag[t] = myByTag[t] || []).push(b.title); }));
+  const selTags = new Set();
+  if(bookInterests.length){
+    BOOK_INTERESTS.filter(it => bookInterests.includes(it.label)).forEach(it => it.tags.forEach(t => selTags.add(t)));
+  }
+  const myTitles = myLibTitles();
+  const list = RECO_POOL.filter(b => !myTitles.has((b.title||'').trim().toLowerCase()));
+  const scored = list.map(b => {
+    const inter = (b.tags||[]).filter(t => selTags.has(t));
+    let score;
+    if(bookInterests.length === 0){
+      const dw = ({'强烈推荐':3,'值得略读':2,'仅参考特定章节':1,'不推荐':0})[b.decision] || 1;
+      score = dw*10 + (b.rating||0);
+    } else {
+      score = inter.length*10 + (b.rating||0)/10;
+    }
+    const refs = [...new Set((b.tags||[]).flatMap(t => myByTag[t] || []))];
+    return {b, score, refs};
+  });
+  scored.sort((a,c) => c.score - a.score);
+  const top = scored.slice(0, bookInterests.length ? 8 : 6);
+  if(bookInterests.length === 0){
+    box.innerHTML = `<p class="text-xs text-violet-500 mb-2">先选上面的兴趣，推荐会更准；下面是根据口碑的热门起点 👇</p>` + top.map(recoCard).join('');
+  } else if(top.length){
+    box.innerHTML = top.map(recoCard).join('');
+  } else {
+    box.innerHTML = `<p class="text-sm text-slate-400">暂无匹配的推荐，换几个兴趣试试。</p>`;
+  }
+}
+function recoCard(x){
+  const b = x.b;
+  const refHtml = x.refs.length ? `<p class="text-[11px] text-violet-500 mt-1">🎯 因为你收了《${x.refs.slice(0,2).join('》《')}》等同主题</p>` : '';
+  return `<div class="bg-white rounded-xl border border-slate-200 p-3">
+    <div class="flex items-start justify-between gap-2">
+      <div class="min-w-0">
+        <div class="flex items-center gap-2 flex-wrap">
+          <h4 class="font-semibold text-slate-800">${b.title}</h4>
+          ${decisionBadge(b.decision)} ${liveRating(b)}
+        </div>
+        <p class="text-xs text-slate-400">${b.author||''} · ${(b.tags||[]).join(' / ')}</p>
+        ${b.highlight?`<p class="text-sm font-medium text-violet-700">✨ ${b.highlight}</p>`:''}
+        <p class="text-xs text-slate-600 mt-1">${b.reco||''}</p>
+        ${refHtml}
+      </div>
+      <button class="shrink-0 text-xs px-3 py-1.5 rounded-lg bg-violet-600 text-white hover:bg-violet-700" onclick="addRecoToPlan('${b.id}')">+ 加入待读</button>
+    </div>
+  </div>`;
+}
+function addRecoToPlan(id){
+  const src = poolById(id); if(!src) return;
+  if(inMyLib(src.title)){ toast('已在你的书单里'); return; }
+  const nb = {
+    id: 'rb_'+id+'_'+Date.now().toString(36),
+    title: src.title, author: src.author, status:'wish',
+    tags: src.tags||[], highlight: src.highlight||'', decision: src.decision||'值得略读',
+    forWho: src.forWho||'', level: src.level||'', core: src.core||[], quotes: src.quotes||[],
+    rating: src.rating, ratingSrc: src.ratingSrc, edition: src.edition||'', source: src.source||'原书+书评',
+    controversy: src.controversy||'', alt: src.alt||'', compare: src.compare||''
+  };
+  setBooks([nb, ...getBooks()]);
+  renderBooks(); renderReco(); renderThemeLists();
+  toast('已加入待读：'+src.title);
+}
+function renderThemeLists(){
+  const box = document.getElementById('bookThemeLists');
+  if(!box) return;
+  const myTitles = myLibTitles();
+  box.innerHTML = RECO_THEMES.map(t => {
+    const books = t.books.map(poolById).filter(Boolean);
+    return `<div class="bg-white rounded-xl border border-slate-200 p-3">
+      <div class="flex items-center gap-2 mb-1">
+        <span class="text-lg">${t.emoji}</span>
+        <h4 class="font-semibold text-slate-800">${t.name}</h4>
+      </div>
+      <p class="text-xs text-slate-400 mb-2">${t.desc}</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        ${books.map(b => {
+          const added = myTitles.has((b.title||'').trim().toLowerCase());
+          return `<div class="flex items-center justify-between gap-2 border border-slate-100 rounded-lg px-2 py-1.5">
+            <div class="min-w-0">
+              <p class="text-sm font-medium text-slate-700 truncate">${b.title}</p>
+              <p class="text-[10px] text-slate-400 truncate">${b.author||''} · ${b.highlight||''}</p>
+            </div>
+            ${added?`<span class="text-[10px] text-emerald-600 shrink-0">✓ 已收</span>`:`<button class="shrink-0 text-[11px] px-2 py-1 rounded-lg bg-violet-50 text-violet-600 hover:bg-violet-100" onclick="addRecoToPlan('${b.id}')">+ 收</button>`}
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
 /* ===== 电影收藏 ===== */
 let movieFilterCat = '全部';
 let editingMovieId = null;
@@ -1531,6 +2092,7 @@ async function initAllData(){
     setBooks(SEED_BOOKS);
     localStorage.setItem('wb_books_seeded', '1');
   }
+  bookInterests = safeArr(K_BOOK_INTERESTS);
   // 用种子电影的分类初始化「智能识别」记忆，使已有影片也能被自动识别
   seedMovieLearnFromSeed();
 }
@@ -1940,6 +2502,9 @@ renderMovieFilter();
 renderMovies();
 renderBookFilter();
 renderBooks();
+renderBookInterests();
+renderReco();
+renderThemeLists();
 renderWords();
 renderChat();
 renderEnglishReport('day');
@@ -1949,6 +2514,7 @@ renderEditReport('week');
 initAllData().then(() => {
   renderSubtags(); renderFixed(); renderCats(); renderExpenseLog(); renderFinReport();
   renderWords(); renderChat(); renderEdit(); renderEditReport('week'); renderDouyin(); renderMovies(); renderBooks();
+  renderBookInterests(); renderReco(); renderThemeLists();
 });
 
 /* ===== 心跳保活：打开 APP 后每 30 秒 ping 服务器，减少被平台判定为空闲而暂停 ===== */
