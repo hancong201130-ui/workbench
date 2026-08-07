@@ -1,46 +1,46 @@
 {
- "updated": "2026/08/08 03:39",
+ "updated": "2026/08/08 06:06",
  "songs": [
   {
    "rank": 1,
-   "title": "Dai Dai",
-   "artist": "Shakira",
-   "platform": "Spotify Global"
-  },
-  {
-   "rank": 2,
-   "title": "Beauty And A Beat",
-   "artist": "Justin Bieber",
-   "platform": "Spotify Global"
-  },
-  {
-   "rank": 3,
    "title": "hate that i made you love me",
    "artist": "Ariana Grande",
    "platform": "Spotify Global"
   },
   {
-   "rank": 4,
-   "title": "Billie Jean",
-   "artist": "Michael Jackson",
+   "rank": 2,
+   "title": "Dai Dai",
+   "artist": "Shakira",
    "platform": "Spotify Global"
   },
   {
-   "rank": 5,
+   "rank": 3,
+   "title": "Beauty And A Beat",
+   "artist": "Justin Bieber",
+   "platform": "Spotify Global"
+  },
+  {
+   "rank": 4,
    "title": "Earrings",
    "artist": "Malcolm Todd",
    "platform": "Spotify Global"
   },
   {
+   "rank": 5,
+   "title": "SWIM",
+   "artist": "BTS",
+   "platform": "Spotify Global"
+  },
+  {
    "rank": 6,
-   "title": "Babydoll",
-   "artist": "Dominic Fike",
+   "title": "Billie Jean",
+   "artist": "Michael Jackson",
    "platform": "Spotify Global"
   },
   {
    "rank": 7,
-   "title": "SWIM",
-   "artist": "BTS",
+   "title": "Babydoll",
+   "artist": "Dominic Fike",
    "platform": "Spotify Global"
   },
   {
@@ -63,44 +63,44 @@
   },
   {
    "rank": 11,
-   "title": "stupid song",
-   "artist": "Olivia Rodrigo",
-   "platform": "Spotify Global"
-  },
-  {
-   "rank": 12,
-   "title": "the cure",
-   "artist": "Olivia Rodrigo",
-   "platform": "Spotify Global"
-  },
-  {
-   "rank": 13,
    "title": "back to friends",
    "artist": "sombr",
    "platform": "Spotify Global"
   },
   {
-   "rank": 14,
-   "title": "Choosin' Texas",
-   "artist": "Ella Langley",
+   "rank": 12,
+   "title": "stupid song",
+   "artist": "Olivia Rodrigo",
    "platform": "Spotify Global"
   },
   {
-   "rank": 15,
+   "rank": 13,
    "title": "Iris",
    "artist": "The Goo Goo Dolls",
    "platform": "Spotify Global"
   },
   {
-   "rank": 16,
-   "title": "drop dead",
+   "rank": 14,
+   "title": "the cure",
    "artist": "Olivia Rodrigo",
    "platform": "Spotify Global"
   },
   {
+   "rank": 15,
+   "title": "Choosin' Texas",
+   "artist": "Ella Langley",
+   "platform": "Spotify Global"
+  },
+  {
+   "rank": 16,
+   "title": "End of Beginning",
+   "artist": "Djo",
+   "platform": "Spotify Global"
+  },
+  {
    "rank": 17,
-   "title": "Beat It",
-   "artist": "Michael Jackson",
+   "title": "drop dead",
+   "artist": "Olivia Rodrigo",
    "platform": "Spotify Global"
   },
   {
@@ -111,14 +111,14 @@
   },
   {
    "rank": 19,
-   "title": "End of Beginning",
-   "artist": "Djo",
+   "title": "Beat It",
+   "artist": "Michael Jackson",
    "platform": "Spotify Global"
   },
   {
    "rank": 20,
-   "title": "DtMF",
-   "artist": "Bad Bunny",
+   "title": "Die With A Smile",
+   "artist": "Lady Gaga",
    "platform": "Spotify Global"
   }
  ]
