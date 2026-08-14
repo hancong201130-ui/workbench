@@ -1,16 +1,16 @@
 {
- "updated": "2026/08/15 05:44",
+ "updated": "2026/08/15 06:53",
  "songs": [
   {
    "rank": 1,
-   "title": "hate that i made you love me",
-   "artist": "Ariana Grande",
+   "title": "Dai Dai",
+   "artist": "Shakira",
    "platform": "Spotify Global"
   },
   {
    "rank": 2,
-   "title": "Dai Dai",
-   "artist": "Shakira",
+   "title": "hate that i made you love me",
+   "artist": "Ariana Grande",
    "platform": "Spotify Global"
   },
   {
@@ -21,44 +21,44 @@
   },
   {
    "rank": 4,
+   "title": "petal",
+   "artist": "Ariana Grande",
+   "platform": "Spotify Global"
+  },
+  {
+   "rank": 5,
    "title": "Earrings",
    "artist": "Malcolm Todd",
    "platform": "Spotify Global"
   },
   {
-   "rank": 5,
-   "title": "SWIM",
-   "artist": "BTS",
-   "platform": "Spotify Global"
-  },
-  {
    "rank": 6,
-   "title": "Billie Jean",
-   "artist": "Michael Jackson",
-   "platform": "Spotify Global"
-  },
-  {
-   "rank": 7,
    "title": "Babydoll",
    "artist": "Dominic Fike",
    "platform": "Spotify Global"
   },
   {
+   "rank": 7,
+   "title": "Self Aware",
+   "artist": "Temper City",
+   "platform": "Spotify Global"
+  },
+  {
    "rank": 8,
-   "title": "Wonderwall - Remastered",
-   "artist": "Oasis",
+   "title": "SWIM",
+   "artist": "BTS",
    "platform": "Spotify Global"
   },
   {
    "rank": 9,
-   "title": "The One That Got Away",
-   "artist": "Katy Perry",
+   "title": "Billie Jean",
+   "artist": "Michael Jackson",
    "platform": "Spotify Global"
   },
   {
    "rank": 10,
-   "title": "Self Aware",
-   "artist": "Temper City",
+   "title": "the cure",
+   "artist": "Olivia Rodrigo",
    "platform": "Spotify Global"
   },
   {
@@ -75,50 +75,50 @@
   },
   {
    "rank": 13,
-   "title": "Iris",
-   "artist": "The Goo Goo Dolls",
+   "title": "Animal",
+   "artist": "KATSEYE",
    "platform": "Spotify Global"
   },
   {
    "rank": 14,
-   "title": "the cure",
-   "artist": "Olivia Rodrigo",
-   "platform": "Spotify Global"
-  },
-  {
-   "rank": 15,
    "title": "Choosin' Texas",
    "artist": "Ella Langley",
    "platform": "Spotify Global"
   },
   {
+   "rank": 15,
+   "title": "Iris",
+   "artist": "The Goo Goo Dolls",
+   "platform": "Spotify Global"
+  },
+  {
    "rank": 16,
+   "title": "Wonderwall - Remastered",
+   "artist": "Oasis",
+   "platform": "Spotify Global"
+  },
+  {
+   "rank": 17,
+   "title": "Die With A Smile",
+   "artist": "Lady Gaga",
+   "platform": "Spotify Global"
+  },
+  {
+   "rank": 18,
+   "title": "Love Me Not",
+   "artist": "Ravyn Lenae",
+   "platform": "Spotify Global"
+  },
+  {
+   "rank": 19,
    "title": "End of Beginning",
    "artist": "Djo",
    "platform": "Spotify Global"
   },
   {
-   "rank": 17,
-   "title": "drop dead",
-   "artist": "Olivia Rodrigo",
-   "platform": "Spotify Global"
-  },
-  {
-   "rank": 18,
-   "title": "Man I Need",
-   "artist": "Olivia Dean",
-   "platform": "Spotify Global"
-  },
-  {
-   "rank": 19,
-   "title": "Beat It",
-   "artist": "Michael Jackson",
-   "platform": "Spotify Global"
-  },
-  {
    "rank": 20,
-   "title": "Die With A Smile",
-   "artist": "Lady Gaga",
+   "title": "Sunflower - Spider-Man: Into the Spider-Verse",
+   "artist": "Post Malone",
    "platform": "Spotify Global"
   }
  ]
