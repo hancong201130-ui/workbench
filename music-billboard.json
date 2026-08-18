@@ -1,5 +1,5 @@
 {
- "updated": "2026/08/18 17:06",
+ "updated": "2026/08/18 18:55",
  "songs": [
   {
    "rank": 1,
@@ -9,8 +9,8 @@
   },
   {
    "rank": 2,
-   "title": "Hate That I Made You Love Me",
-   "artist": "Ariana Grande",
+   "title": "I Knew It, I Knew You",
+   "artist": "Taylor Swift",
    "platform": "Billboard Hot 100"
   },
   {
@@ -21,26 +21,26 @@
   },
   {
    "rank": 4,
-   "title": "Petal",
-   "artist": "Ariana Grande",
-   "platform": "Billboard Hot 100"
-  },
-  {
-   "rank": 5,
-   "title": "I Knew It, I Knew You",
-   "artist": "Taylor Swift",
-   "platform": "Billboard Hot 100"
-  },
-  {
-   "rank": 6,
    "title": "Boston",
    "artist": "Stella Lefty",
    "platform": "Billboard Hot 100"
   },
   {
-   "rank": 7,
+   "rank": 5,
+   "title": "Hate That I Made You Love Me",
+   "artist": "Ariana Grande",
+   "platform": "Billboard Hot 100"
+  },
+  {
+   "rank": 6,
    "title": "I Can't Love You Anymore",
    "artist": "Ella Langley & Morgan Wallen",
+   "platform": "Billboard Hot 100"
+  },
+  {
+   "rank": 7,
+   "title": "So Easy (To Fall In Love)",
+   "artist": "Olivia Dean",
    "platform": "Billboard Hot 100"
   },
   {
@@ -51,7 +51,7 @@
   },
   {
    "rank": 9,
-   "title": "So Easy (To Fall In Love)",
+   "title": "Man I Need",
    "artist": "Olivia Dean",
    "platform": "Billboard Hot 100"
   },
@@ -63,14 +63,14 @@
   },
   {
    "rank": 11,
-   "title": "Man I Need",
-   "artist": "Olivia Dean",
+   "title": "Risk It All",
+   "artist": "Bruno Mars",
    "platform": "Billboard Hot 100"
   },
   {
    "rank": 12,
-   "title": "Risk It All",
-   "artist": "Bruno Mars",
+   "title": "Drop Dead",
+   "artist": "Olivia Rodrigo",
    "platform": "Billboard Hot 100"
   },
   {
@@ -81,44 +81,44 @@
   },
   {
    "rank": 14,
-   "title": "Drop Dead",
-   "artist": "Olivia Rodrigo",
-   "platform": "Billboard Hot 100"
-  },
-  {
-   "rank": 15,
-   "title": "Janice STFU",
-   "artist": "Drake",
-   "platform": "Billboard Hot 100"
-  },
-  {
-   "rank": 16,
-   "title": "Stupid Song",
-   "artist": "Olivia Rodrigo",
-   "platform": "Billboard Hot 100"
-  },
-  {
-   "rank": 17,
    "title": "Midnight Sun",
    "artist": "Zara Larsson",
    "platform": "Billboard Hot 100"
   },
   {
-   "rank": 18,
+   "rank": 15,
+   "title": "Stupid Song",
+   "artist": "Olivia Rodrigo",
+   "platform": "Billboard Hot 100"
+  },
+  {
+   "rank": 16,
+   "title": "Janice STFU",
+   "artist": "Drake",
+   "platform": "Billboard Hot 100"
+  },
+  {
+   "rank": 17,
    "title": "Be By You",
    "artist": "Luke Combs",
    "platform": "Billboard Hot 100"
   },
   {
+   "rank": 18,
+   "title": "Petal",
+   "artist": "Ariana Grande",
+   "platform": "Billboard Hot 100"
+  },
+  {
    "rank": 19,
-   "title": "Don't We",
-   "artist": "Morgan Wallen",
+   "title": "Jaded",
+   "artist": "Koe Wetzel & Ella Langley",
    "platform": "Billboard Hot 100"
   },
   {
    "rank": 20,
-   "title": "Dead Fresh",
-   "artist": "Lil Baby",
+   "title": "Oh Yeah?",
+   "artist": "Steve Lacy",
    "platform": "Billboard Hot 100"
   }
  ]
