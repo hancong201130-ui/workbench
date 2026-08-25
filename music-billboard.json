@@ -1,5 +1,5 @@
 {
- "updated": "2026/08/26 00:19",
+ "updated": "2026/08/26 01:55",
  "songs": [
   {
    "rank": 1,
@@ -9,20 +9,20 @@
   },
   {
    "rank": 2,
+   "title": "Boston",
+   "artist": "Stella Lefty",
+   "platform": "Billboard Hot 100"
+  },
+  {
+   "rank": 3,
    "title": "I Knew It, I Knew You",
    "artist": "Taylor Swift",
    "platform": "Billboard Hot 100"
   },
   {
-   "rank": 3,
+   "rank": 4,
    "title": "Been By Now",
    "artist": "Morgan Wallen",
-   "platform": "Billboard Hot 100"
-  },
-  {
-   "rank": 4,
-   "title": "Boston",
-   "artist": "Stella Lefty",
    "platform": "Billboard Hot 100"
   },
   {
@@ -81,14 +81,14 @@
   },
   {
    "rank": 14,
-   "title": "Midnight Sun",
-   "artist": "Zara Larsson",
+   "title": "Stupid Song",
+   "artist": "Olivia Rodrigo",
    "platform": "Billboard Hot 100"
   },
   {
    "rank": 15,
-   "title": "Stupid Song",
-   "artist": "Olivia Rodrigo",
+   "title": "Midnight Sun",
+   "artist": "Zara Larsson",
    "platform": "Billboard Hot 100"
   },
   {
@@ -105,20 +105,20 @@
   },
   {
    "rank": 18,
-   "title": "Petal",
-   "artist": "Ariana Grande",
+   "title": "Loser",
+   "artist": "Tame Impala",
    "platform": "Billboard Hot 100"
   },
   {
    "rank": 19,
-   "title": "Jaded",
-   "artist": "Koe Wetzel & Ella Langley",
+   "title": "Oh Yeah?",
+   "artist": "Steve Lacy",
    "platform": "Billboard Hot 100"
   },
   {
    "rank": 20,
-   "title": "Oh Yeah?",
-   "artist": "Steve Lacy",
+   "title": "Earrings",
+   "artist": "Malcolm Todd",
    "platform": "Billboard Hot 100"
   }
  ]
