@@ -1,124 +1,124 @@
 {
- "updated": "2026/08/28 08:57",
+ "updated": "2026/08/29 05:52",
  "songs": [
   {
    "rank": 1,
+   "title": "Loser",
+   "artist": "Tame Impala",
+   "platform": "Spotify Global"
+  },
+  {
+   "rank": 2,
    "title": "Dai Dai",
    "artist": "Shakira",
    "platform": "Spotify Global"
   },
   {
-   "rank": 2,
+   "rank": 3,
    "title": "Beauty And A Beat",
    "artist": "Justin Bieber",
    "platform": "Spotify Global"
   },
   {
-   "rank": 3,
-   "title": "hate that i made you love me",
-   "artist": "Ariana Grande",
+   "rank": 4,
+   "title": "The One That Got Away",
+   "artist": "Katy Perry",
    "platform": "Spotify Global"
   },
   {
-   "rank": 4,
+   "rank": 5,
    "title": "Babydoll",
    "artist": "Dominic Fike",
    "platform": "Spotify Global"
   },
   {
-   "rank": 5,
+   "rank": 6,
+   "title": "hate that i made you love me",
+   "artist": "Ariana Grande",
+   "platform": "Spotify Global"
+  },
+  {
+   "rank": 7,
    "title": "SWIM",
    "artist": "BTS",
    "platform": "Spotify Global"
   },
   {
-   "rank": 6,
-   "title": "Animal",
-   "artist": "KATSEYE",
-   "platform": "Spotify Global"
-  },
-  {
-   "rank": 7,
+   "rank": 8,
    "title": "Billie Jean",
    "artist": "Michael Jackson",
    "platform": "Spotify Global"
   },
   {
-   "rank": 8,
+   "rank": 9,
    "title": "the cure",
    "artist": "Olivia Rodrigo",
    "platform": "Spotify Global"
   },
   {
-   "rank": 9,
-   "title": "back to friends",
-   "artist": "sombr",
-   "platform": "Spotify Global"
-  },
-  {
    "rank": 10,
-   "title": "Sunflower - Spider-Man: Into the Spider-Verse",
-   "artist": "Post Malone",
-   "platform": "Spotify Global"
-  },
-  {
-   "rank": 11,
-   "title": "stupid song",
-   "artist": "Olivia Rodrigo",
-   "platform": "Spotify Global"
-  },
-  {
-   "rank": 12,
    "title": "Iris",
    "artist": "The Goo Goo Dolls",
    "platform": "Spotify Global"
   },
   {
+   "rank": 11,
+   "title": "back to friends",
+   "artist": "sombr",
+   "platform": "Spotify Global"
+  },
+  {
+   "rank": 12,
+   "title": "stupid song",
+   "artist": "Olivia Rodrigo",
+   "platform": "Spotify Global"
+  },
+  {
    "rank": 13,
-   "title": "Choosin' Texas",
-   "artist": "Ella Langley",
+   "title": "Sunflower - Spider-Man: Into the Spider-Verse",
+   "artist": "Post Malone",
    "platform": "Spotify Global"
   },
   {
    "rank": 14,
-   "title": "Love Me Not",
-   "artist": "Ravyn Lenae",
-   "platform": "Spotify Global"
-  },
-  {
-   "rank": 15,
    "title": "Wonderwall - Remastered",
    "artist": "Oasis",
    "platform": "Spotify Global"
   },
   {
+   "rank": 15,
+   "title": "Choosin' Texas",
+   "artist": "Ella Langley",
+   "platform": "Spotify Global"
+  },
+  {
    "rank": 16,
-   "title": "Die With A Smile",
-   "artist": "Lady Gaga",
+   "title": "Love Me Not",
+   "artist": "Ravyn Lenae",
    "platform": "Spotify Global"
   },
   {
    "rank": 17,
-   "title": "petal",
-   "artist": "Ariana Grande",
-   "platform": "Spotify Global"
-  },
-  {
-   "rank": 18,
    "title": "Treat You Better",
    "artist": "Shawn Mendes",
    "platform": "Spotify Global"
   },
   {
+   "rank": 18,
+   "title": "Animal",
+   "artist": "KATSEYE",
+   "platform": "Spotify Global"
+  },
+  {
    "rank": 19,
-   "title": "Man I Need",
-   "artist": "Olivia Dean",
+   "title": "Die With A Smile",
+   "artist": "Lady Gaga",
    "platform": "Spotify Global"
   },
   {
    "rank": 20,
-   "title": "drop dead",
-   "artist": "Olivia Rodrigo",
+   "title": "Man I Need",
+   "artist": "Olivia Dean",
    "platform": "Spotify Global"
   }
  ]
