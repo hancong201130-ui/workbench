@@ -1,10 +1,10 @@
 {
- "updated": "2026/09/11 23:56",
+ "updated": "2026/09/12 03:03",
  "songs": [
   {
    "rank": 1,
-   "title": "Beauty And A Beat",
-   "artist": "Justin Bieber",
+   "title": "BbY WOW",
+   "artist": "KAROL G",
    "platform": "Spotify Global"
   },
   {
@@ -21,62 +21,62 @@
   },
   {
    "rank": 4,
+   "title": "Beauty And A Beat",
+   "artist": "Justin Bieber",
+   "platform": "Spotify Global"
+  },
+  {
+   "rank": 5,
    "title": "The One That Got Away",
    "artist": "Katy Perry",
    "platform": "Spotify Global"
   },
   {
-   "rank": 5,
-   "title": "Dai Dai",
-   "artist": "Shakira",
-   "platform": "Spotify Global"
-  },
-  {
    "rank": 6,
-   "title": "Self Aware",
-   "artist": "Temper City",
-   "platform": "Spotify Global"
-  },
-  {
-   "rank": 7,
    "title": "the cure",
    "artist": "Olivia Rodrigo",
    "platform": "Spotify Global"
   },
   {
+   "rank": 7,
+   "title": "Dai Dai",
+   "artist": "Shakira",
+   "platform": "Spotify Global"
+  },
+  {
    "rank": 8,
+   "title": "Self Aware",
+   "artist": "Temper City",
+   "platform": "Spotify Global"
+  },
+  {
+   "rank": 9,
    "title": "hate that i made you love me",
    "artist": "Ariana Grande",
    "platform": "Spotify Global"
   },
   {
-   "rank": 9,
-   "title": "Babydoll",
-   "artist": "Dominic Fike",
-   "platform": "Spotify Global"
-  },
-  {
    "rank": 10,
-   "title": "back to friends",
-   "artist": "sombr",
-   "platform": "Spotify Global"
-  },
-  {
-   "rank": 11,
    "title": "SWIM",
    "artist": "BTS",
    "platform": "Spotify Global"
   },
   {
+   "rank": 11,
+   "title": "Iris",
+   "artist": "The Goo Goo Dolls",
+   "platform": "Spotify Global"
+  },
+  {
    "rank": 12,
-   "title": "Billie Jean",
-   "artist": "Michael Jackson",
+   "title": "back to friends",
+   "artist": "sombr",
    "platform": "Spotify Global"
   },
   {
    "rank": 13,
-   "title": "Iris",
-   "artist": "The Goo Goo Dolls",
+   "title": "Die With A Smile",
+   "artist": "Lady Gaga",
    "platform": "Spotify Global"
   },
   {
@@ -87,38 +87,38 @@
   },
   {
    "rank": 15,
-   "title": "Die With A Smile",
-   "artist": "Lady Gaga",
+   "title": "Babydoll",
+   "artist": "Dominic Fike",
    "platform": "Spotify Global"
   },
   {
    "rank": 16,
-   "title": "stupid song",
-   "artist": "Olivia Rodrigo",
+   "title": "Billie Jean",
+   "artist": "Michael Jackson",
    "platform": "Spotify Global"
   },
   {
    "rank": 17,
-   "title": "Treat You Better",
-   "artist": "Shawn Mendes",
-   "platform": "Spotify Global"
-  },
-  {
-   "rank": 18,
-   "title": "Sunflower - Spider-Man: Into the Spider-Verse",
-   "artist": "Post Malone",
-   "platform": "Spotify Global"
-  },
-  {
-   "rank": 19,
    "title": "Love Me Not",
    "artist": "Ravyn Lenae",
    "platform": "Spotify Global"
   },
   {
+   "rank": 18,
+   "title": "stupid song",
+   "artist": "Olivia Rodrigo",
+   "platform": "Spotify Global"
+  },
+  {
+   "rank": 19,
+   "title": "Training Season",
+   "artist": "Dua Lipa",
+   "platform": "Spotify Global"
+  },
+  {
    "rank": 20,
-   "title": "Wonderwall - Remastered",
-   "artist": "Oasis",
+   "title": "Treat You Better",
+   "artist": "Shawn Mendes",
    "platform": "Spotify Global"
   }
  ]
