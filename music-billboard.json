@@ -1,5 +1,5 @@
 {
- "updated": "2026/09/15 14:27",
+ "updated": "2026/09/15 20:00",
  "songs": [
   {
    "rank": 1,
@@ -21,14 +21,14 @@
   },
   {
    "rank": 4,
-   "title": "Hate That I Made You Love Me",
-   "artist": "Ariana Grande",
+   "title": "Been By Now",
+   "artist": "Morgan Wallen",
    "platform": "Billboard Hot 100"
   },
   {
    "rank": 5,
-   "title": "Been By Now",
-   "artist": "Morgan Wallen",
+   "title": "Hate That I Made You Love Me",
+   "artist": "Ariana Grande",
    "platform": "Billboard Hot 100"
   },
   {
@@ -51,20 +51,20 @@
   },
   {
    "rank": 9,
-   "title": "Risk It All",
-   "artist": "Bruno Mars",
-   "platform": "Billboard Hot 100"
-  },
-  {
-   "rank": 10,
    "title": "Be Her",
    "artist": "Ella Langley",
    "platform": "Billboard Hot 100"
   },
   {
+   "rank": 10,
+   "title": "BbY WOW",
+   "artist": "Karol G With Judeline & rusowsky",
+   "platform": "Billboard Hot 100"
+  },
+  {
    "rank": 11,
-   "title": "I Can't Love You Anymore",
-   "artist": "Ella Langley & Morgan Wallen",
+   "title": "Risk It All",
+   "artist": "Bruno Mars",
    "platform": "Billboard Hot 100"
   },
   {
@@ -75,44 +75,44 @@
   },
   {
    "rank": 13,
-   "title": "Drop Dead",
-   "artist": "Olivia Rodrigo",
-   "platform": "Billboard Hot 100"
-  },
-  {
-   "rank": 14,
-   "title": "I Just Might",
-   "artist": "Bruno Mars",
-   "platform": "Billboard Hot 100"
-  },
-  {
-   "rank": 15,
    "title": "Midnight Sun",
    "artist": "Zara Larsson",
    "platform": "Billboard Hot 100"
   },
   {
+   "rank": 14,
+   "title": "I Can't Love You Anymore",
+   "artist": "Ella Langley & Morgan Wallen",
+   "platform": "Billboard Hot 100"
+  },
+  {
+   "rank": 15,
+   "title": "I Just Might",
+   "artist": "Bruno Mars",
+   "platform": "Billboard Hot 100"
+  },
+  {
    "rank": 16,
-   "title": "BbY WOW",
-   "artist": "Karol G With Judeline & rusowsky",
+   "title": "Drop Dead",
+   "artist": "Olivia Rodrigo",
    "platform": "Billboard Hot 100"
   },
   {
    "rank": 17,
-   "title": "Janice STFU",
-   "artist": "Drake",
-   "platform": "Billboard Hot 100"
-  },
-  {
-   "rank": 18,
    "title": "Be By You",
    "artist": "Luke Combs",
    "platform": "Billboard Hot 100"
   },
   {
+   "rank": 18,
+   "title": "Janice STFU",
+   "artist": "Drake",
+   "platform": "Billboard Hot 100"
+  },
+  {
    "rank": 19,
-   "title": "9 To 5",
-   "artist": "Dolly Parton",
+   "title": "Earrings",
+   "artist": "Malcolm Todd",
    "platform": "Billboard Hot 100"
   },
   {
