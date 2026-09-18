@@ -1,5 +1,5 @@
 {
- "updated": "2026/09/19 02:54",
+ "updated": "2026/09/19 05:26",
  "songs": [
   {
    "rank": 1,
@@ -15,20 +15,20 @@
   },
   {
    "rank": 3,
-   "title": "Loser",
-   "artist": "Tame Impala",
-   "platform": "Spotify Global"
-  },
-  {
-   "rank": 4,
    "title": "Beauty And A Beat",
    "artist": "Justin Bieber",
    "platform": "Spotify Global"
   },
   {
+   "rank": 4,
+   "title": "Loser",
+   "artist": "Tame Impala",
+   "platform": "Spotify Global"
+  },
+  {
    "rank": 5,
-   "title": "The One That Got Away",
-   "artist": "Katy Perry",
+   "title": "Self Aware",
+   "artist": "Temper City",
    "platform": "Spotify Global"
   },
   {
@@ -39,14 +39,14 @@
   },
   {
    "rank": 7,
-   "title": "Dai Dai",
-   "artist": "Shakira",
+   "title": "back to friends",
+   "artist": "sombr",
    "platform": "Spotify Global"
   },
   {
    "rank": 8,
-   "title": "Self Aware",
-   "artist": "Temper City",
+   "title": "Love Me Not",
+   "artist": "Ravyn Lenae",
    "platform": "Spotify Global"
   },
   {
@@ -57,68 +57,68 @@
   },
   {
    "rank": 10,
+   "title": "Dai Dai",
+   "artist": "Shakira",
+   "platform": "Spotify Global"
+  },
+  {
+   "rank": 11,
    "title": "SWIM",
    "artist": "BTS",
    "platform": "Spotify Global"
   },
   {
-   "rank": 11,
-   "title": "Iris",
-   "artist": "The Goo Goo Dolls",
-   "platform": "Spotify Global"
-  },
-  {
    "rank": 12,
-   "title": "back to friends",
-   "artist": "sombr",
-   "platform": "Spotify Global"
-  },
-  {
-   "rank": 13,
    "title": "Die With A Smile",
    "artist": "Lady Gaga",
    "platform": "Spotify Global"
   },
   {
-   "rank": 14,
-   "title": "Choosin' Texas",
-   "artist": "Ella Langley",
+   "rank": 13,
+   "title": "Wonderwall - Remastered",
+   "artist": "Oasis",
    "platform": "Spotify Global"
   },
   {
-   "rank": 15,
+   "rank": 14,
    "title": "Babydoll",
    "artist": "Dominic Fike",
    "platform": "Spotify Global"
   },
   {
-   "rank": 16,
+   "rank": 15,
    "title": "Billie Jean",
    "artist": "Michael Jackson",
    "platform": "Spotify Global"
   },
   {
-   "rank": 17,
-   "title": "Love Me Not",
-   "artist": "Ravyn Lenae",
-   "platform": "Spotify Global"
-  },
-  {
-   "rank": 18,
+   "rank": 16,
    "title": "stupid song",
    "artist": "Olivia Rodrigo",
    "platform": "Spotify Global"
   },
   {
-   "rank": 19,
+   "rank": 17,
+   "title": "Sweater Weather",
+   "artist": "The Neighbourhood",
+   "platform": "Spotify Global"
+  },
+  {
+   "rank": 18,
    "title": "Training Season",
    "artist": "Dua Lipa",
    "platform": "Spotify Global"
   },
   {
-   "rank": 20,
+   "rank": 19,
    "title": "Treat You Better",
    "artist": "Shawn Mendes",
+   "platform": "Spotify Global"
+  },
+  {
+   "rank": 20,
+   "title": "Choosin' Texas",
+   "artist": "Ella Langley",
    "platform": "Spotify Global"
   }
  ]
