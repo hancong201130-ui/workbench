@@ -1,124 +1,124 @@
 {
- "updated": "2026/10/06 15:13",
+ "updated": "2026/10/06 22:23",
  "songs": [
   {
    "rank": 1,
+   "title": "Patient Zero",
+   "artist": "Taylor Swift",
+   "platform": "Billboard Hot 100"
+  },
+  {
+   "rank": 2,
    "title": "Choosin' Texas",
    "artist": "Ella Langley",
    "platform": "Billboard Hot 100"
   },
   {
-   "rank": 2,
+   "rank": 3,
+   "title": "Cleveland!",
+   "artist": "Taylor Swift",
+   "platform": "Billboard Hot 100"
+  },
+  {
+   "rank": 4,
+   "title": "Babylon",
+   "artist": "Taylor Swift",
+   "platform": "Billboard Hot 100"
+  },
+  {
+   "rank": 5,
+   "title": "Pink Clouding",
+   "artist": "Taylor Swift",
+   "platform": "Billboard Hot 100"
+  },
+  {
+   "rank": 6,
    "title": "Boston",
    "artist": "Stella Lefty",
    "platform": "Billboard Hot 100"
   },
   {
-   "rank": 3,
+   "rank": 7,
    "title": "Been By Now",
    "artist": "Morgan Wallen",
    "platform": "Billboard Hot 100"
   },
   {
-   "rank": 4,
+   "rank": 8,
    "title": "Hate That I Made You Love Me",
    "artist": "Ariana Grande",
    "platform": "Billboard Hot 100"
   },
   {
-   "rank": 5,
-   "title": "Dracula",
-   "artist": "Tame Impala & JENNIE",
-   "platform": "Billboard Hot 100"
-  },
-  {
-   "rank": 6,
-   "title": "BbY WOW",
-   "artist": "Karol G With Judeline & rusowsky",
-   "platform": "Billboard Hot 100"
-  },
-  {
-   "rank": 7,
-   "title": "So Easy (To Fall In Love)",
-   "artist": "Olivia Dean",
-   "platform": "Billboard Hot 100"
-  },
-  {
-   "rank": 8,
-   "title": "Man I Need",
-   "artist": "Olivia Dean",
-   "platform": "Billboard Hot 100"
-  },
-  {
    "rank": 9,
-   "title": "Last Thing You Need",
-   "artist": "Morgan Wallen",
-   "platform": "Billboard Hot 100"
-  },
-  {
-   "rank": 10,
-   "title": "Be Her",
-   "artist": "Ella Langley",
-   "platform": "Billboard Hot 100"
-  },
-  {
-   "rank": 11,
-   "title": "Nicole Kidman",
-   "artist": "ADELA",
-   "platform": "Billboard Hot 100"
-  },
-  {
-   "rank": 12,
-   "title": "I Knew It, I Knew You",
-   "artist": "Taylor Swift",
-   "platform": "Billboard Hot 100"
-  },
-  {
-   "rank": 13,
    "title": "Stupid Song",
    "artist": "Olivia Rodrigo",
    "platform": "Billboard Hot 100"
   },
   {
-   "rank": 14,
-   "title": "I Just Might",
-   "artist": "Bruno Mars",
+   "rank": 10,
+   "title": "Dracula",
+   "artist": "Tame Impala & JENNIE",
    "platform": "Billboard Hot 100"
   },
   {
-   "rank": 15,
+   "rank": 11,
+   "title": "BbY WOW",
+   "artist": "Karol G With Judeline & rusowsky",
+   "platform": "Billboard Hot 100"
+  },
+  {
+   "rank": 12,
+   "title": "Nicole Kidman",
+   "artist": "ADELA",
+   "platform": "Billboard Hot 100"
+  },
+  {
+   "rank": 13,
+   "title": "Last Thing You Need",
+   "artist": "Morgan Wallen",
+   "platform": "Billboard Hot 100"
+  },
+  {
+   "rank": 14,
    "title": "Risk It All",
    "artist": "Bruno Mars",
    "platform": "Billboard Hot 100"
   },
   {
+   "rank": 15,
+   "title": "I Just Might",
+   "artist": "Bruno Mars",
+   "platform": "Billboard Hot 100"
+  },
+  {
    "rank": 16,
-   "title": "Midnight Sun",
-   "artist": "Zara Larsson",
+   "title": "Be Her",
+   "artist": "Ella Langley",
    "platform": "Billboard Hot 100"
   },
   {
    "rank": 17,
-   "title": "I Can't Love You Anymore",
-   "artist": "Ella Langley & Morgan Wallen",
-   "platform": "Billboard Hot 100"
-  },
-  {
-   "rank": 18,
    "title": "Babydoll",
    "artist": "Dominic Fike",
    "platform": "Billboard Hot 100"
   },
   {
+   "rank": 18,
+   "title": "Midnight Sun",
+   "artist": "Zara Larsson",
+   "platform": "Billboard Hot 100"
+  },
+  {
    "rank": 19,
-   "title": "Janice STFU",
-   "artist": "Drake",
+   "title": "I Can't Love You Anymore",
+   "artist": "Ella Langley & Morgan Wallen",
    "platform": "Billboard Hot 100"
   },
   {
    "rank": 20,
-   "title": "Earrings",
-   "artist": "Malcolm Todd",
+   "title": "Drop Dead",
+   "artist": "Olivia Rodrigo",
    "platform": "Billboard Hot 100"
   }
  ]
