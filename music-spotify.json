@@ -1,5 +1,5 @@
 {
- "updated": "2026/10/10 01:07",
+ "updated": "2026/10/10 05:49",
  "songs": [
   {
    "rank": 1,
@@ -15,14 +15,14 @@
   },
   {
    "rank": 3,
-   "title": "Ain't In LA",
-   "artist": "ADÉLA",
+   "title": "Patient Zero",
+   "artist": "Taylor Swift",
    "platform": "Spotify Global"
   },
   {
    "rank": 4,
-   "title": "Earrings",
-   "artist": "Malcolm Todd",
+   "title": "Ain't In LA",
+   "artist": "ADÉLA",
    "platform": "Spotify Global"
   },
   {
@@ -33,8 +33,8 @@
   },
   {
    "rank": 6,
-   "title": "Beauty And A Beat",
-   "artist": "Justin Bieber",
+   "title": "Earrings",
+   "artist": "Malcolm Todd",
    "platform": "Spotify Global"
   },
   {
@@ -45,20 +45,20 @@
   },
   {
    "rank": 8,
-   "title": "Self Aware",
-   "artist": "Temper City",
+   "title": "Beauty And A Beat",
+   "artist": "Justin Bieber",
    "platform": "Spotify Global"
   },
   {
    "rank": 9,
-   "title": "The Fate of Ophelia",
-   "artist": "Taylor Swift",
+   "title": "stupid song",
+   "artist": "Olivia Rodrigo",
    "platform": "Spotify Global"
   },
   {
    "rank": 10,
-   "title": "stupid song",
-   "artist": "Olivia Rodrigo",
+   "title": "Self Aware",
+   "artist": "Temper City",
    "platform": "Spotify Global"
   },
   {
@@ -81,44 +81,44 @@
   },
   {
    "rank": 14,
-   "title": "hate that i made you love me",
-   "artist": "Ariana Grande",
-   "platform": "Spotify Global"
-  },
-  {
-   "rank": 15,
    "title": "Loser",
    "artist": "Tame Impala",
    "platform": "Spotify Global"
   },
   {
-   "rank": 16,
-   "title": "Choosin' Texas",
-   "artist": "Ella Langley",
-   "platform": "Spotify Global"
-  },
-  {
-   "rank": 17,
-   "title": "Love Me Not",
-   "artist": "Ravyn Lenae",
-   "platform": "Spotify Global"
-  },
-  {
-   "rank": 18,
-   "title": "Training Season",
-   "artist": "Dua Lipa",
-   "platform": "Spotify Global"
-  },
-  {
-   "rank": 19,
+   "rank": 15,
    "title": "Babydoll",
    "artist": "Dominic Fike",
    "platform": "Spotify Global"
   },
   {
-   "rank": 20,
+   "rank": 16,
+   "title": "Love Me Not",
+   "artist": "Ravyn Lenae",
+   "platform": "Spotify Global"
+  },
+  {
+   "rank": 17,
    "title": "SWIM",
    "artist": "BTS",
+   "platform": "Spotify Global"
+  },
+  {
+   "rank": 18,
+   "title": "hate that i made you love me",
+   "artist": "Ariana Grande",
+   "platform": "Spotify Global"
+  },
+  {
+   "rank": 19,
+   "title": "Training Season",
+   "artist": "Dua Lipa",
+   "platform": "Spotify Global"
+  },
+  {
+   "rank": 20,
+   "title": "Choosin' Texas",
+   "artist": "Ella Langley",
    "platform": "Spotify Global"
   }
  ]
