@@ -1,5 +1,5 @@
 {
- "updated": "2026/10/16 21:25",
+ "updated": "2026/10/17 01:37",
  "songs": [
   {
    "rank": 1,
@@ -15,50 +15,50 @@
   },
   {
    "rank": 3,
-   "title": "Patient Zero",
-   "artist": "Taylor Swift",
-   "platform": "Spotify Global"
-  },
-  {
-   "rank": 4,
    "title": "Ain't In LA",
    "artist": "ADÉLA",
    "platform": "Spotify Global"
   },
   {
-   "rank": 5,
+   "rank": 4,
    "title": "the cure",
    "artist": "Olivia Rodrigo",
    "platform": "Spotify Global"
   },
   {
-   "rank": 6,
+   "rank": 5,
    "title": "Earrings",
    "artist": "Malcolm Todd",
    "platform": "Spotify Global"
   },
   {
-   "rank": 7,
-   "title": "The One That Got Away",
-   "artist": "Katy Perry",
-   "platform": "Spotify Global"
-  },
-  {
-   "rank": 8,
-   "title": "Beauty And A Beat",
-   "artist": "Justin Bieber",
-   "platform": "Spotify Global"
-  },
-  {
-   "rank": 9,
+   "rank": 6,
    "title": "stupid song",
    "artist": "Olivia Rodrigo",
    "platform": "Spotify Global"
   },
   {
+   "rank": 7,
+   "title": "Beauty And A Beat",
+   "artist": "Justin Bieber",
+   "platform": "Spotify Global"
+  },
+  {
+   "rank": 8,
+   "title": "The One That Got Away",
+   "artist": "Katy Perry",
+   "platform": "Spotify Global"
+  },
+  {
+   "rank": 9,
+   "title": "Die With A Smile",
+   "artist": "Lady Gaga",
+   "platform": "Spotify Global"
+  },
+  {
    "rank": 10,
-   "title": "Self Aware",
-   "artist": "Temper City",
+   "title": "Patient Zero",
+   "artist": "Taylor Swift",
    "platform": "Spotify Global"
   },
   {
@@ -69,56 +69,56 @@
   },
   {
    "rank": 12,
-   "title": "Iris",
-   "artist": "The Goo Goo Dolls",
-   "platform": "Spotify Global"
-  },
-  {
-   "rank": 13,
-   "title": "Die With A Smile",
-   "artist": "Lady Gaga",
-   "platform": "Spotify Global"
-  },
-  {
-   "rank": 14,
-   "title": "Loser",
-   "artist": "Tame Impala",
-   "platform": "Spotify Global"
-  },
-  {
-   "rank": 15,
-   "title": "Babydoll",
-   "artist": "Dominic Fike",
-   "platform": "Spotify Global"
-  },
-  {
-   "rank": 16,
    "title": "Love Me Not",
    "artist": "Ravyn Lenae",
    "platform": "Spotify Global"
   },
   {
+   "rank": 13,
+   "title": "Iris",
+   "artist": "The Goo Goo Dolls",
+   "platform": "Spotify Global"
+  },
+  {
+   "rank": 14,
+   "title": "Self Aware",
+   "artist": "Temper City",
+   "platform": "Spotify Global"
+  },
+  {
+   "rank": 15,
+   "title": "Man I Need",
+   "artist": "Olivia Dean",
+   "platform": "Spotify Global"
+  },
+  {
+   "rank": 16,
+   "title": "Loser",
+   "artist": "Tame Impala",
+   "platform": "Spotify Global"
+  },
+  {
    "rank": 17,
+   "title": "Babydoll",
+   "artist": "Dominic Fike",
+   "platform": "Spotify Global"
+  },
+  {
+   "rank": 18,
+   "title": "Great Expectation",
+   "artist": "SIENNA SPIRO",
+   "platform": "Spotify Global"
+  },
+  {
+   "rank": 19,
    "title": "SWIM",
    "artist": "BTS",
    "platform": "Spotify Global"
   },
   {
-   "rank": 18,
-   "title": "hate that i made you love me",
-   "artist": "Ariana Grande",
-   "platform": "Spotify Global"
-  },
-  {
-   "rank": 19,
-   "title": "Training Season",
-   "artist": "Dua Lipa",
-   "platform": "Spotify Global"
-  },
-  {
    "rank": 20,
-   "title": "Choosin' Texas",
-   "artist": "Ella Langley",
+   "title": "Treat You Better",
+   "artist": "Shawn Mendes",
    "platform": "Spotify Global"
   }
  ]
