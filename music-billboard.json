@@ -1,5 +1,5 @@
 {
- "updated": "2026/10/20 13:40",
+ "updated": "2026/10/20 18:58",
  "songs": [
   {
    "rank": 1,
@@ -27,14 +27,14 @@
   },
   {
    "rank": 5,
-   "title": "Solar Eclipse",
-   "artist": "Drake & Don Toliver",
+   "title": "Dracula",
+   "artist": "Tame Impala & JENNIE",
    "platform": "Billboard Hot 100"
   },
   {
    "rank": 6,
-   "title": "Dracula",
-   "artist": "Tame Impala & JENNIE",
+   "title": "Nicole Kidman",
+   "artist": "ADELA",
    "platform": "Billboard Hot 100"
   },
   {
@@ -51,32 +51,32 @@
   },
   {
    "rank": 9,
-   "title": "Nicole Kidman",
-   "artist": "ADELA",
-   "platform": "Billboard Hot 100"
-  },
-  {
-   "rank": 10,
    "title": "BbY WOW",
    "artist": "Karol G With Judeline & rusowsky",
    "platform": "Billboard Hot 100"
   },
   {
-   "rank": 11,
-   "title": "Quebec",
-   "artist": "Drake",
+   "rank": 10,
+   "title": "Babydoll",
+   "artist": "Dominic Fike",
    "platform": "Billboard Hot 100"
   },
   {
-   "rank": 12,
+   "rank": 11,
    "title": "I Just Might",
    "artist": "Bruno Mars",
    "platform": "Billboard Hot 100"
   },
   {
+   "rank": 12,
+   "title": "Midnight Sun",
+   "artist": "Zara Larsson",
+   "platform": "Billboard Hot 100"
+  },
+  {
    "rank": 13,
-   "title": "Babydoll",
-   "artist": "Dominic Fike",
+   "title": "Be Her",
+   "artist": "Ella Langley",
    "platform": "Billboard Hot 100"
   },
   {
@@ -87,38 +87,38 @@
   },
   {
    "rank": 15,
-   "title": "Be Her",
-   "artist": "Ella Langley",
-   "platform": "Billboard Hot 100"
-  },
-  {
-   "rank": 16,
    "title": "Last Thing You Need",
    "artist": "Morgan Wallen",
    "platform": "Billboard Hot 100"
   },
   {
-   "rank": 17,
-   "title": "Midnight Sun",
-   "artist": "Zara Larsson",
-   "platform": "Billboard Hot 100"
-  },
-  {
-   "rank": 18,
-   "title": "Cold Shoulder",
-   "artist": "Drake , Don Toliver & Yebba",
-   "platform": "Billboard Hot 100"
-  },
-  {
-   "rank": 19,
+   "rank": 16,
    "title": "Loving Life Again",
    "artist": "Ella Langley",
    "platform": "Billboard Hot 100"
   },
   {
-   "rank": 20,
+   "rank": 17,
    "title": "Earrings",
    "artist": "Malcolm Todd",
+   "platform": "Billboard Hot 100"
+  },
+  {
+   "rank": 18,
+   "title": "Jaded",
+   "artist": "Koe Wetzel & Ella Langley",
+   "platform": "Billboard Hot 100"
+  },
+  {
+   "rank": 19,
+   "title": "Solar Eclipse",
+   "artist": "Drake & Don Toliver",
+   "platform": "Billboard Hot 100"
+  },
+  {
+   "rank": 20,
+   "title": "I Can't Love You Anymore",
+   "artist": "Ella Langley & Morgan Wallen",
    "platform": "Billboard Hot 100"
   }
  ]
