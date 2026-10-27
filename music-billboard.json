@@ -1,94 +1,94 @@
 {
- "updated": "2026/10/27 16:13",
+ "updated": "2026/10/27 22:47",
  "songs": [
   {
    "rank": 1,
-   "title": "Patient Zero",
-   "artist": "Taylor Swift",
-   "platform": "Billboard Hot 100"
-  },
-  {
-   "rank": 2,
    "title": "Choosin' Texas",
    "artist": "Ella Langley",
    "platform": "Billboard Hot 100"
   },
   {
+   "rank": 2,
+   "title": "Housewife",
+   "artist": "Tate McRae",
+   "platform": "Billboard Hot 100"
+  },
+  {
    "rank": 3,
+   "title": "Expectations",
+   "artist": "Olivia Rodrigo & Chappell Roan",
+   "platform": "Billboard Hot 100"
+  },
+  {
+   "rank": 4,
+   "title": "Lies",
+   "artist": "Zach Bryan Featuring Lana Del Rey",
+   "platform": "Billboard Hot 100"
+  },
+  {
+   "rank": 5,
+   "title": "Patient Zero",
+   "artist": "Taylor Swift",
+   "platform": "Billboard Hot 100"
+  },
+  {
+   "rank": 6,
    "title": "Boston",
    "artist": "Stella Lefty",
    "platform": "Billboard Hot 100"
   },
   {
-   "rank": 4,
+   "rank": 7,
    "title": "Been By Now",
    "artist": "Morgan Wallen",
    "platform": "Billboard Hot 100"
   },
   {
-   "rank": 5,
+   "rank": 8,
    "title": "Dracula",
    "artist": "Tame Impala & JENNIE",
    "platform": "Billboard Hot 100"
   },
   {
-   "rank": 6,
+   "rank": 9,
    "title": "Nicole Kidman",
    "artist": "ADELA",
    "platform": "Billboard Hot 100"
   },
   {
-   "rank": 7,
-   "title": "Hate That I Made You Love Me",
-   "artist": "Ariana Grande",
-   "platform": "Billboard Hot 100"
-  },
-  {
-   "rank": 8,
+   "rank": 10,
    "title": "Stupid Song",
    "artist": "Olivia Rodrigo",
    "platform": "Billboard Hot 100"
   },
   {
-   "rank": 9,
+   "rank": 11,
+   "title": "Hate That I Made You Love Me",
+   "artist": "Ariana Grande",
+   "platform": "Billboard Hot 100"
+  },
+  {
+   "rank": 12,
    "title": "BbY WOW",
    "artist": "Karol G With Judeline & rusowsky",
    "platform": "Billboard Hot 100"
   },
   {
-   "rank": 10,
+   "rank": 13,
    "title": "Babydoll",
    "artist": "Dominic Fike",
    "platform": "Billboard Hot 100"
   },
   {
-   "rank": 11,
+   "rank": 14,
    "title": "I Just Might",
    "artist": "Bruno Mars",
    "platform": "Billboard Hot 100"
   },
   {
-   "rank": 12,
+   "rank": 15,
    "title": "Midnight Sun",
    "artist": "Zara Larsson",
-   "platform": "Billboard Hot 100"
-  },
-  {
-   "rank": 13,
-   "title": "Be Her",
-   "artist": "Ella Langley",
-   "platform": "Billboard Hot 100"
-  },
-  {
-   "rank": 14,
-   "title": "Risk It All",
-   "artist": "Bruno Mars",
-   "platform": "Billboard Hot 100"
-  },
-  {
-   "rank": 15,
-   "title": "Last Thing You Need",
-   "artist": "Morgan Wallen",
    "platform": "Billboard Hot 100"
   },
   {
@@ -99,8 +99,8 @@
   },
   {
    "rank": 17,
-   "title": "Earrings",
-   "artist": "Malcolm Todd",
+   "title": "Be Her",
+   "artist": "Ella Langley",
    "platform": "Billboard Hot 100"
   },
   {
@@ -111,14 +111,14 @@
   },
   {
    "rank": 19,
-   "title": "Solar Eclipse",
-   "artist": "Drake & Don Toliver",
+   "title": "Risk It All",
+   "artist": "Bruno Mars",
    "platform": "Billboard Hot 100"
   },
   {
    "rank": 20,
-   "title": "I Can't Love You Anymore",
-   "artist": "Ella Langley & Morgan Wallen",
+   "title": "Earrings",
+   "artist": "Malcolm Todd",
    "platform": "Billboard Hot 100"
   }
  ]
