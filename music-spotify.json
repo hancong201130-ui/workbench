@@ -1,58 +1,58 @@
 {
- "updated": "2026/10/31 02:43",
+ "updated": "2026/10/31 06:47",
  "songs": [
   {
    "rank": 1,
+   "title": "Housewife",
+   "artist": "Tate McRae",
+   "platform": "Spotify Global"
+  },
+  {
+   "rank": 2,
    "title": "BbY WOW",
    "artist": "KAROL G",
    "platform": "Spotify Global"
   },
   {
-   "rank": 2,
+   "rank": 3,
    "title": "Nicole Kidman",
    "artist": "ADÉLA",
    "platform": "Spotify Global"
   },
   {
-   "rank": 3,
+   "rank": 4,
    "title": "Ain't In LA",
    "artist": "ADÉLA",
    "platform": "Spotify Global"
   },
   {
-   "rank": 4,
+   "rank": 5,
    "title": "the cure",
    "artist": "Olivia Rodrigo",
    "platform": "Spotify Global"
   },
   {
-   "rank": 5,
-   "title": "Stop The Wedding!",
-   "artist": "Ashe",
+   "rank": 6,
+   "title": "expectations",
+   "artist": "Olivia Rodrigo",
    "platform": "Spotify Global"
   },
   {
-   "rank": 6,
+   "rank": 7,
    "title": "Earrings",
    "artist": "Malcolm Todd",
    "platform": "Spotify Global"
   },
   {
-   "rank": 7,
-   "title": "The One That Got Away",
-   "artist": "Katy Perry",
-   "platform": "Spotify Global"
-  },
-  {
    "rank": 8,
-   "title": "stupid song",
-   "artist": "Olivia Rodrigo",
+   "title": "back to friends",
+   "artist": "sombr",
    "platform": "Spotify Global"
   },
   {
    "rank": 9,
-   "title": "Die With A Smile",
-   "artist": "Lady Gaga",
+   "title": "The One That Got Away",
+   "artist": "Katy Perry",
    "platform": "Spotify Global"
   },
   {
@@ -63,14 +63,14 @@
   },
   {
    "rank": 11,
-   "title": "back to friends",
-   "artist": "sombr",
+   "title": "Iris",
+   "artist": "The Goo Goo Dolls",
    "platform": "Spotify Global"
   },
   {
    "rank": 12,
-   "title": "Iris",
-   "artist": "The Goo Goo Dolls",
+   "title": "stupid song",
+   "artist": "Olivia Rodrigo",
    "platform": "Spotify Global"
   },
   {
@@ -81,26 +81,26 @@
   },
   {
    "rank": 14,
-   "title": "Man I Need",
-   "artist": "Olivia Dean",
+   "title": "Die With A Smile",
+   "artist": "Lady Gaga",
    "platform": "Spotify Global"
   },
   {
    "rank": 15,
-   "title": "Love Me Not",
-   "artist": "Ravyn Lenae",
+   "title": "Great Expectation",
+   "artist": "SIENNA SPIRO",
    "platform": "Spotify Global"
   },
   {
    "rank": 16,
-   "title": "Self Aware",
-   "artist": "Temper City",
+   "title": "Loser",
+   "artist": "Tame Impala",
    "platform": "Spotify Global"
   },
   {
    "rank": 17,
-   "title": "Loser",
-   "artist": "Tame Impala",
+   "title": "Love Me Not",
+   "artist": "Ravyn Lenae",
    "platform": "Spotify Global"
   },
   {
@@ -117,8 +117,8 @@
   },
   {
    "rank": 20,
-   "title": "SWIM",
-   "artist": "BTS",
+   "title": "Self Aware",
+   "artist": "Temper City",
    "platform": "Spotify Global"
   }
  ]
