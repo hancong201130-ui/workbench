@@ -1,5 +1,5 @@
 {
- "updated": "2026/11/07 02:14",
+ "updated": "2026/11/07 07:23",
  "songs": [
   {
    "rank": 1,
@@ -33,32 +33,32 @@
   },
   {
    "rank": 6,
-   "title": "expectations",
-   "artist": "Olivia Rodrigo",
-   "platform": "Spotify Global"
-  },
-  {
-   "rank": 7,
-   "title": "Earrings",
-   "artist": "Malcolm Todd",
-   "platform": "Spotify Global"
-  },
-  {
-   "rank": 8,
    "title": "back to friends",
    "artist": "sombr",
    "platform": "Spotify Global"
   },
   {
-   "rank": 9,
+   "rank": 7,
+   "title": "Beauty And A Beat",
+   "artist": "Justin Bieber",
+   "platform": "Spotify Global"
+  },
+  {
+   "rank": 8,
    "title": "The One That Got Away",
    "artist": "Katy Perry",
    "platform": "Spotify Global"
   },
   {
+   "rank": 9,
+   "title": "Earrings",
+   "artist": "Malcolm Todd",
+   "platform": "Spotify Global"
+  },
+  {
    "rank": 10,
-   "title": "Beauty And A Beat",
-   "artist": "Justin Bieber",
+   "title": "Die With A Smile",
+   "artist": "Lady Gaga",
    "platform": "Spotify Global"
   },
   {
@@ -69,8 +69,8 @@
   },
   {
    "rank": 12,
-   "title": "stupid song",
-   "artist": "Olivia Rodrigo",
+   "title": "Just Give Me a Reason",
+   "artist": "P!nk",
    "platform": "Spotify Global"
   },
   {
@@ -81,44 +81,44 @@
   },
   {
    "rank": 14,
-   "title": "Die With A Smile",
-   "artist": "Lady Gaga",
+   "title": "Pós - Ao Vivo",
+   "artist": "Felipe e Rodrigo",
    "platform": "Spotify Global"
   },
   {
    "rank": 15,
-   "title": "Great Expectation",
-   "artist": "SIENNA SPIRO",
+   "title": "stupid song",
+   "artist": "Olivia Rodrigo",
    "platform": "Spotify Global"
   },
   {
    "rank": 16,
-   "title": "Loser",
-   "artist": "Tame Impala",
-   "platform": "Spotify Global"
-  },
-  {
-   "rank": 17,
    "title": "Love Me Not",
    "artist": "Ravyn Lenae",
    "platform": "Spotify Global"
   },
   {
+   "rank": 17,
+   "title": "Great Expectation",
+   "artist": "SIENNA SPIRO",
+   "platform": "Spotify Global"
+  },
+  {
    "rank": 18,
-   "title": "Choosin' Texas",
-   "artist": "Ella Langley",
+   "title": "Billie Jean",
+   "artist": "Michael Jackson",
    "platform": "Spotify Global"
   },
   {
    "rank": 19,
-   "title": "Babydoll",
-   "artist": "Dominic Fike",
+   "title": "End of Beginning",
+   "artist": "Djo",
    "platform": "Spotify Global"
   },
   {
    "rank": 20,
-   "title": "Self Aware",
-   "artist": "Temper City",
+   "title": "SWIM",
+   "artist": "BTS",
    "platform": "Spotify Global"
   }
  ]
