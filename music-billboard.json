@@ -1,5 +1,5 @@
 {
- "updated": "2026/11/10 11:17",
+ "updated": "2026/11/10 19:31",
  "songs": [
   {
    "rank": 1,
@@ -9,116 +9,116 @@
   },
   {
    "rank": 2,
-   "title": "Housewife",
-   "artist": "Tate McRae",
+   "title": "Thriller",
+   "artist": "Michael Jackson",
    "platform": "Billboard Hot 100"
   },
   {
    "rank": 3,
-   "title": "Boston",
-   "artist": "Stella Lefty",
-   "platform": "Billboard Hot 100"
-  },
-  {
-   "rank": 4,
-   "title": "Been By Now",
-   "artist": "Morgan Wallen",
-   "platform": "Billboard Hot 100"
-  },
-  {
-   "rank": 5,
    "title": "Dracula",
    "artist": "Tame Impala & JENNIE",
    "platform": "Billboard Hot 100"
   },
   {
+   "rank": 4,
+   "title": "Housewife",
+   "artist": "Tate McRae",
+   "platform": "Billboard Hot 100"
+  },
+  {
+   "rank": 5,
+   "title": "Boston",
+   "artist": "Stella Lefty",
+   "platform": "Billboard Hot 100"
+  },
+  {
    "rank": 6,
+   "title": "Been By Now",
+   "artist": "Morgan Wallen",
+   "platform": "Billboard Hot 100"
+  },
+  {
+   "rank": 7,
    "title": "Nicole Kidman",
    "artist": "ADELA",
    "platform": "Billboard Hot 100"
   },
   {
-   "rank": 7,
-   "title": "Expectations",
-   "artist": "Olivia Rodrigo & Chappell Roan",
-   "platform": "Billboard Hot 100"
-  },
-  {
    "rank": 8,
-   "title": "Patient Zero",
-   "artist": "Taylor Swift",
-   "platform": "Billboard Hot 100"
-  },
-  {
-   "rank": 9,
    "title": "BbY WOW",
    "artist": "Karol G With Judeline & rusowsky",
    "platform": "Billboard Hot 100"
   },
   {
-   "rank": 10,
+   "rank": 9,
    "title": "Hate That I Made You Love Me",
    "artist": "Ariana Grande",
    "platform": "Billboard Hot 100"
   },
   {
-   "rank": 11,
-   "title": "Lies",
-   "artist": "Zach Bryan Featuring Lana Del Rey",
-   "platform": "Billboard Hot 100"
-  },
-  {
-   "rank": 12,
+   "rank": 10,
    "title": "Stupid Song",
    "artist": "Olivia Rodrigo",
    "platform": "Billboard Hot 100"
   },
   {
+   "rank": 11,
+   "title": "Patient Zero",
+   "artist": "Taylor Swift",
+   "platform": "Billboard Hot 100"
+  },
+  {
+   "rank": 12,
+   "title": "Ghostbusters",
+   "artist": "Ray Parker Jr.",
+   "platform": "Billboard Hot 100"
+  },
+  {
    "rank": 13,
+   "title": "Monster Mash",
+   "artist": "Bobby \"Boris\" Pickett And The Crypt-Kickers",
+   "platform": "Billboard Hot 100"
+  },
+  {
+   "rank": 14,
+   "title": "Somebody's Watching Me",
+   "artist": "Rockwell",
+   "platform": "Billboard Hot 100"
+  },
+  {
+   "rank": 15,
+   "title": "Expectations",
+   "artist": "Olivia Rodrigo & Chappell Roan",
+   "platform": "Billboard Hot 100"
+  },
+  {
+   "rank": 16,
    "title": "Babydoll",
    "artist": "Dominic Fike",
    "platform": "Billboard Hot 100"
   },
   {
-   "rank": 14,
+   "rank": 17,
    "title": "I Just Might",
    "artist": "Bruno Mars",
    "platform": "Billboard Hot 100"
   },
   {
-   "rank": 15,
+   "rank": 18,
    "title": "Jaded",
    "artist": "Koe Wetzel & Ella Langley",
    "platform": "Billboard Hot 100"
   },
   {
-   "rank": 16,
-   "title": "Loving Life Again",
-   "artist": "Ella Langley",
-   "platform": "Billboard Hot 100"
-  },
-  {
-   "rank": 17,
-   "title": "Be Her",
-   "artist": "Ella Langley",
-   "platform": "Billboard Hot 100"
-  },
-  {
-   "rank": 18,
-   "title": "Midnight Sun",
-   "artist": "Zara Larsson",
-   "platform": "Billboard Hot 100"
-  },
-  {
    "rank": 19,
-   "title": "Risk It All",
-   "artist": "Bruno Mars",
+   "title": "Lies",
+   "artist": "Zach Bryan Featuring Lana Del Rey",
    "platform": "Billboard Hot 100"
   },
   {
    "rank": 20,
-   "title": "Thriller",
-   "artist": "Michael Jackson",
+   "title": "Loving Life Again",
+   "artist": "Ella Langley",
    "platform": "Billboard Hot 100"
   }
  ]
